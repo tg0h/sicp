@@ -1,6 +1,6 @@
 #lang sicp
 
-;; (define (square x) (* x x))
+(define (square x) (* x x))
 ;; (square 21)
 
 ;; (define (abs x)
@@ -38,3 +38,20 @@
 ;; (/ (+ 5 4(- 2 (- 3 (+ 6 0.8)))) (* 3 (- 6 2) (- 2 7)))
 ;;
 ;; (* 3 (- 6 2) (- 2 7))
+
+;; (define larger_two a b c)
+(define (<= a b) (or (< a b) (= a b)))
+
+;; (<= 4 3)
+;; (define (square x) (* x x))
+
+;; ex 1.3
+(define (larger_two_squares a b c)
+  (cond 
+      ((and (<= a b) (<= a c)) (+ (square b) (square c)))
+      ((and (<= b a) (<= b c)) (+ (square a) (square c)))
+      ((and (<= c a) (<= c b)) (+ (square a) (square b)))
+  )
+)
+
+(larger_two_squares 1 2 3)
