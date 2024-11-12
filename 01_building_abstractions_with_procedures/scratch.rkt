@@ -40,18 +40,23 @@
 ;; (* 3 (- 6 2) (- 2 7))
 
 ;; (define larger_two a b c)
-(define (<= a b) (or (< a b) (= a b)))
 
 ;; (<= 4 3)
 ;; (define (square x) (* x x))
 
 ;; ex 1.3
-(define (larger_two_squares a b c)
-  (cond 
-      ((and (<= a b) (<= a c)) (+ (square b) (square c)))
-      ((and (<= b a) (<= b c)) (+ (square a) (square c)))
-      ((and (<= c a) (<= c b)) (+ (square a) (square b)))
-  )
-)
+;; (define (<= a b) (or (< a b) (= a b)))
+;; (define (larger_two_squares a b c)
+;;   (cond 
+;;       ((and (<= a b) (<= a c)) (+ (square b) (square c)))
+;;       ((and (<= b a) (<= b c)) (+ (square a) (square c)))
+;;       ((and (<= c a) (<= c b)) (+ (square a) (square b)))
+;;   )
+;; )
+;; (larger_two_squares 1 1.1 3)
 
-(larger_two_squares 1 2 3)
+
+; ex1.4
+(define (a-plus-abs-b a b) ((if (> b 0) + -) a b))
+
+(a-plus-abs-b -1 3)
