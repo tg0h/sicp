@@ -21,9 +21,11 @@
       ((< x 0) (- x))
   )
 )
+
 (define (good-enough? guess x)
 (< (abs (- (square guess) x)) 0.001))
 
+(define (improve guess x) (average guess (/ x guess)))
 
 (define (sqrt-iter guess x) 
   (new-if (good-enough? guess x)
