@@ -9,3 +9,12 @@
 )
 
 (new-if (= 2 3) 0 5)
+
+(new-if (= 1 1) 0 5)
+
+
+(define (sqrt-iter guess x) 
+  (new-if (good-enough? guess x)
+    guess
+    (sqrt-iter (improve guess x) x))
+)
