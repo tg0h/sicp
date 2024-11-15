@@ -31,7 +31,7 @@
 (define (_sqrt-iter guess x) 
   (new-if (good-enough? guess x)
     guess
-    (sqrt-iter (improve guess x) x))
+    (_sqrt-iter (improve guess x) x))
 )
 
 (define (sqrt-iter guess x) (if (good-enough? guess x)
@@ -39,3 +39,4 @@
       (sqrt-iter (improve guess x) x)))
 
 (sqrt-iter 1 2)
+(_sqrt-iter 1 2)
