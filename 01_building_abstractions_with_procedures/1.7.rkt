@@ -13,7 +13,7 @@
   (< (abs (- (square guess) x)) 0.001))
 
 (define (_good-enough? guess x)
-  (> (abs (/ (square guess) x)) 0.99))
+  (< (/ (abs (- x (square guess) )) x) 0.01))
 
 ;; improve
 (define (average x y) (/ (+ x y) 2))
@@ -26,6 +26,11 @@
       )
   )
 
-;; (sqrt-iter 1 0.00025)
-(sqrt-iter 1 123456789)
+;; (sqrt-iter 1 2)
+;; (sqrt-iter 1 123456789)
+(sqrt-iter 1.0 16e64)
+
+;; (improve 123456789 1.0)
+;; (improve 61728394.50000001 1.0)
+;; (improve 61728394.50000001 1.0)
 
