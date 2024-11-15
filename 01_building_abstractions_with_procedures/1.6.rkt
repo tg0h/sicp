@@ -7,3 +7,5 @@
     (else else-clause)
   )
 )
+
+(new-if (= 2 3) 0 5)
