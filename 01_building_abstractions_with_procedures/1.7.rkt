@@ -28,9 +28,18 @@
 
 ;; (sqrt-iter 1 2)
 ;; (sqrt-iter 1 123456789)
-(sqrt-iter 1.0 16e64)
+;; (sqrt-iter 1.0 16e64)
 
-;; (improve 123456789 1.0)
-;; (improve 61728394.50000001 1.0)
+;; (square 16e64)
+;; (abs (- 1.0 (square 16e64)))
+
+
+;; (/ 16e64 8e64)
+(improve 8e64 16e64)
 ;; (improve 61728394.50000001 1.0)
 
+;; (abs (- 16e64 (square 4.0e32)))
+;; (square 4.0e32)
+
+(abs (- 16e64 1.6e65))
+(abs (- 16e64 (square 4.0e32)  ))
