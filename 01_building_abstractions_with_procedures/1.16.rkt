@@ -12,10 +12,10 @@
   (display ":" )
   (display k)
   (newline)
-  (cond ((= k 0) a)
+  (cond ((= k 1) a)
         ((not (even? k)) (f-exp (* a b) b (- k 1)))
         (else (f-exp (* a (square b)) b (/ k 2)))
         )
   )
 
-(f-exp 1 2 3 )
+(f-exp 1 2 5 )
