@@ -29,4 +29,4 @@
   (iter a b 0 3)
   )
 
-(f-mult 3 10)
+(f-mult 3 1)
