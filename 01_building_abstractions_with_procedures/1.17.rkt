@@ -22,11 +22,11 @@
     (display k)
     (newline)
     (cond ((= b 1) (+ c k))
-          ((even? b) (iter a (halve b) k (double a)) ); even
+          ((even? b) (iter a (halve b) c (double k)) ); even
           (else (iter a (- b 1) k k)) ; odd
           )
     )
-  (iter a b 0 1)
+  (iter a b 0 3)
   )
 
-(f-mult 3 2)
+(f-mult 3 10)
