@@ -12,18 +12,18 @@
   )
 
 (define (f-mult a b )
-  (define (iter a b c product)
+  (define (iter a b c k)
     (display a)
     (display ":" )
     (display b)
     (display ":" )
     (display c)
     (display ":" )
-    (display product)
+    (display k)
     (newline)
-    (cond ((= b 1) (+ c product))
-          ((even? b) (iter a (halve b) product (double a)) ); even
-          (else (iter a (- b 1) product product)) ; odd
+    (cond ((= b 1) (+ c k))
+          ((even? b) (iter a (halve b) k (double a)) ); even
+          (else (iter a (- b 1) k k)) ; odd
           )
     )
   (iter a b 0 1)
