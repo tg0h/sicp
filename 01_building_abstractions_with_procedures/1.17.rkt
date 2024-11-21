@@ -3,6 +3,14 @@
 (define (even? n)
   (= (remainder n 2) 0))
 
+(define (double n)
+  (* n 2)
+  )
+
+(define (halve n)
+  (/ n 2)
+  )
+
 (define (f-mult a b )
   (define (iter a b c k)
     (display a)
@@ -20,4 +28,4 @@
     )
   )
 
-(f-exp 1 2 5 )
+(f-mult 3 5)
