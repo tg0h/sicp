@@ -3,6 +3,16 @@
 (define (fib n)
   (fib-iter 1 0 0 1 n))
 (define (fib-iter a b p q count)
+  (display a)
+  (display ":" )
+  (display b)
+  (display ":" )
+  (display p)
+  (display ":" )
+  (display q)
+  (display ":" )
+  (display count)
+  (newline)
   (cond ((= count 0) b)
         ((even? count)
          (fib-iter a
@@ -19,5 +29,7 @@
 (define (square x) (* x x))
 
 
+
+(fib 128)
 
 
