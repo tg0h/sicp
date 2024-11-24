@@ -32,13 +32,13 @@
     (cond
       ((= n 3) display "end")
       ((even? candidate) (search-for-3-primes (+ candidate 1) n))
-      (if (prime? candidate)
-          (search-for-3-primes (+ 2 candidate) (+ 1 n))
-          (search-for-3-primes (+ 2 candidate) n)
-          )
+      (else (if (timed-prime-test candidate)
+                (search-for-3-primes (+ 2 candidate) (+ 1 n))
+                (search-for-3-primes (+ 2 candidate) n)
+                ))
       )
     )
   (search-for-3-primes range 0)
   )
 
-(search-for-primes-range 1000)
+(search-for-primes 1000)
