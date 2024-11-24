@@ -26,3 +26,16 @@
 
 (define (even? n)
   (= (remainder n 2) 0))
+
+(define (search-for-primes range)
+  (define (search-for-3-primes candidate n)
+    (cond
+      ((= n 3) display "end")
+      ((even? candidate) (search-for-3-primes (+ candidate 1) n))
+      (if (prime? candidate)
+          ((and (timed-prime-test candidate) (search-for-primes (+ 2 candidate) (+ 1 n))) )
+          (search-for-3-primes (+ 2 candidate) n)
+          )
+      )
+    )
+  )
