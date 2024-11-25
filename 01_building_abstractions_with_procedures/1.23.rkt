@@ -1,5 +1,9 @@
 #lang sicp
 
+(define (next test-divisor) 
+  (if (= test-divisor 2) 3 (+ test-divisor 2))
+  )
+
 (define (square x) (* x x))
 (define (smallest-divisor n) (find-divisor n 2))
 (define (divides? a b) (= (remainder b a) 0))
@@ -21,7 +25,7 @@
       (report-prime (- (runtime) start-time))))
 
 (define (report-prime elapsed-time)
-  (display " *** ")
+  (display " time elapsed ")
   (display elapsed-time))
 
 (define (even? n)
