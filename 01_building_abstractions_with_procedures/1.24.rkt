@@ -52,8 +52,14 @@
 
 (define (fermat-test n)
   (define (try-it a)
-    (= (expmod a n n) a))
+    (= (expmod a n n) a)) ; if true, by fermats little theorem, n is likely prime, (must be true for ALL a < n for n to be prime)
   (try-it (+ 1 (random (- n 1)))))
+
+
+(define (fast-prime? n times)
+  (cond ((= times 0) true)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else false)))
 
 (search-for-primes 1000000000 1000000021) ;~103
 ; when load increased by factor of 10, perf increased by factor of sqrt(10) ~ 3
