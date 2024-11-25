@@ -43,12 +43,11 @@
 (define (expmod base exp m)
   (cond ((= exp 0) 1)
         ((even? exp)
-         (remainder
-          (square (expmod base (/ exp 2) m))
-          m)) (else
-               (remainder
-                (* base (expmod base (- exp 1) m))
-                m)))
+         (remainder (square (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m)))
   )
 
 (search-for-primes 1000000000 1000000021) ;~103
