@@ -1,6 +1,6 @@
 #lang sicp
 
-(define (next test-divisor) 
+(define (next test-divisor)
   (if (= test-divisor 2) 3 (+ test-divisor 2)) ; more efficient to add 2 to search for next prime
   )
 
@@ -48,6 +48,7 @@
 (search-for-primes 1000000000 1000000021) ;~103
 ; when load increased by factor of 10, perf increased by factor of sqrt(10) ~ 3
 (search-for-primes 10000000000 10000000061) ;~283 increased by a factor of sqrt(10) ~ 3
+(search-for-primes 100000000000 100000000061) ;~283 increased by a factor of sqrt(10) ~ 3
 
 ;; (search-for-primes 1000)
 ;; (timed-prime-test 7)
