@@ -40,6 +40,17 @@
   (iter lower)
   )
 
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder
+          (square (expmod base (/ exp 2) m))
+          m)) (else
+               (remainder
+                (* base (expmod base (- exp 1) m))
+                m)))
+  )
+
 (search-for-primes 1000000000 1000000021) ;~103
 ; when load increased by factor of 10, perf increased by factor of sqrt(10) ~ 3
 (search-for-primes 10000000000 10000000061) ;~283 increased by a factor of sqrt(10) ~ 3
