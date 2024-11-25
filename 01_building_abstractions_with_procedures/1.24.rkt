@@ -17,7 +17,8 @@
   (start-prime-test n (runtime)))
 
 (define (start-prime-test n start-time)
-  (if (prime? n)
+  ;; (if (prime? n)
+  (if (fast-prime? n 100) ; use fermat test
       (report-prime (- (runtime) start-time))))
 
 (define (report-prime elapsed-time)
@@ -61,10 +62,14 @@
         ((fermat-test n) (fast-prime? n (- times 1)))
         (else false)))
 
-(search-for-primes 1000000000 1000000021) ;~103
+;; (fast-prime? 7 100)
+;; (search-for-primes 1000000000 1000000021) ;~103
 ; when load increased by factor of 10, perf increased by factor of sqrt(10) ~ 3
+(search-for-primes 10000000  10000061) ;~283 increased by a factor of sqrt(10) ~ 3
+(search-for-primes 100000000  100000061) ;~283 increased by a factor of sqrt(10) ~ 3
+(search-for-primes 1000000000 1000000061) ;~283 increased by a factor of sqrt(10) ~ 3
 (search-for-primes 10000000000 10000000061) ;~283 increased by a factor of sqrt(10) ~ 3
-(search-for-primes 100000000000 100000000061) ;~283 increased by a factor of sqrt(10) ~ 3
+;; (search-for-primes 100000000000 100000000061) ;~283 increased by a factor of sqrt(10) ~ 3
 
 ;; (search-for-primes 1000)
 ;; (timed-prime-test 7)
