@@ -27,18 +27,25 @@
 (define (even? n)
   (= (remainder n 2) 0))
 
-(define (search-for-primes range)
-  (define (search-for-3-primes candidate n)
+(define (search-for-primes lower upper)
+  (define (iter n)
     (cond
-      ((= n 3) display "end")
-      ((even? candidate) (search-for-3-primes (+ candidate 1) n))
-      (else (if (timed-prime-test candidate)
-                (search-for-3-primes (+ 2 candidate) (+ 1 n))
-                (search-for-3-primes (+ 2 candidate) n)
-                ))
+      ((> n upper) )
+      ((even? n) (iter (+ n 1)))
+      (else
+       (timed-prime-test n)
+       (iter (+ n 2)))
       )
     )
-  (search-for-3-primes range 0)
+  (iter lower)
   )
 
-(search-for-primes 1000)
+(search-for-primes 1000000000 1000000021) ;~103
+; when load increased by factor of 10, perf increased by factor of sqrt(10) ~ 3
+(search-for-primes 10000000000 10000000061) ;~283 increased by a factor of sqrt(10) ~ 3
+
+;; (search-for-primes 1000)
+;; (timed-prime-test 7)
+;; (display newline)
+
+;; (if (timed-prime-test 4) "a" "b" )
