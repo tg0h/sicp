@@ -20,11 +20,18 @@
 (define (even? n)
   (= (remainder n 2) 0))
 
-(define (y-term f a k h n)
+(define (y-term f a b n k)
   (cond
-    ((= k 1) (f (+ a (* k h))))
-    ((= k n) (f (+ a (* k h))))
-    ((even? k) (* 2 (f (+ a (* k h)))))
-    (else (* 4 (f (+ a (* k h)))))
+    ((= k 0) (f a))
+    ((= k n) (f a))
+    ((even? k) (* 2 (f (+ a (* k (/ (- b a) n))))))
+    (else (* 4 (f (+ a (* k (/ (- b a) n))))))
     )
   )
+
+(define (simpsons-rule f a b n)
+  (define (h n) (/(- b a) n))
+  (define (next current) (+ current 1))
+  (/ (* (sum (y-term f a b n) 0 next 100) (* h n)) 3)
+  )
+(simpsons-rule cube 0 1 100)
