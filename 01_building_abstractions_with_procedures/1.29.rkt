@@ -1,6 +1,12 @@
 #lang sicp
 
 (define (sum term a next b)
+  (display "term ")
+  (display a)
+  (display b)
+  (display "=")
+  (display (term a))
+  (newline)
   (if (> a b)
       0
       (+ (term a)
@@ -15,7 +21,7 @@
 
 (define (cube x ) (* (* x x) x))
 
-(integral cube 0 1 0.01)
+;; (integral cube 0 1 0.01)
 
 (define (even? n)
   (= (remainder n 2) 0))
@@ -25,18 +31,18 @@
   (define (h n) (/ (- b a) n))
   (define (next current) (+ current 1))
   (define (y-term k)
-    (display "k:") (display k)
-    (newline)
+    ;; (display "k:") (display k)
+    ;; (newline)
     (cond
       ((= k 0) (f a))
-      ((= k n) (f a))
+      ((= k n) (f (+ a (* k (/ (- b a) n)))))
       ((even? k) (* 2 (f (+ a (* k (/ (- b a) n))))))
       (else (* 4 (f (+ a (* k (/ (- b a) n))))))
       )
     )
-  (/ (* (sum y-term a next b)
-        (h n))
-     3)
+  ;; (display (h n))
+  ;; (/ (* (sum y-term a next b) (h n)) 3)
+  (sum y-term a next b)
   )
 
 (simpsons-rule cube 0 1 2)
