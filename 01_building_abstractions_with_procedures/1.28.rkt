@@ -40,6 +40,16 @@
     )
   (iter lower)
   )
+(define (check-square n m)
+  (cond ((and
+          (not (or (= n 1) (= n (- m 1))))
+          (= (remainder (* n n) n) 1)
+          )
+         0
+         )
+
+        )
+  )
 
 (define (expmod base exp m)
   (cond ((= exp 0) 1)
@@ -54,6 +64,11 @@
 (define (fermat-test n)
   (define (try-it a)
     (= (expmod a n n) a)) ; if true, by fermats little theorem, n is likely prime, (must be true for ALL a < n for n to be prime)
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (miller-rabin-test n)
+  (define (try-it a)
+    (= (expmod a (- n 1) n) 1)) ; if true, by fermats little theorem, n is likely prime, (must be true for ALL a < n for n to be prime)
   (try-it (+ 1 (random (- n 1)))))
 
 
