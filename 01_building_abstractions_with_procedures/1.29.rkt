@@ -32,6 +32,9 @@
 (define (simpsons-rule f a b n)
   (define (h n) (/(- b a) n))
   (define (next current) (+ current 1))
-  (/ (* (sum (y-term f a b n) 0 next 100) (* h n)) 3)
+  ;; (/ (* (sum (y-term f a b n) 0 next 100) (* h n)) 3)
+  (sum y-term f a b n 0 next 100)
   )
+
 (simpsons-rule cube 0 1 100)
+;; (y-term cube 0 1 100 1)
