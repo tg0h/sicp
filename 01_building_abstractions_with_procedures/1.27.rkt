@@ -1,8 +1,6 @@
 #lang sicp
 
-(define (square m)
-  (display "square ")(display m)(newline)
-  (* m m))
+(define (square x) (* x x))
 (define (smallest-divisor n) (find-divisor n 2))
 (define (divides? a b) (= (remainder b a) 0))
 (define (find-divisor n test-divisor)
@@ -64,37 +62,17 @@
         ((fermat-test n) (fast-prime? n (- times 1)))
         (else false)))
 
-(expmod 5 101 101)
+;; (fast-prime? 7 100)
+;; (search-for-primes 1000000000 1000000021) ;~103
+; when load increased by factor of 10, perf increased by factor of sqrt(10) ~ 3
+(search-for-primes 10000000  10000061) ;~283 increased by a factor of sqrt(10) ~ 3
+(search-for-primes 100000000  100000061) ;~283 increased by a factor of sqrt(10) ~ 3
+(search-for-primes 1000000000 1000000061) ;~283 increased by a factor of sqrt(10) ~ 3
+(search-for-primes 10000000000 10000000061) ;~283 increased by a factor of sqrt(10) ~ 3
+;; (search-for-primes 100000000000 100000000061) ;~283 increased by a factor of sqrt(10) ~ 3
 
-; Helper procedures
-(define (fast-expt b n)
-  (cond ((= n 0) 1)
-        ((even? n) (square (fast-expt b (/ n 2))))
-        (else (* b (fast-expt b (- n 1))))))
-;; (define (square x) (* x x))
-(define (report-elapsed-time start-time)
-  (display " *** ")
-  (display (- (runtime) start-time)))
+;; (search-for-primes 1000)
+;; (timed-prime-test 7)
+;; (display newline)
 
-; The original & modified procedures
-;; (define (expmod base exp m)
-;;   (cond ((= exp 0) 1)
-;;         ((even? exp)
-;;          (remainder
-;;           (square (expmod base (/ exp 2) m)) ; (1)
-;;           m))
-;;         (else
-;;          (remainder
-;;           (* base (expmod base (- exp 1) m))
-;;           m))))
-;;
-(define (modified-expmod base exp m)
-  (remainder (fast-expt base exp) m))
-
-; Test the speed
-(define start-time (runtime))
-(expmod 999999 1000000 1000000)
-(report-elapsed-time start-time)
-
-(modified-expmod 999999 1000000 1000000)
-(report-elapsed-time start-time)
+;; (if (timed-prime-test 4) "a" "b" )
