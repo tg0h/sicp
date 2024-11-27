@@ -67,4 +67,10 @@
   (= (gcd a b) 1)
   )
 
-
+;; (filtered-accumulate rel-prime-7? * 1 identity 1 next 6)
+(define (product-relative-primes n)
+  (define (filter m)
+    (rel-prime? m n)
+    )
+  (filtered-accumulate filter * 1 identity 1 next (- n 1))
+  )
