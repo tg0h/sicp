@@ -17,12 +17,26 @@
       )
   )
 
+(define (inverse x) (/ 1 x))
+
+
+(define (cont-frac-iter n d k)
+  (define (iter n d k i result)
+    (if (> i k) result
+        (iter n d k (+ i 1) (/ (n i) (+ result (d i)) ))
+        )
+    )
+  (iter n d k 1 0)
+  )
+
 ;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 3)
 ;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 4)
 ;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 5)
 ;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 10)
 ;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 11)
-(cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 12)
-(cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 13)
-(cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 15)
+;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 12)
+;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 13)
+;; (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 15)
+
 (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 20)
+(cont-frac-iter (lambda (i) 1.0) (lambda (i) 1.0) 20)
