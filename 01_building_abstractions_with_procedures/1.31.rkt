@@ -31,3 +31,9 @@
   )
 
 (product y 1 next 3)
+
+(define (factorial n)
+  (product y 1 next n)
+  )
+
+(factorial 5)
