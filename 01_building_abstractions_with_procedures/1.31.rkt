@@ -16,26 +16,32 @@
 (define (odd-y x ) (+ 1 (* 2 x)))
 
 (define (even-mult a b)
-  (product even-y 1 next 3)
+  (product even-y 1 next b)
   )
 
 ;; (even-mult 1 3)
 
 (define (odd-mult a b)
-  (product odd-y 1 next 3)
+  (product odd-y 1 next b)
   )
 
 ;; (odd-mult 1 3)
 
 (define (pi-approx n)
-  (*
-   ( /
-     (* (even-mult 1 n)
-        (/ (even-mult 1 (+ 1 n) 2)))
-     (* (odd-mult 1 n) (odd-mult 1 n))
-     )
-   4
-   )
+  *
+  ( /
+    (* (even-mult 1 n)
+       (/ (even-mult 1 (+ 1 n)) 2))
+    (* (odd-mult 1 n) (odd-mult 1 n))
+    )
+  4
   )
 
-(pi-approx 3)
+(even-mult 1 3)
+(even-mult 1 4)
+;; (even-mult 1 5)
+;; (odd-mult 1 3)
+
+;; (pi-approx 4)
+;; (pi-approx 5)
+;; (pi-approx 100)
