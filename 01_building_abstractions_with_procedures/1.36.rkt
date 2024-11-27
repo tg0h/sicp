@@ -21,13 +21,19 @@
     (let
         (
          (next (f guess))
-         (average-damp-next (/ (+ guess  (f guess)) 2) )
          )
       (if (close-enough? guess next)
-          average-damp-next
-          (try average-damp-next)))
+          next
+          (try next)))
     )
   (try first-guess)
   )
 
 (fixed-point (lambda (x) (/ (log 1000) (log x))) 1.1)
+
+(fixed-point (lambda (x) (/ (log 1000) (log x))) 1.1)
+
+(define (average x y) (/ (+ x y) 2))
+(define (x-to-the-x y)
+  (fixed-point (lambda (x) (average x (/ (log y) (log x))))
+               10.0))
