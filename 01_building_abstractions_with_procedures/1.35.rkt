@@ -20,3 +20,5 @@
           next
           (try next))))
   (try first-guess))
+
+(fixed-point (lambda (x) (+ (/ 1 x) 1)) 1.0)
