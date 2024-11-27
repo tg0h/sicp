@@ -33,25 +33,13 @@
   (iter a null-value)
   )
 
-(define (accumulate-recursive combiner null-value term a next b)
-  (if (> a b)
-      null-value
-      (combiner (term a) (accumulate-recursive combiner null-value term (next a ) next b))
-      )
+(define (filtered-accumulate filter combiner null-value term a next b)
+  (define (iter a result)
+    (cond
+      ((> a b) result)
+      ((filter a) (iter (next a) (combiner (term a) result)))
+      (else (iter (next a) result)))
+    )
+  (iter a null-value)
   )
 
-(accumulate + 0 identity 1 next 3)
-(accumulate-recursive + 0 identity 1 next 3)
-(newline)
-
-(accumulate + 0 identity 1 next 4)
-(accumulate-recursive + 0 identity 1 next 4)
-(newline)
-
-(accumulate * 1 identity 1 next 3)
-(accumulate-recursive * 1 identity 1 next 3)
-(newline)
-
-(accumulate * 1 identity 1 next 4)
-(accumulate-recursive * 1 identity 1 next 4)
-(newline)
