@@ -13,6 +13,8 @@
   )
 
 (define (even-y x ) (* 2 x))
+(define (odd-y x ) (+ 1 (* 2 x)))
+
 (define (even-mult a b)
   (product even-y 1 next 3)
   )
@@ -20,5 +22,7 @@
 (even-mult 1 3)
 
 (define (odd-mult a b)
-  (product even-y 1 next 3)
+  (product odd-y 1 next 3)
   )
+
+(odd-mult 1 3)
