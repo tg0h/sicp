@@ -18,10 +18,16 @@
     (display "guess:")
     (display guess)
     (newline)
-    (let ((next (f guess)))
+    (let
+        (
+         (next (f guess))
+         (average-damp-next (/ (+ guess  (f guess)) 2) )
+         )
       (if (close-enough? guess next)
-          next
-          (try next))))
-  (try first-guess))
+          average-damp-next
+          (try average-damp-next)))
+    )
+  (try first-guess)
+  )
 
-(fixed-point (lambda (x) (+ (/ 1 x) 1)) 1.0)
+(fixed-point (lambda (x) (/ (log 1000) (log x))) 1.1)
