@@ -32,3 +32,10 @@
     )
   (iter a null-value)
   )
+
+(define (plus x y ) (+ x y))
+
+(accumulate + 0 identity 1 next 3)
+(accumulate + 0 identity 1 next 4)
+(accumulate * 1 identity 1 next 3)
+(accumulate * 1 identity 1 next 4)
