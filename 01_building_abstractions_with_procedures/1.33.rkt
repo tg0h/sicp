@@ -63,4 +63,8 @@
       a
       (gcd b (remainder a b))))
 
+(define (rel-prime? a b)
+  (= (gcd a b) 1)
+  )
+
 
