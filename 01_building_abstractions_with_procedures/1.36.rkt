@@ -29,11 +29,9 @@
   (try first-guess)
   )
 
-(fixed-point (lambda (x) (/ (log 1000) (log x))) 1.1)
-
-(fixed-point (lambda (x) (/ (log 1000) (log x))) 1.1)
-
 (define (average x y) (/ (+ x y) 2))
-(define (x-to-the-x y)
-  (fixed-point (lambda (x) (average x (/ (log y) (log x))))
-               10.0))
+(fixed-point (lambda (x) (/ (log 1000) (log x))) 1.1)
+
+(fixed-point (lambda (x) (average x (/ (log 1000) (log x)))) 1.1)
+
+
