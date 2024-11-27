@@ -23,3 +23,12 @@
 
 (sum identity 1 next 4)
 (product identity 1 next 4)
+
+(define (accumulate combiner null-value term a next b)
+  (define (iter a result)
+    (if (> a b)
+        result
+        (iter (next a) (combiner (term a) result)))
+    )
+  (iter a null-value)
+  )
