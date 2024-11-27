@@ -58,7 +58,9 @@
 
 (filtered-accumulate prime? + 0 square 1 next 7)
 
-(define (gcd a b) 
+(define (gcd a b)
   (if (= b 0)
-                      a
-                      (gcd b (remainder a b))))
+      a
+      (gcd b (remainder a b))))
+
+
