@@ -74,3 +74,5 @@
     )
   (filtered-accumulate filter * 1 identity 1 next (- n 1))
   )
+
+(product-relative-primes 10)
