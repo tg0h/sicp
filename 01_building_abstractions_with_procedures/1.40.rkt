@@ -47,3 +47,5 @@
      )
     )
   )
+(newtons-method (cubic 1 1 1) 1)
+
