@@ -21,3 +21,5 @@
                (double (double x)))) inc) 5)
 
 (((lambda (x) (double (double (double (double x))))) inc) 5)
+
+((double (double (double (double inc)))) 5)
