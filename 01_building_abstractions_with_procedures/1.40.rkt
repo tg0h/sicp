@@ -28,5 +28,22 @@
 
 (define (square x ) (* x x ))
 
-(define (sqrt x) (fixed-point-of-transform
-                  (lambda (y) (- (square y) x)) newton-transform 1.0))
+(define (sqrt x)
+  (fixed-point-of-transform
+   (lambda (y) (- (square y) x)) newton-transform 1.0)
+  )
+
+(define (cubic a b c)
+  (lambda (x)
+    (+
+     (+
+      (+
+       (* (* x x ) x)
+       (* (* x x ) a)
+       )
+      (* x b)
+      )
+     c
+     )
+    )
+  )
