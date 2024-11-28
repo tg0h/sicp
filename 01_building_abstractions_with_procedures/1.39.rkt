@@ -7,14 +7,15 @@
         (/ (n i) (+ (d i) (recur (+ 1 i))))))
   (recur 1))
 
-(define (n i) 1.0)
+(define (n x i)
+  (
+   cond ((= i 1) x)
+        (else (* x x ))
+        )
+  )
 
 (define (d i)
-  (
-   cond ((= (remainder i 3) 1) 1)
-        ((= (remainder i 3) 0) 1)
-        (else (* 2 (/ (+ i 1) 3)))
-        )
+  (+ 1 (* (- i 1) 2))
   )
 
 (cont-frac-recur n d 1)
