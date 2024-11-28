@@ -1,10 +1,10 @@
 #lang sicp
 
-(define (cont-frac-recur n d k)
+(define (tan-cf x k)
   (define (recur i)
-    (if (= k i)
-        (/ (n i) (d i))
-        (/ (n i) (+ (d i) (recur (+ 1 i))))))
+    (if (> i k)
+        0
+        (/ (n i) (- (d i) (recur (+ 1 i))))))
   (recur 1))
 
 (define (n x i)
