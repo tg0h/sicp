@@ -23,3 +23,10 @@
           next
           (try next))))
   (try first-guess))
+
+(define (fixed-point-of-transform g transform guess) (fixed-point (transform g) guess))
+
+(define (square x ) (* x x ))
+
+(define (sqrt x) (fixed-point-of-transform
+                  (lambda (y) (- (square y) x)) newton-transform 1.0))
