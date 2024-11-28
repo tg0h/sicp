@@ -23,3 +23,5 @@
 (((lambda (x) (double (double (double (double x))))) inc) 5)
 
 ((double (double (double (double inc)))) 5)
+
+;; https://github.com/mngu2382/sicp/blob/master/fragments/Ex1-41.scm
