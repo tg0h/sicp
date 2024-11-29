@@ -73,8 +73,8 @@
 
 ;; (root-3 2)
 
-(define (average-damp-1 f)
-  (repeated average-damp 1) f
+(define (average-damp-n f n)
+  (repeated average-damp n) f
   )
 
 (define (power x n)
@@ -82,37 +82,20 @@
       x
       (* x (power x (- n 1)))))
 
-(define (root-4 x 4)
-  (fixed-point (average-damp-1 (lambda (y) (/ x (power y )  )))
-               1.0))
+;; (define (root-4 x 4)
+;;   (fixed-point (average-damp-1 (lambda (y) (/ x (power y (- ))  )))
+;;                1.0))
 
-(root-4 2) ; does not work
+;; (root-4 2) ; does not work
 
-;; (define (root-4 a) (fixed-point (lambda (x) (/ a (x * x )) 1.0)))
-
-
-
-
-(define (root-n a n)
-  (fixed-point (lambda (x) (neg-power a (- n 1))) 1.0)
+(define (root-n x n damp)
+  (fixed-point (average-damp-n (lambda (y) (/ x (power y (- n 1))))
+                               damp
+                               ) 1.0)
   )
 
-(define (power a n) (if (= n 1) a (* a (power a (- n 1)))))
-(define (neg-power a n) (/ 1 (power a n)))
-
-;; (root-n 2 2)
-;; (neg-power 2 (- 2 1))
+(root-n 2 2 1)
 
 
 
 
-;; (root-n 2 2) ; square root of 2
-;; (root-n 2 3) ; cube root of 2
-;; (root-n 2 2) ; 4th root of 2
-
-
-;; (define (root-n a)
-;;   lambda (x) (/ a ()
-;;                 )
-;;
-;;   (sqrt 2)
