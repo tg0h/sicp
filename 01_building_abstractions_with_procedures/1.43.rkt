@@ -27,5 +27,5 @@
   )
 
 
-;; ((repeated square 1) 2)
+((repeated square 1) 2)
 ((repeated square 2) 2)
