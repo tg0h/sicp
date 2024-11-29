@@ -30,6 +30,17 @@
   (lambda(x) (average x (f x))))
 
 
+(define (compose f g) (lambda (x) (f (g x))))
+(define (repeated f n)
+  (define (iter i)
+    (if (= i 1)
+        f
+        (compose f (iter (- i 1)))
+        )
+    )
+  (iter n)
+  )
+
 
 (define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
 ;; (sqrt-cyclic 2)
@@ -62,11 +73,15 @@
 
 (root-3 2)
 
+(define (average-damp-2)
+  (repeated average-damp 2)
+  )
+
 (define (root-4 x)
-  (fixed-point (average-damp (lambda (y) (/ x (* y y y)  )))
+  (fixed-point (average-damp-2 (lambda (y) (/ x (* y y y)  )))
                1.0))
 
-(root-4 2)
+(root-4 2) ; does not work
 
 ;; (define (root-4 a) (fixed-point (lambda (x) (/ a (x * x )) 1.0)))
 
@@ -85,16 +100,6 @@
 
 
 
-(define (compose f g) (lambda (x) (f (g x))))
-(define (repeated f n)
-  (define (iter i)
-    (if (= i 1)
-        f
-        (compose f (iter (- i 1)))
-        )
-    )
-  (iter n)
-  )
 
 ;; (root-n 2 2) ; square root of 2
 ;; (root-n 2 3) ; cube root of 2
