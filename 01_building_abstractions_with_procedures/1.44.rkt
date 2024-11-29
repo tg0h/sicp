@@ -1,5 +1,6 @@
 #lang sicp
 
+
 (define (compose f g)
   (lambda (x) (f (g x)))
   )
@@ -12,4 +13,10 @@
         )
     )
   (iter n)
+  )
+
+(define dx 0.0001)
+
+(define (smooth f)
+
   )
