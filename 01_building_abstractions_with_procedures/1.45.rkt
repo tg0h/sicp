@@ -30,4 +30,15 @@
 
 (define (sqrt a) (fixed-point (lambda (x) (/ a x)) 1.0))
 
-(sqrt 2)
+(define (power a n)
+  (if (= n 1) a (* a (power a (- n 1)))
+      )
+  )
+
+(power 2 5)
+
+;; (define (root-n a)
+;;   lambda (x) (/ a ()
+;;                 )
+;;
+;;   (sqrt 2)
