@@ -26,4 +26,8 @@
 
 (define (average x y) (/ (+ x y) 2))
 
-(fixed-point (lambda (x) (/ 1 x) ) 1.1)
+;; (fixed-point (lambda (x) (/ 1 x) ) 1.1)
+
+(define (sqrt a) (fixed-point (lambda (x) (/ a x)) 1.0))
+
+(sqrt 2)
