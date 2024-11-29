@@ -23,4 +23,7 @@
           (try next))))
   (try first-guess))
 
+
+(define (average x y) (/ (+ x y) 2))
+
 (fixed-point (lambda (x) (/ 1 x) ) 1.1)
