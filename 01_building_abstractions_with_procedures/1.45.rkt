@@ -25,12 +25,16 @@
 
 
 (define (average x y) (/ (+ x y) 2))
-(define (average-damp f) 
+(define (average-damp f)
   (lambda(x) (average x f(x)))
   )
 
 
-(define (sqrt a) (fixed-point (lambda (x) (/ a x)) 1.0))
+(define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
+(sqrt-cyclic 2)
+
+
+
 (define (cube-root a) (fixed-point (lambda (x) (/ a (x * x)) 1.0)))
 
 (define (fixed-point-transform f transform)
@@ -39,7 +43,7 @@
 
 (define (sqrt-f a) (lambda(x) (/ a  x)))
 
-(define (sqrt-damp a) (fixed-point-transform f ) 1.0))
+;; (define (sqrt-damp a) (fixed-point-transform f ) 1.0))
 
 
 
