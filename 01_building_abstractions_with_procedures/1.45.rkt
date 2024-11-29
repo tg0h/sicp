@@ -71,14 +71,19 @@
   (fixed-point (average-damp (lambda (y) (/ x (* y y)  )))
                1.0))
 
-(root-3 2)
+;; (root-3 2)
 
-(define (average-damp-2)
-  (repeated average-damp 2)
+(define (average-damp-1 f)
+  (repeated average-damp 1) f
   )
 
-(define (root-4 x)
-  (fixed-point (average-damp-2 (lambda (y) (/ x (* y y y)  )))
+(define (power x n)
+  (if (= n 1)
+      x
+      (* x (power x (- n 1)))))
+
+(define (root-4 x 4)
+  (fixed-point (average-damp-1 (lambda (y) (/ x (power y )  )))
                1.0))
 
 (root-4 2) ; does not work
