@@ -8,4 +8,6 @@
   (+ x 1)
   )
 
-i
+(define (square x) (* x x))
+
+((compose square inc) 6)
