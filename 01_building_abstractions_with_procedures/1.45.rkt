@@ -47,12 +47,22 @@
   (fixed-point (average-damp (lambda (y) (/ x y)))
                1.0))
 
-(sqrt 2)
+;; (sqrt 2)
+
+(define (cubert x)
+  (fixed-point (average-damp (lambda (y) (/ x (* y y)  )))
+               1.0))
+
+;; (cubert 2)
 
 
+(define (root-3 x)
+  (fixed-point (average-damp (lambda (y) (/ x (* y y)  )))
+               1.0))
 
+(root-3 2)
 
-(define (cube-root a) (fixed-point (lambda (x) (/ a (x * x)) 1.0)))
+;; (define (root-4 a) (fixed-point (lambda (x) (/ a (x * x )) 1.0)))
 
 
 
