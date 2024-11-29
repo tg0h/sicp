@@ -25,11 +25,23 @@
 
 
 (define (average x y) (/ (+ x y) 2))
+(define (average-damp f) 
+  (lambda(x) (average x f(x)))
+  )
 
-;; (fixed-point (lambda (x) (/ 1 x) ) 1.1)
 
 (define (sqrt a) (fixed-point (lambda (x) (/ a x)) 1.0))
-;; (sqrt 2)
+(define (cube-root a) (fixed-point (lambda (x) (/ a (x * x)) 1.0)))
+
+(define (fixed-point-transform f transform)
+  (fixed-point (transform f) 1.0)
+  )
+
+(define (sqrt-f a) (lambda(x) (/ a  x)))
+
+(define (sqrt-damp a) (fixed-point-transform f ) 1.0))
+
+
 
 (define (root-n a n)
   (fixed-point (lambda (x) (neg-power a (- n 1))) 1.0)
@@ -39,7 +51,9 @@
 (define (power a n) (if (= n 1) a (* a (power a (- n 1)))))
 (define (neg-power a n) (/ 1 (power a n)))
 
-(power 2 1)
+;; (root-n 2 2)
+;; (neg-power 2 (- 2 1))
+
 
 
 (define (compose f g) (lambda (x) (f (g x))))
