@@ -1,5 +1,6 @@
 #lang sicp
 
+(define (square x) (* x x))
 
 (define (repeated f n)
   (define (iter i)
@@ -10,3 +11,7 @@
     )
   (iter n)
   )
+
+
+;; ((repeated square 1) 2)
+((repeated square 2) 2)
