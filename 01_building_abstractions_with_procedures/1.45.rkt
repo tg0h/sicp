@@ -62,6 +62,12 @@
 
 (root-3 2)
 
+(define (root-4 x)
+  (fixed-point (average-damp (lambda (y) (/ x (* y y y)  )))
+               1.0))
+
+(root-4 2)
+
 ;; (define (root-4 a) (fixed-point (lambda (x) (/ a (x * x )) 1.0)))
 
 
