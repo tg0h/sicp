@@ -85,7 +85,19 @@
     ) 1.0
       )
   )
+(log 16 2)
 
+(define (root-n-correct a n)
+  (fixed-point
+   ((average-damp-repeated (floor (log n 2)))
+    (lambda (x) (/ a (power x (- n 1 ))))
+    ;; (neg-power a n)
+    ) 1.0
+      )
+  )
+
+(root-n-correct 2 16)
+(newline)
 ;; (define (nth-root-damped x nth damp)
 ;;   (fixed-point
 ;;    ((repeated average-damp damp)
