@@ -13,10 +13,19 @@
   )
 
 (define (average x y) (/ (+ x y) 2))
-(define (improve guess x) (average guess (/ x guess)))
+
+(define improve-guess-sqrt-2
+  (lambda (guess)
+    (average guess (/ 2 guess))))
 
 (define (square x) (* x x))
 (define (abs x) (cond ((> x 0) x) ((= x 0) 0) ((< x 0) (- x))))
-(define (good-enough? guess x) (< (abs (- (square guess) x)) 0.001))
+
+(define good-enough-sqrt-2?
+  (lambda (guess)
+    (< (abs (- (square guess) 2)) 0.001))
+  )
+
+((iterative-improve good-enough-sqrt-2? improve-guess-sqrt-2) 1.0)
 
 
