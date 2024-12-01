@@ -42,6 +42,7 @@
   )
 
 
+
 (define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
 ;; (sqrt-cyclic 2)
 
@@ -85,7 +86,6 @@
 ;; (define (root-4 x 4)
 ;;   (fixed-point (average-damp-1 (lambda (y) (/ x (power y (- ))  )))
 ;;                1.0))
-
 ;; (root-4 2) ; does not work
 
 (define (root-n x n damp)
@@ -95,7 +95,4 @@
   )
 
 (root-n 2 2 1)
-
-
-
 
