@@ -48,13 +48,14 @@
       (* x (power x (- n 1)))))
 
 (define (root-n a n)
-  fixed-point (lambda (n) (/ a (power n))) 1.0
+  (fixed-point (lambda (x) (/ a (power x (- n 1 )))) 1.0)
+  ;; (fixed-point (lambda (x) (/ a x)) 1.0)
   )
 
 (root-n 2 2)
 
 
-(define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
+;; (define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
 ;; (sqrt-cyclic 2)
 
 
