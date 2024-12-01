@@ -31,6 +31,7 @@
 
 
 (define (compose f g) (lambda (x) (f (g x))))
+
 (define (repeated f n)
   (define (iter i)
     (if (= i 1)
@@ -49,10 +50,17 @@
 
 (define (root-n a n)
   (fixed-point (lambda (x) (/ a (power x (- n 1 )))) 1.0)
-  ;; (fixed-point (lambda (x) (/ a x)) 1.0)
   )
 
 (root-n 2 2)
+
+(define (average-damp-repeated n)
+  (repeated average-damp n)
+  )
+
+(define (root-n-average-damp a n repeat)
+  (fixed-point ( (lambda (x) (/ a (power x (- n 1 ))))) 1.0)
+  )
 
 
 ;; (define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
