@@ -64,9 +64,8 @@
 
 ;; ((average-damp (lambda(x) x)) 1)
 
-(( (average-damp-repeated 2)  identity ) 1)
-
-(( (average-damp-repeated 2)  (lambda(x) x) ) 1)
+;; (( (average-damp-repeated 1)  identity ) 1)
+;; (( (average-damp-repeated 1)  (lambda(x) x) ) 1)
 
 ;; (compose
 ;;  (average-damp-repeated
@@ -74,18 +73,36 @@
 ;;  )(1)
 ;; ((repeated average-damp 1)(lambda (x) x))(2)
 
-
-
-(define (root-n-average-damp a n repeat)
-  (fixed-point (
-                (compose
-                 (average-damp-repeated repeat)
-                 (lambda (x) (/ a (power x (- n 1 ))))
-                 )
-                ) 1.0)
+(define (neg-power a n )
+  (lambda (x) (/ a (power x (- n 1 ))))
   )
 
+(define (root-n-average-damp a n repeat)
+  (fixed-point
+   ((average-damp-repeated repeat)
+    (lambda (x) (/ a (power x (- n 1 ))))
+    ;; (neg-power a n)
+    ) 1.0
+      )
+  )
+
+;; (define (nth-root-damped x nth damp)
+;;   (fixed-point
+;;    ((repeated average-damp damp)
+;;     (lambda (y)
+;;       (/ x (power y (- nth 1)))))
+;;    1.0))
+
 ;; (root-n-average-damp 2 2 1)
+;; (root-n-average-damp 2 3 1)
+;; (root-n-average-damp 2 4 2)
+;; (root-n-average-damp 2 5 2)
+;; (root-n-average-damp 2 6 2)
+;; (root-n-average-damp 2 7 2)
+;; (root-n-average-damp 2 8 3)
+;; (root-n-average-damp 2 9 3)
+;; (root-n-average-damp 2 15 3)
+(root-n-average-damp 2 16 4)
 
 
 ;; (define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
