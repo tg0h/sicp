@@ -42,6 +42,15 @@
   )
 
 
+(define (power x n)
+  (if (= n 1)
+      x
+      (* x (power x (- n 1)))))
+
+(define (root-n a n)
+  fixed-point (lambda (n) (/ a (power n))) 1.0
+  )
+
 
 (define (sqrt-cyclic a) (fixed-point (lambda (x) (/ a x)) 1.0))
 ;; (sqrt-cyclic 2)
@@ -78,10 +87,6 @@
   (repeated average-damp n) f
   )
 
-(define (power x n)
-  (if (= n 1)
-      x
-      (* x (power x (- n 1)))))
 
 ;; (define (root-4 x 4)
 ;;   (fixed-point (average-damp-1 (lambda (y) (/ x (power y (- ))  )))
