@@ -50,9 +50,10 @@
     (< (abs (- guess (cos guess))) tolerance))
   )
 
-(define improve-guess-sqrt-2
+(define improve-guess-fixed-cos?
   (lambda (guess)
-    (average guess (/ 2 guess))))
+    (cos guess)))
 
+;; ((iterative-improve good-enough-sqrt-2? improve-guess-sqrt-2) 1.0)
 
 ;; (fixed-point cos 1.0)
