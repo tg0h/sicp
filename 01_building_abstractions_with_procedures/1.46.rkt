@@ -26,11 +26,11 @@
     (< (abs (- (square guess) 2)) 0.001))
   )
 
-((iterative-improve good-enough-sqrt-2? improve-guess-sqrt-2) 1.0)
+;; ((iterative-improve good-enough-sqrt-2? improve-guess-sqrt-2) 1.0)
 
-(define fixed-point-good-enough?
-  (lambda (guess) )
-  )
+;; (define fixed-point-good-enough?
+;;   (lambda (guess) )
+;;   )
 
 
 (define tolerance 0.00001)
@@ -45,3 +45,14 @@
   (try first-guess)
   )
 
+(define good-enough-fixed-cos?
+  (lambda (guess)
+    (< (abs (- guess (cos guess))) tolerance))
+  )
+
+(define improve-guess-sqrt-2
+  (lambda (guess)
+    (average guess (/ 2 guess))))
+
+
+;; (fixed-point cos 1.0)
