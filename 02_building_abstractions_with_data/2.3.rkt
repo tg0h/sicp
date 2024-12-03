@@ -37,3 +37,7 @@
 
 (print-point (mid-point-segment (make-segment (make-point 1 2) (make-point 3 4))))
 
+(define (make-rectangle s1 s2)
+  (cons s1 s2)
+  )
+
