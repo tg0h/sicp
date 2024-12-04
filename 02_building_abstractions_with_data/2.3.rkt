@@ -60,6 +60,14 @@
 (define (make-rectangle s1 s2)
   (cons s1 s2)
   )
+(define (rectangle-segment1 r) (car r))
+(define (rectangle-segment2 r) (cdr r))
 
 (define (rectangle-perimeter r)
+  (+
+   (distance rectangle-segment1)
+   (distance rectangle-segment1)
+   (distance rectangle-segment2)
+   (distance rectangle-segment2)
+   )
   )
