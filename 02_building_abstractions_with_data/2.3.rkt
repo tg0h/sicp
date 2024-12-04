@@ -38,7 +38,7 @@
 
 (print-point (mid-point-segment (make-segment (make-point 1 2) (make-point 3 4))))
 
-(define (distance segment)
+(define (distance s)
   (let
       (
        (start-point (start-segment s))
@@ -51,6 +51,8 @@
            )
           ))
   )
+
+(distance (make-segment (make-point 0 0) (make-point 1 1)))
 
 
 ;; (define (make-rectangle s1 s2)
