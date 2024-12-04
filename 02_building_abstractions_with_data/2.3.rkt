@@ -3,6 +3,7 @@
 (define (make-point x y) (cons x y))
 (define (x-point p) (car p))
 (define (y-point p) (cdr p))
+(define (square x)(* x x))
 
 (define (print-point point)
   (display "(")
@@ -37,6 +38,9 @@
 
 (print-point (mid-point-segment (make-segment (make-point 1 2) (make-point 3 4))))
 
+(define (distance segment)
+  (let ())
+  )
 (define (make-rectangle s1 s2)
   (cons s1 s2)
   )
