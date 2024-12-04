@@ -55,8 +55,7 @@
 (distance (make-segment (make-point 0 0) (make-point 1 1)))
 
 
-;; (define (make-rectangle s1 s2)
-;;   (cons s1 s2)
-;;   )
-;; )
-;;
+ (define (make-rectangle s1 s2)
+   (cons s1 s2)
+   )
+)
