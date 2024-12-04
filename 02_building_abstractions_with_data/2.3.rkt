@@ -20,6 +20,11 @@
 (define (start-segment s) (car s))
 (define (end-segment s) (cdr s))
 
+(define (print-segment s)
+  (print-point (start-segment s))
+  (print-point (end-segment s))
+  )
+
 (define (average a b) (/ (+ a b) 2))
 
 (define (mid-point-segment s)
@@ -60,14 +65,24 @@
 (define (make-rectangle s1 s2)
   (cons s1 s2)
   )
+
 (define (rectangle-segment1 r) (car r))
 (define (rectangle-segment2 r) (cdr r))
 
 (define (rectangle-perimeter r)
   (+
-   (distance rectangle-segment1)
-   (distance rectangle-segment1)
-   (distance rectangle-segment2)
-   (distance rectangle-segment2)
+   (distance (rectangle-segment1 r ))
+   (distance (rectangle-segment1 r ))
+   (distance (rectangle-segment2 r ))
+   (distance (rectangle-segment2 r ))
    )
   )
+
+(define r1 (make-rectangle s1 s2))
+(print-segment (rectangle-segment1 r1))
+;; (distance (rectangle-segment1 r1))
+(print-segment (rectangle-segment2 r1))
+(distance (rectangle-segment2 r1))
+;; (rectangle-perimeter r1)
+
+(rectangle-perimeter r1)
