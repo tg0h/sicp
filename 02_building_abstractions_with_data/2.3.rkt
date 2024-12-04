@@ -39,9 +39,22 @@
 (print-point (mid-point-segment (make-segment (make-point 1 2) (make-point 3 4))))
 
 (define (distance segment)
-  (let ())
-  )
-(define (make-rectangle s1 s2)
-  (cons s1 s2)
+  (let
+      (
+       (start-point (start-segment s))
+       (end-point (end-segment s))
+       )
+
+    (sqrt (+
+           (square (- (x-point start-point) (x-point end-point)))
+           (square (- (y-point start-point) (y-point end-point)))
+           )
+          ))
   )
 
+
+;; (define (make-rectangle s1 s2)
+;;   (cons s1 s2)
+;;   )
+;; )
+;;
