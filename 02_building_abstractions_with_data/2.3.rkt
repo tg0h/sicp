@@ -79,10 +79,8 @@
   )
 
 (define (rectangle-area r)
-  (+
+  (*
    (distance (rectangle-segment1 r ))
-   (distance (rectangle-segment1 r ))
-   (distance (rectangle-segment2 r ))
    (distance (rectangle-segment2 r ))
    )
   )
@@ -95,3 +93,4 @@
 ;; (rectangle-perimeter r1)
 
 (rectangle-perimeter r1)
+(rectangle-area r1)
