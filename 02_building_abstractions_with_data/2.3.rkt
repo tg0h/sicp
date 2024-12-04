@@ -60,3 +60,6 @@
 (define (make-rectangle s1 s2)
   (cons s1 s2)
   )
+
+(define (rectangle-perimeter r)
+  )
