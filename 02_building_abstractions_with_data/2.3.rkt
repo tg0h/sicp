@@ -78,6 +78,15 @@
    )
   )
 
+(define (rectangle-area r)
+  (+
+   (distance (rectangle-segment1 r ))
+   (distance (rectangle-segment1 r ))
+   (distance (rectangle-segment2 r ))
+   (distance (rectangle-segment2 r ))
+   )
+  )
+
 (define r1 (make-rectangle s1 s2))
 (print-segment (rectangle-segment1 r1))
 ;; (distance (rectangle-segment1 r1))
