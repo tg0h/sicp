@@ -7,5 +7,9 @@
 (define (car z)
   (z (lambda (p q) p)))
 
+(define (cdr z)
+  (z (lambda (p q) q)))
+
 (define gg (cons 1 2))
 (car gg)
+(cdr gg)
