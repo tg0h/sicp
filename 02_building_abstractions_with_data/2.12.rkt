@@ -35,6 +35,8 @@
 (width int)
 (center int)
 (percent int)
-(define a (make-center-percent 1 0.01))
-(define b (make-center-percent 2 0.01))
-()
+(define a (make-center-percent 1 0.9))
+(define b (make-center-percent 2 0.4))
+(define c (mul-interval a b))
+(percent c)
+
