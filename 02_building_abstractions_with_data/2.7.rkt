@@ -27,3 +27,12 @@
 (define (sub-interval x y)
   (make-interval (- (lower-bound x) (upper-bound y))
                  (- (upper-bound x) (lower-bound y))))
+
+(define (width x)
+  (- (upper-bound x) (lower-bound x))
+  )
+
+(define a (make-interval 1 2))
+(define b (make-interval 3 4))
+
+(add-interval a b)
