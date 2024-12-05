@@ -35,13 +35,13 @@
 
 (define int2 (make-center-width 1.5 0.5))
 
-(width int)
-(center int)
-(percent int)
-(define a (make-center-percent 1 0.9))
-(define b (make-center-percent 2 0.4))
-(define c (mul-interval a b))
-(percent c)
+;; (width int)
+;; (center int)
+;; (percent int)
+;; (define a (make-center-percent 1 0.9))
+;; (define b (make-center-percent 2 0.4))
+;; (define c (mul-interval a b))
+;; (percent c)
 
 (define (contains-zero x) (and (< (lower-bound x) 0) (> (upper-bound x) 0)))
 (define (div-interval x y)
