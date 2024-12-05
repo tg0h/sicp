@@ -61,3 +61,17 @@
     (div-interval
      one (add-interval (div-interval one r1)
                        (div-interval one r2)))))
+
+
+
+(define a (make-center-percent 1 0.01))
+(define b (make-center-percent 2 0.01))
+(define c (make-interval 2 8))
+
+;; (par1 a b)
+;; (par2 a b)
+;; a
+;; c
+;; (div-interval c c)
+(div-interval a b)
+(div-interval a a)
