@@ -10,6 +10,20 @@
   )
 (pop (list 1 4 9 16 25))
 
-;; (define (reverse l)
-;;   if (null? l)
-;;   )
+(define (last-pair l)
+  (if (null? (cdr l))
+      (car l)
+      (last-pair (cdr l))
+      )
+  )
+
+(define (reverse l)
+  (if (null? (cdr l))
+      l
+      (cons (last-pair l) (reverse (pop  l)))
+      )
+  )
+
+(reverse (list 1 4 9 16 25))
+
+(cons 3 nil)
