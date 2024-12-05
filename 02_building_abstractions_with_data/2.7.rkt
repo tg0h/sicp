@@ -21,8 +21,8 @@
 
 (define (make-interval a b) (cons a b))
 
-(define (lower-bound x) car x)
-(define (upper-bound x) cdr x)
+(define (lower-bound x) (car x))
+(define (upper-bound x) (cdr x))
 
 (define (sub-interval x y)
   (make-interval (- (lower-bound x) (upper-bound y))
@@ -34,5 +34,11 @@
 
 (define a (make-interval 1 2))
 (define b (make-interval 3 4))
+( define (print-interval i)
+   (display (lower-bound i))
+   (display (upper-bound i))
+   )
 
-(add-interval a b)
+;; (add-interval a b)
+(print-interval a)
+;; (lower-bound a )
