@@ -13,3 +13,5 @@
 (define gg (cons 1 2))
 (car gg)
 (cdr gg)
+
+(log 3 641)
