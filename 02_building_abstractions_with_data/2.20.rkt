@@ -2,15 +2,15 @@
 
 (define (even? n) (= (remainder n 2) 0))
 
-(define (even-list l)
-  (cond
-    ((null? l) (list nil))
-    ((even? (car l)) (cons((car l) (even-list (cdr l)))))
-    (else (even-list (cdr l)))
-    )
-  )
+;; (define (even-list l)
+;;   (cond
+;;     ((null? l) (list nil))
+;;     ((even? (car l)) (cons((car l) (even-list (cdr l)))))
+;;     (else (even-list (cdr l)))
+;;     )
+;;   )
 
-(even-list (list 2))
+;; (even-list (list 2))
 ;; (null? 2)
 
 
@@ -24,5 +24,57 @@
 ;;       )
 
 (define (same-parity first . rest)
-  first
+  (define (get-parity-list l)
+    (display "l is:") (display l) (newline)
+    (cond
+      ((null? l)
+       (display "null>")
+       (newline)
+       (newline)
+       nil)
+      ((= (remainder (car l) first ) 0)
+       (display "car l:")
+       (display (car l))
+       (newline)
+       (display "parity>")
+       (newline)
+       (newline)
+       (cons ( (car l) (get-parity-list (cdr l)))))
+      (else
+       (display "else>")
+       (newline)
+       (newline)
+       (get-parity-list (cdr l))
+       )
+      )
+    )
+  (cons first (get-parity-list rest))
   )
+
+;; (same-parity 1 2)
+
+(define (get-parity-list l)
+  (display "l is:") (display l) (newline)
+  (cond
+    ((null? l)
+     (display "null>")
+     (newline)
+     (newline)
+     nil)
+    ((= (remainder (car l) 1 ) 0)
+     (display "car l:")
+     (display (car l))
+     (newline)
+     (display "parity>")
+     (newline)
+     (newline)
+     (cons ( (car l) (get-parity-list (cdr l)))))
+    (else
+     (display "else>")
+     (newline)
+     (newline)
+     (get-parity-list (cdr l))
+     )
+    )
+  )
+(get-parity-list (list 2))
