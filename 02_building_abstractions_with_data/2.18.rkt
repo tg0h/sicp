@@ -26,4 +26,4 @@
 
 (reverse (list 1 4 9 16 25))
 
-(cons 3 nil)
+;; (cons 3 nil)
