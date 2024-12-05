@@ -1,5 +1,8 @@
 #lang sicp
 
+(define (add-interval x y)
+  (make-interval (+ (lower-bound x) (lower-bound y))
+                 (+ (upper-bound x) (upper-bound y))))
 (define (mul-interval x y)
   (let ((p1 (* (lower-bound x) (lower-bound y)))
         (p2 (* (lower-bound x) (upper-bound y)))
@@ -40,11 +43,21 @@
 (define c (mul-interval a b))
 (percent c)
 
+(define (contains-zero x) (and (< (lower-bound x) 0) (> (upper-bound x) 0)))
+(define (div-interval x y)
+  ( if (contains-zero y) (error "division by zero")
+       (mul-interval
+        x
+        (make-interval (/ 1.0 (upper-bound y))
+                       (/ 1.0 (lower-bound y))))
+       )
+  )
+
 (define (par1 r1 r2)
-(div-interval (mul-interval r1 r2)
+  (div-interval (mul-interval r1 r2)
                 (add-interval r1 r2)))
 (define (par2 r1 r2)
-(let ((one (make-interval 1 1)))
+  (let ((one (make-interval 1 1)))
     (div-interval
      one (add-interval (div-interval one r1)
                        (div-interval one r2)))))
