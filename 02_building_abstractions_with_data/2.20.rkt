@@ -25,7 +25,6 @@
 (define (parity a b)
   (if (even? a)
       (even? b)
-
       (not (even? b))
       )
   )
@@ -62,6 +61,6 @@
   (cons first (get-parity-list rest))
   )
 
-(same-parity 1 2 3 5 6)
-(same-parity 2 3 5 6)
+(same-parity 1 2 3 4 5 6 7)
+(same-parity 2 3 4 5 6 7)
 
