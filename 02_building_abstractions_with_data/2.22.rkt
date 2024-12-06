@@ -17,8 +17,10 @@
   (define (iter things answer)
     (if (null? things) answer
         (iter (cdr things)
-              (cons (square (car things))
-                    answer))))
+              (cons
+               answer
+               (square (car things))
+               ))))
   (iter items nil))
 
 (ssquare-list (list 1 2 3 4))
