@@ -16,3 +16,12 @@
       x))
 
 
+;; (define (deep-reverse-iter x)
+;;   (define (iter items result)
+;;     )
+;;   (if (pair? x)
+;;       (append (deep-reverse (cdr x))
+;;               (list (deep-reverse (car x))))
+;;       x))
+;;
+
