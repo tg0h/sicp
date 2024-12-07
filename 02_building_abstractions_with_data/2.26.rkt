@@ -6,3 +6,5 @@
 (append x y )
 (cons x y )
 (list x y )
+
+(cons 1 2)
