@@ -17,10 +17,10 @@
 
 
 (define (fringe x)
-  (if (pair? x)
-      (append (fringe (car x))
-              (list (fringe (cdr x))))
-      x))
-
+  (cond ((null? x) nil)
+        ((pair? x)
+         (append (fringe (car x))
+                 (fringe (cdr x))))
+        (else (list x))))
 
 (fringe x)
