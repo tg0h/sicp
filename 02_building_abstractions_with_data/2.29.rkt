@@ -7,3 +7,7 @@
   (car mobile)
   )
 
+(define (right-branch mobile)
+  (cdr mobile)
+  )
+
