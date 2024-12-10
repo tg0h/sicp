@@ -9,7 +9,11 @@
 (define (map p sequence)
   (accumulate (lambda (x y) (cons (p x) y)) nil sequence)
   )
-
 (define square (lambda (x) (* x x)) )
-
 (map square (list 1 2 3))
+
+
+(define (append seq1 seq2)
+  (accumulate cons seq2 seq1)
+  )
+(append (list 1 2) (list 3 4))
