@@ -1,6 +1,5 @@
 #lang sicp
 
-
 (define (fold-right op initial sequence)
   (if (null? sequence)
       initial
@@ -13,3 +12,9 @@
         (iter (op result (car rest))
               (cdr rest))))
   (iter initial sequence))
+
+(fold-right / 1 (list 1 2 3))
+(fold-left / 1 (list 1 2 3))
+
+(fold-right list nil (list 1 2 3))
+(fold-left list nil (list 1 2 3))
