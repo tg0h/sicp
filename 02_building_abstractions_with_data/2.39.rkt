@@ -12,3 +12,12 @@
         (iter (op result (car rest))
               (cdr rest))))
   (iter initial sequence))
+
+
+(define (reverse sequence)
+  (fold-right (lambda (x y )
+                (if (null? y) (list x) (append y (list x))
+                    )) nil sequence)
+              )
+
+(reverse (list 1 2 3))
