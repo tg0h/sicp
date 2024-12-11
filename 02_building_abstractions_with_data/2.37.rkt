@@ -36,6 +36,18 @@
             (accumulate-n op init (map (lambda (x) (cdr x)) seqs)))
       )
   )
-(define (transpose mat)
 
+(define (transpose matrix)
+  (accumulate-n cons nil matrix)
   )
+
+(transpose m)
+
+(define mm 
+  (list 
+  (list 1 2 3)
+  (list 4 5 6)
+  (list 7 8 9)
+  )
+  )
+(transpose mm)
