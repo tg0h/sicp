@@ -39,6 +39,14 @@
 (define (prime-sum? pair) (prime? (+ (car pair) (cadr pair))))
 (define (flatmap proc seq) (accumulate append nil (map proc seq)))
 
+(define (make-pair-sum pair) (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence)))) (else (filter predicate (cdr sequence)))))
+
 (define (prime-sum-pairs n)
   (map make-pair-sum
        (filter prime-sum?
