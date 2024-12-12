@@ -20,7 +20,7 @@
                    ))
   )
 
-(unique-pairs 2)
+(unique-pairs 3)
 
 
 ;; prime?
@@ -50,7 +50,11 @@
 (define (prime-sum-pairs n)
   (map make-pair-sum
        (filter prime-sum?
-               (flatmap (lambda (i)
-                          (map (lambda (j) (list i j))
-                               (enumerate-interval 1 (- i 1))))
-                        (enumerate-interval 1 n)))))
+               ;; (flatmap (lambda (i)
+               ;;            (map (lambda (j) (list i j))
+               ;;                 (enumerate-interval 1 (- i 1))))
+               ;;          (enumerate-interval 1 n))
+               (unique-pairs n)
+               )))
+
+(prime-sum-pairs 10)
