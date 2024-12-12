@@ -44,13 +44,38 @@
 
 (generate-triple 2)
 
-;; (filter (lambda (triple)
-;;           (and (car triple))
-;;           ) generate-triple 2
-;;         )
+(define (ordered-triple? triple)
+  (let
+      (
+       (i (car triple))
+       (j (cadr triple))
+       (k (caddr triple))
+       )
+    (and
+     (<= i j)
+     (<= j k)
+     )
+    )
+  )
+
+  (filter (lambda (triple)
+            (let
+                (
+                 (i (car triple))
+                 (j (cadr triple))
+                 (k (caddr triple))
+                 )
+              (and
+               (<= i j)
+               (<= j k)
+               )
+              )
+            )
+          (generate-triple 3)
+          )
 
 
-(define trip (list 1 2 3))
-(car trip)
-(cadr trip)
-(caddr trip)
+  ;; (define trip (list 1 2 3))
+  ;; (car trip)
+  ;; (cadr trip)
+  ;; (caddr trip)
