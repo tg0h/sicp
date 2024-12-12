@@ -42,7 +42,7 @@
            (enumerate-interval 1 n))
   )
 
-(generate-triple 2)
+;; (generate-triple 2)
 
 (define (ordered-triple? triple)
   (let
@@ -58,24 +58,31 @@
     )
   )
 
-  (filter (lambda (triple)
-            (let
-                (
-                 (i (car triple))
-                 (j (cadr triple))
-                 (k (caddr triple))
-                 )
-              (and
-               (<= i j)
-               (<= j k)
-               )
-              )
-            )
-          (generate-triple 3)
+(define (triple-sums-to-n? n)
+  (lambda(triple)
+    (let
+        (
+         (i (car triple))
+         (j (cadr triple))
+         (k (caddr triple))
+         )
+      (= (+ i j k) n)
+      )
+    )
+  )
+
+(define (generate-trips n s)
+  (filter (triple-sums-to-n? s)
+          (filter ordered-triple?
+                  (generate-triple n)
+                  )
           )
+  )
+
+(generate-trips 4 10)
 
 
-  ;; (define trip (list 1 2 3))
-  ;; (car trip)
-  ;; (cadr trip)
-  ;; (caddr trip)
+;; (define trip (list 1 2 3))
+;; (car trip)
+;; (cadr trip)
+;; (caddr trip)
