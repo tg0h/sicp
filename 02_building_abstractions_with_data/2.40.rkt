@@ -23,23 +23,17 @@
 (unique-pairs 2)
 
 
-;; prime
-(define (next test-divisor)
-  (if (= test-divisor 2) 3 (+ test-divisor 2)) ; more efficient to add 2 to search for next prime
-  )
-
+;; prime?
+(define (next test-divisor) (if (= test-divisor 2) 3 (+ test-divisor 2)) )
 (define (square x) (* x x))
 (define (smallest-divisor n) (find-divisor n 2))
 (define (divides? a b) (= (remainder b a) 0))
 (define (find-divisor n test-divisor)
   (cond ((> (square test-divisor) n) n)
         ((divides? test-divisor n) test-divisor)
-        ;; (else (find-divisor n (+ test-divisor 1)))))
-        (else (find-divisor n (next test-divisor ))))) ; more efficient
-
+        (else (find-divisor n (next test-divisor )))))
 (define (prime? n)
   (= n (smallest-divisor n)))
-
 
 
 (define (prime-sum? pair) (prime? (+ (car pair) (cadr pair))))
