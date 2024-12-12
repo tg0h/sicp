@@ -27,20 +27,30 @@
          (cons (car sequence)
                (filter predicate (cdr sequence)))) (else (filter predicate (cdr sequence)))))
 
-(define (test n)
-  (map (lambda (i)
-         (map (lambda (j)
-                (map (lambda (k)
-                       (list i j k))
-                     (enumerate-interval 1 n))
-                )
-              (enumerate-interval 1 n)
-              )
-         )
-       (enumerate-interval 1 n))
+(define (flatmap proc seq) (accumulate append nil (map proc seq)))
+
+(define (generate-triple n)
+  (flatmap (lambda (i)
+             (flatmap (lambda (j)
+                        (map (lambda (k)
+                               (list i j k))
+                             (enumerate-interval 1 n))
+                        )
+                      (enumerate-interval 1 n)
+                      )
+             )
+           (enumerate-interval 1 n))
   )
 
-(test 2)
+(generate-triple 2)
 
-;; (filter (lambda )
+;; (filter (lambda (triple)
+;;           (and (car triple))
+;;           ) generate-triple 2
+;;         )
 
+
+(define trip (list 1 2 3))
+(car trip)
+(cadr trip)
+(caddr trip)
