@@ -42,7 +42,7 @@
            (enumerate-interval 1 n))
   )
 
-;; (generate-triple 2)
+(generate-triple 2)
 
 (define (ordered-triple? triple)
   (let
@@ -79,7 +79,22 @@
           )
   )
 
-(generate-trips 4 10)
+;; (generate-trips 4 10)
+
+
+(filter ordered-triple?
+        (generate-triple 2)
+        )
+
+(define (ordered-triples-sum n s)
+  (filter (lambda (list) (= (accumulate + 0 list) s))
+          (flatmap
+           (lambda (i)
+             (flatmap (lambda (j)
+                        (map (lambda (k) (list i j k))
+                             (enumerate-interval 1 (- j 1))))
+                      (enumerate-interval 1 (- i 1))))
+           (enumerate-interval 1 n))))
 
 
 ;; (define trip (list 1 2 3))
