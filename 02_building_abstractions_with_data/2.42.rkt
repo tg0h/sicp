@@ -62,7 +62,6 @@
               )
   )
 
-
 (define positions-3-board
   (list
    (list (list 1 3) (list 2 3))
@@ -71,3 +70,11 @@
    )
   )
 (safe? 2 positions-3-board)
+
+
+(define (adjoin-position row col rest-of-queens)
+  (cons (list row col) rest-of-queens)
+  )
+
+;; (define aboard (list (list 1 2) ))
+;; (adjoin-position 2 2 aboard)
