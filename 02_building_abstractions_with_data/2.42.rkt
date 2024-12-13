@@ -1,5 +1,12 @@
 #lang sicp
 
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
 (define (horizontal? point-a point-b) (= (cadr point-a) (cadr point-b)))
 (define (diagonal? point-a point-b)
   (define (abs x) (cond ((> x 0) x) ((= x 0) 0) ((< x 0) (- x))))
