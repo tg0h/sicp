@@ -86,18 +86,31 @@
         (generate-triple 2)
         )
 
+;; (flatmap
+;;  (lambda (i)
+;;    (flatmap (lambda (j)
+;;               (map (lambda (k) (list i j k))
+;;                    (enumerate-interval 1 (- j 1))))
+;;             (enumerate-interval 1 (- i 1))))
+;;  (enumerate-interval 1 3)
+;;  )
+
 (define (ordered-triples-sum n s)
-  (filter (lambda (list) (= (accumulate + 0 list) s))
+  (filter (lambda (l) (= (accumulate + 0 l) s))
           (flatmap
            (lambda (i)
              (flatmap (lambda (j)
                         (map (lambda (k) (list i j k))
                              (enumerate-interval 1 (- j 1))))
                       (enumerate-interval 1 (- i 1))))
-           (enumerate-interval 1 n))))
+           (enumerate-interval 1 n))
+          ))
 
+
+(ordered-triples-sum 5 3)
 
 ;; (define trip (list 1 2 3))
 ;; (car trip)
 ;; (cadr trip)
 ;; (caddr trip)
+
