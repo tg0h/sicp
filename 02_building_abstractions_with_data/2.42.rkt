@@ -61,3 +61,13 @@
             ) positions
               )
   )
+
+
+(define positions-3-board
+  (list
+   (list (list 1 3) (list 2 3))
+   (list (list 1 3) (list 2 2))
+   (list (list 1 3) (list 2 1)) ; safe
+   )
+  )
+(safe? 2 positions-3-board)
