@@ -7,20 +7,26 @@
       (op (car sequence)
           (accumulate op initial (cdr sequence)))))
 
-(define (horizontal? point-a point-b) (= (cadr point-a) (cadr point-b)))
-(define (diagonal? point-a point-b)
-  (define (abs x) (cond ((> x 0) x) ((= x 0) 0) ((< x 0) (- x))))
-  (let
-      (
-       (x-point-a (car point-a))
-       (y-point-a (cadr point-a))
-       (x-point-b (car point-b))
-       (y-point-b (cadr point-b))
-       )
-    (= (abs (- y-point-b y-point-a)) (abs(- x-point-b x-point-a)))
-    )
-  )
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence)))) (else (filter predicate (cdr sequence)))))
+
 (define (is-point-safe? point-a point-b)
+  (define (horizontal? point-a point-b) (= (cadr point-a) (cadr point-b)))
+  (define (diagonal? point-a point-b)
+    (define (abs x) (cond ((> x 0) x) ((= x 0) 0) ((< x 0) (- x))))
+    (let
+        (
+         (x-point-a (car point-a))
+         (y-point-a (cadr point-a))
+         (x-point-b (car point-b))
+         (y-point-b (cadr point-b))
+         )
+      (= (abs (- y-point-b y-point-a)) (abs(- x-point-b x-point-a)))
+      )
+    )
   (and
    (not (horizontal? point-a point-b))
    (not (diagonal? point-a point-b))
