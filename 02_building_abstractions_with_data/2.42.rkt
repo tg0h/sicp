@@ -93,4 +93,4 @@
   (queen-cols board-size)
   )
 
-(queens 4)
+(length(queens 8))
