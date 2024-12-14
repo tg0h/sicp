@@ -54,8 +54,8 @@
                                         ) position
                                           ))
                  )
-              ;; (display col-k-point) (display "test against->") (display test-points)
-              ;; (newline)
+              (display col-k-point) (display "test against->") (display test-points)
+              (newline)
               (check-point-safe-with-positions col-k-point test-points)
               )
             ) positions
@@ -69,7 +69,7 @@
    (list (list 1 3) (list 2 1)) ; safe
    )
   )
-(safe? 2 positions-3-board)
+;; (safe? 2 positions-3-board)
 
 
 (define (adjoin-position row col rest-of-queens)
@@ -85,6 +85,7 @@
   )
 
 (define empty-board (list(list nil)))
+
 (define (queens board-size)
   (define (queen-cols k)
     (if (= k 0)
