@@ -62,14 +62,15 @@
               )
   )
 
+
 (define positions-3-board
   (list
-   (list (list 1 3) (list 2 3))
-   (list (list 1 3) (list 2 2))
-   (list (list 1 3) (list 2 1)) ; safe
+   (list (list 1 3) )
+   (list (list 1 3) )
+   (list (list 1 3) ) ; safe
    )
   )
-;; (safe? 2 positions-3-board)
+;; (safe? 1 positions-3-board)
 
 
 (define (adjoin-position row col rest-of-queens)
@@ -77,33 +78,49 @@
   )
 
 ;; (define aboard (list (list 9 9) ))
-(define aboard ( nil ))
-  aboard
-  ;; (adjoin-position 2 2 aboard)
+(define aboard  nil )
+;; aboard
+;; (adjoin-position 2 2 aboard)
 
 
-  (define (flatmap proc seq) (accumulate append nil (map proc seq)))
-  (define (enumerate-interval low high)
-    (if (> low high) nil (cons low (enumerate-interval (+ low 1) high)))
-    )
+(define (flatmap proc seq) (accumulate append nil (map proc seq)))
+(define (enumerate-interval low high)
+  (if (> low high) nil (cons low (enumerate-interval (+ low 1) high)))
+  )
 
 
-  (map (lambda (new-row)
-         (adjoin-position new-row 2 aboard))
-       (enumerate-interval 1 2))
+;; (map (lambda (new-row)
+;;        (adjoin-position new-row 2 aboard))
+;;      (enumerate-interval 1 2))
 
-  (define empty-board (list(list nil)))
+(define empty-board nil)
 
-  (define (queens board-size)
-    (define (queen-cols k)
-      (if (= k 0)
-          (list empty-board)
-          (filter (lambda (positions) (safe? k positions))
-                  (flatmap (lambda (rest-of-queens)
-                             (map (lambda (new-row)
-                                    (adjoin-position new-row k rest-of-queens))
-                                  (enumerate-interval 1 board-size)))
-                           (queen-cols (- k 1))))))
-    (queen-cols board-size))
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter (lambda (positions) (safe? k positions))
+                (flatmap (lambda (rest-of-queens)
+                           (map (lambda (new-row)
+                                  (adjoin-position new-row k rest-of-queens))
+                                (enumerate-interval 1 board-size)))
+                         (queen-cols (- k 1))))))
+  (queen-cols board-size))
 
-  ;; (queens 4)
+;; (queens 1)
+
+        (flatmap (lambda (rest-of-queens)
+                   (map (lambda (new-row)
+                          (adjoin-position new-row 1 rest-of-queens))
+                        (enumerate-interval 1 1 )))
+                 (list nil)
+                 )
+
+(filter (lambda (positions) (safe? 1 positions))
+        (flatmap (lambda (rest-of-queens)
+                   (map (lambda (new-row)
+                          (adjoin-position new-row 1 rest-of-queens))
+                        (enumerate-interval 1 1 )))
+                 (list nil)
+                 )
+        )
