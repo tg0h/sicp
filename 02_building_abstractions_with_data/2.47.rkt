@@ -51,4 +51,9 @@
 (define (_make-frame origin edge1 edge2)
   (cons origin (cons edge1 edge2)))
 
-(define f (make-frame ))
+
+(define org (make-vect 0 0))
+(define e1 (make-vect 1 1))
+(define e2 (make-vect -1 1))
+
+(define f (make-frame org e1 e2))
