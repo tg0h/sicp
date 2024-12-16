@@ -57,3 +57,7 @@
     (iter n)
     )
   )
+
+(define _right-split (split beside below))
+
+(paint (_right-split einstein 3))
