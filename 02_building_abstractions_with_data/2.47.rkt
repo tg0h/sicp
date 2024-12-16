@@ -48,6 +48,11 @@
 
 (define (make-frame origin edge1 edge2)
   (list origin edge1 edge2))
+
+(define (org-frame f) (car f))
+(define (e1-frame f) (cadr f))
+(define (e2-frame f) (caddr f))
+
 (define (_make-frame origin edge1 edge2)
   (cons origin (cons edge1 edge2)))
 
@@ -55,5 +60,9 @@
 (define org (make-vect 0 0))
 (define e1 (make-vect 1 1))
 (define e2 (make-vect -1 1))
-
 (define f (make-frame org e1 e2))
+
+f
+(org-frame f)
+(e1-frame f)
+(e2-frame f)
