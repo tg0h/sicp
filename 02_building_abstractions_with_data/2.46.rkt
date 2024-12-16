@@ -42,3 +42,17 @@
     (make-vect (- x-v1 x-v2) (- y-v1 y-v2))
     )
   )
+
+(sub-vect v1 v2)
+
+(define (scale-vect s v1)
+  (let
+      (
+       (x-v1 (xcor-vect v1))
+       (y-v1 (ycor-vect v1))
+       )
+    (make-vect (* s x-v1) (* s y-v1))
+    )
+  )
+
+(scale-vect 2 v1)
