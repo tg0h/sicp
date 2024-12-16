@@ -10,11 +10,11 @@
 
 (paint (right-split einstein 3))
 
-(paint (beside einstein einstein))
-(paint
- (beside (beside einstein einstein)
-         (beside einstein einstein))
- )
+;; (paint (beside einstein einstein))
+;; (paint
+;;  (beside (beside einstein einstein)
+;;          (beside einstein einstein))
+;;  )
 
 (define (up-split painter n)
   (if (= n 0)
