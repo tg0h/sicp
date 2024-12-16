@@ -55,6 +55,9 @@
 
 (define (_make-frame origin edge1 edge2)
   (cons origin (cons edge1 edge2)))
+(define (_org-frame f) (car f))
+(define (_e1-frame f) (cadr f))
+(define (_e2-frame f) (cddr f))
 
 
 (define org (make-vect 0 0))
@@ -66,3 +69,10 @@ f
 (org-frame f)
 (e1-frame f)
 (e2-frame f)
+
+(define _f (_make-frame org e1 e2))
+
+_f
+(_org-frame _f)
+(_e1-frame _f)
+(_e2-frame _f)
