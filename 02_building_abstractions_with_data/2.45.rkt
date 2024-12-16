@@ -16,7 +16,6 @@
       (let ((smaller (up-split painter (- n 1))))
         (below painter (beside smaller smaller)))))
 
-;; (paint (up-split einstein 1))
 
 (define (split op1 op2)
   (lambda(painter n)
@@ -32,6 +31,10 @@
   )
 
 (define _right-split (split beside below))
+(define _up-split (split below beside))
 
 (paint (right-split einstein 3))
 (paint (_right-split einstein 3))
+
+(paint (up-split einstein 3))
+(paint (_up-split einstein 3))
