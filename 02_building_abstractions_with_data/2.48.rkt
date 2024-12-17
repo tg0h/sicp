@@ -43,3 +43,7 @@
     (make-vect (* s x-v1) (* s y-v1))
     )
   )
+
+(define (make-segment v1 v2)
+  (cons v1 v2)
+  )
