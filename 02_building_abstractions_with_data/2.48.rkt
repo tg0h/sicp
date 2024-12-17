@@ -50,3 +50,6 @@
 (define (end-segment s) (cdr s))
 
 (define s1 (make-segment v1 v2))
+;; s1
+;; (start-segment s1)
+;; (end-segment s1)
