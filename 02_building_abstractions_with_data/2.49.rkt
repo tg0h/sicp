@@ -56,13 +56,16 @@
 ;; (start-segment s1)
 ;; (end-segment s1)
 
-(define (segments->painter segment-list)
-  (lambda (frame)
-    (for-each
-     (lambda (segment)
-       (draw-line
-        ((frame-coord-map frame)
-         (start-segment segment))
-        ((frame-coord-map frame)
-         (end-segment segment))))
-     segment-list)))
+;; (define (segments->painter segment-list)
+;;   (lambda (frame)
+;;     (for-each
+;;      (lambda (segment)
+;;        (draw-line
+;;         ((frame-coord-map frame)
+;;          (start-segment segment))
+;;         ((frame-coord-map frame)
+;;          (end-segment segment))))
+;;      segment-list)))
+
+; 2.49.a
+(make-segment (make-vect 0 0) (make-vect 1 0))
