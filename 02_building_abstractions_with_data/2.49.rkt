@@ -76,6 +76,13 @@
  (make-segment (make-vect 0 1) (make-vect 0 0))
  )
 
+(define outline
+  (segments->painter
+   (list
+    (segment (vect 0.0 0.0) (vect 0.0 1.0))
+    (segment (vect 0.0 0.0) (vect 1.0 0.0))
+    (segment (vect 0.0 1.0) (vect 1.0 1.0))
+    (segment (vect 1.0 0.0) (vect 1.0 1.0)))))
 ; 2.49.b
 ; draw an x
 (list
@@ -91,3 +98,14 @@
  (make-segment (make-vect 0.5 1) (make-vect 0 0.5))
  (make-segment (make-vect 0 0.5) (make-vect 0.5 0))
  )
+
+(define d-painter
+  (segments->painter
+   (list
+    (segment (vect 0.5 0.0) (vect 1.0 0.5))
+    (segment (vect 1.0 0.5) (vect 0.5 1.0))
+    (segment (vect 0.5 1.0) (vect 0.0 0.5))
+    (segment (vect 0.0 0.5) (vect 0.5 0.0))
+    )
+   )
+  )
