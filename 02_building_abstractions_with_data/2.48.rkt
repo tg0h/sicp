@@ -49,4 +49,4 @@
 (define (start-segment s) (car s))
 (define (end-segment s) (cdr s))
 
-(define s1 (make-segment v1 v2)
+(define s1 (make-segment v1 v2))
