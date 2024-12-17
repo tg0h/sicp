@@ -1,4 +1,6 @@
 #lang sicp
+(#%require sicp-pict)
+(paint einstein)
 
 (define (make-vect x y) (cons x y))
 (define (xcor-vect v) (car v))
@@ -53,3 +55,14 @@
 ;; s1
 ;; (start-segment s1)
 ;; (end-segment s1)
+
+(define (segments->painter segment-list)
+  (lambda (frame)
+    (for-each
+     (lambda (segment)
+       (draw-line
+        ((frame-coord-map frame)
+         (start-segment segment))
+        ((frame-coord-map frame)
+         (end-segment segment))))
+     segment-list)))
