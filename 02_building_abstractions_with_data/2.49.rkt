@@ -77,10 +77,15 @@
  )
 
 ; 2.49.b
-; provide the unit square
+; draw an x
 (list
- (make-segment (make-vect 0 0) (make-vect 1 0))
- (make-segment (make-vect 1 0) (make-vect 1 1))
- (make-segment (make-vect 1 1) (make-vect 0 1))
- (make-segment (make-vect 0 1) (make-vect 0 0))
+ (make-segment (make-vect 0 0) (make-vect 1 1))
+ (make-segment (make-vect 1 0) (make-vect 0 1))
+ )
+
+; 2.49.c
+; draw an x
+(list
+ (make-segment (make-vect 0 0) (make-vect 1 1))
+ (make-segment (make-vect 1 0) (make-vect 0 1))
  )
