@@ -68,4 +68,18 @@
             (make-vect 0.0 1.0))))
       (lambda (frame) (paint-bottom frame) (paint-top frame)))))
 
-(paint (below einstein einstein))
+;; (paint (below einstein einstein))
+
+
+(define (_below painter1 painter2)
+  (lambda (frame) (
+                   (flip-vert
+                    (flip-horiz
+                     (rotate-270
+                      (beside
+                       (rotate-270 painter1)
+                       (rotate-270 painter2)))))
+                   frame)))
+
+;; (paint (beside einstein einstein))
+(paint (_below einstein einstein))
