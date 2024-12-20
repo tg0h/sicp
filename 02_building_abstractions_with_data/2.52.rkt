@@ -8,7 +8,7 @@
       (let ((smaller (right-split painter (- n 1))))
         (beside painter (below smaller smaller)))))
 
-(paint (right-split einstein 3))
+;; (paint (right-split einstein 3))
 
 ;; (paint (beside einstein einstein))
 ;; (paint
@@ -22,7 +22,7 @@
       (let ((smaller (up-split painter (- n 1))))
         (below painter (beside smaller smaller)))))
 
-(paint (up-split einstein 1))
+;; (paint (up-split einstein 1))
 
 (define (corner-split painter n)
   (if (= n 0)
@@ -34,9 +34,17 @@
           (beside (below painter top-left)
                   (below bottom-right corner)
                   )))))
+(define (_corner-split painter n)
+  (if (= n 0)
+      painter
+      (beside (below painter (up-split painter (- n 1)))
+              (below (right-split painter (- n 1)) (corner-split painter (- n 1))))))
+
+(paint (_corner-split einstein 1))
 
 
 (define (square-limit painter n)
   (let ((quarter (corner-split painter n)))
     (let ((half (beside (flip-horiz quarter) quarter)))
       (below (flip-vert half) half))))
+
