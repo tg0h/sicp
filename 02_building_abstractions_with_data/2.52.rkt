@@ -34,13 +34,6 @@
           (beside (below painter top-left)
                   (below bottom-right corner)
                   )))))
-(define (_corner-split painter n)
-  (if (= n 0)
-      painter
-      (beside (below painter (up-split painter (- n 1)))
-              (below (right-split painter (- n 1)) (corner-split painter (- n 1))))))
-
-(paint (_corner-split einstein 1))
 
 
 (define (square-limit painter n)
