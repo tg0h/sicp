@@ -9,6 +9,7 @@
 (define (addend s) (cadr s))
 (define (augend s) (caddr s))
 (define (product? x) (and (pair? x) (eq? (car x) '*)))
+(define (multiplier p) (cadr p))
 
 (define (deriv exp var)
   (cond ((number? exp) 0)
