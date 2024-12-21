@@ -24,7 +24,13 @@
 
 (define (sum? x) (and (pair? x) (eq? (car x) '+)))
 (define (addend s) (cadr s))
-(define (augend s) (caddr s))
+(define (augend s)
+  (let
+      ((rest (caddr s)))
+    (if (not (pair? rest)) (make-sum (car s) (cdr s) ))
+    )
+  )
+
 (define (product? x) (and (pair? x) (eq? (car x) '*)))
 (define (multiplier p) (cadr p))
 (define (multiplicand p) (caddr p))
@@ -67,3 +73,13 @@
         (else
          (error "unknown expression type: DERIV" exp))))
 
+(deriv '(+ (+ y 1) v ) 'x)
+
+(define test '(+ x 1))
+(cadr test)
+(caddr test)
+(cddr test)
+(define _test (cddr test))
+(cdr _test)
+
+;; (augend '(+ x 1 a))
