@@ -8,6 +8,7 @@
 (define (sum? x) (and (pair? x) (eq? (car x) '+)))
 (define (addend s) (cadr s))
 (define (augend s) (caddr s))
+(define (product? x) (and (pair? x) (eq? (car x) '*)))
 
 (define (deriv exp var)
   (cond ((number? exp) 0)
