@@ -3,7 +3,15 @@
 (define (variable? x) (symbol? x))
 (define (same-variable? v1 v2)
   (and (variable? v1) (variable? v2) (eq? v1 v2)))
-(define (make-sum a1 a2) (list '+ a1 a2))
+;; (define (make-sum a1 a2) (list '+ a1 a2))
+
+(define (=number? exp num) (and (number? exp) (= exp num)))
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else (list '+ a1 a2))))
+
 (define (make-product m1 m2) (list '* m1 m2))
 (define (sum? x) (and (pair? x) (eq? (car x) '+)))
 (define (addend s) (cadr s))
@@ -27,3 +35,8 @@
          (error "unknown expression type: DERIV" exp))))
 
 
+(deriv '(+ x 3) 'x)
+
+(deriv '(* x y) 'x)
+
+(deriv '(* (* x y) (+ x 3)) 'x)
