@@ -57,6 +57,13 @@
                         (deriv (multiplicand exp) var))
           (make-product (deriv (multiplier exp) var)
                         (multiplicand exp))))
+
+        ((exponentiation? exp)
+         (make-product
+          (* (multiplier exp)
+                        (deriv (multiplicand exp) var))
+          (make-product (deriv (multiplier exp) var)
+                        (multiplicand exp))))
         (else
          (error "unknown expression type: DERIV" exp))))
 
