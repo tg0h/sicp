@@ -60,10 +60,10 @@
 
         ((exponentiation? exp)
          (make-product
-          (* (multiplier exp)
-                        (deriv (multiplicand exp) var))
-          (make-product (deriv (multiplier exp) var)
-                        (multiplicand exp))))
+          (* (exponent exp)
+             (make-exponent (base (- (exponent exp) 1))))
+          (deriv (base exp) var)
+          ))
         (else
          (error "unknown expression type: DERIV" exp))))
 
