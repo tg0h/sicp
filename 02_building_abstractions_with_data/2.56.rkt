@@ -60,17 +60,17 @@
 
         ((exponentiation? exp)
          (make-product
-          (* (exponent exp)
-             (make-exponent (base (- (exponent exp) 1))))
-          (deriv (base exp) var)
-          ))
+          (make-product (exponent exp)
+                        (make-exponent (base exp) (- (exponent exp) 1)))
+          (deriv (base exp) var))
+         )
         (else
          (error "unknown expression type: DERIV" exp))))
 
 
-'(** u n)
-(base '(** u n))
-(exponent '(** u n))
+;; '(** u n)
+;; (base '(** u n))
+;; (exponent '(** u n))
 ;; (deriv '(+ x 3) 'x)
 
 ;; (deriv '(+ x y) 'x)
@@ -79,4 +79,12 @@
 
 ;; (deriv '(* (* x y) (+ x 3)) 'x)
 
-(eq? 3 3)
+(define test '(** x 5))
+
+(exponentiation? test)
+(exponent test)
+(base test)
+(make-exponent (base test) (- (exponent test) 1))
+
+(deriv '(** x 5) 'x)
+(deriv (deriv '(** x 5) 'x) 'x)
