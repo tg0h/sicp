@@ -6,6 +6,7 @@
 ;; (define (make-sum a1 a2) (list '+ a1 a2))
 
 (define (=number? exp num) (and (number? exp) (= exp num)))
+
 (define (make-sum a1 a2)
   (cond ((=number? a1 0) a2)
         ((=number? a2 0) a1)
@@ -18,7 +19,7 @@
   (cond ((or (=number? m1 0) (=number? m2 0)) 0)
         ((=number? m1 1) m2)
         ((=number? m2 1) m1)
-        ((and (number? m1) (number? m2)) (* m1 m2)) 
+        ((and (number? m1) (number? m2)) (* m1 m2))
         (else (list '* m1 m2))))
 
 (define (sum? x) (and (pair? x) (eq? (car x) '+)))
@@ -27,6 +28,23 @@
 (define (product? x) (and (pair? x) (eq? (car x) '*)))
 (define (multiplier p) (cadr p))
 (define (multiplicand p) (caddr p))
+
+
+(define (exponentiation? x) (and (pair? x) (eq? (car x) '**)))
+(define (base x) (cadr x))
+(define (exponent x) (caddr x))
+
+
+(define (power x n)
+  (if (= n 1)
+      x
+      (* x (power x (- n 1)))))
+
+(define (make-exponent b e)
+  (cond ((=number? e 0) 1) ; something power 0 is 1
+        ((=number? e 1) b)
+        ((and (number? b) (number? e)) (power b e))
+        (else (list '** b e))))
 
 (define (deriv exp var)
   (cond ((number? exp) 0)
@@ -43,8 +61,15 @@
          (error "unknown expression type: DERIV" exp))))
 
 
-(deriv '(+ x 3) 'x)
+'(** u n)
+(base '(** u n))
+(exponent '(** u n))
+;; (deriv '(+ x 3) 'x)
 
-(deriv '(* x y) 'x)
+;; (deriv '(+ x y) 'x)
 
-(deriv '(* (* x y) (+ x 3)) 'x)
+;; (deriv '(* x y) 'x)
+
+;; (deriv '(* (* x y) (+ x 3)) 'x)
+
+(eq? 3 3)
