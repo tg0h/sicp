@@ -22,24 +22,21 @@
         ((and (number? m1) (number? m2)) (* m1 m2))
         (else (list '* m1 m2))))
 
-(define (sum? x) (and (pair? x) (eq? (car x) '+)))
-(define (addend s) (cadr s))
+;; (define (sum? x) (and (pair? x) (eq? (car x) '+)))
+(define (sum? x) (and (pair? x) (eq? (cadr x) '+)))
+;; (define (addend s) (cadr s))
+(define (addend s) (car s))
+(define (simplify exp)
+  (if (null? (cdr exp)) (car exp) exp))
+;; (define (augend s) (caddr s))
+(define (augend s) (simplify (cddr s)))
+(define (multiplicand p) (simplify (cddr p)))
 
-(define (accumulate op initial sequence)
-  (if (null? sequence)
-      initial
-      (op (car sequence)
-          (accumulate op initial (cdr sequence)))))
-
-(define (augend s)
-  (accumulate make-sum 0 (cddr s))
-  )
-
-(define (product? x) (and (pair? x) (eq? (car x) '*)))
-(define (multiplier p) (cadr p))
-(define (multiplicand p)
-  (accumulate make-product 1 (cddr p))
-  )
+;; (define (product? x) (and (pair? x) (eq? (car x) '*)))
+(define (product? x) (and (pair? x) (eq? (cadr x) '*)))
+;; (define (multiplier p) (cadr p))
+(define (multiplier p) (car p))
+;; (define (multiplicand p) (caddr p))
 
 
 (define (exponentiation? x) (and (pair? x) (eq? (car x) '**)))
@@ -81,4 +78,13 @@
 
 ;; (deriv '(+ (+ y 1 2) v ) 'x)
 
-(deriv '(* x y (+ x 3)) 'x)
+;; (deriv '(x + 1) 'x)
+;; (deriv '(x * 3) 'x)
+;; (deriv '(x + (x * 3)) 'x)
+;; (deriv '(x + (3 * (x + (y + 2)))) 'x)
+(deriv '( ( x +  3 ) * 4 * x) 'x)
+(deriv '( x +  3 )  'x)
+
+;; (augend '(x + (x * 3)))
+;; (deriv (augend '(x + (x * 3))) 'x)
+

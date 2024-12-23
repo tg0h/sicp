@@ -32,7 +32,7 @@
           (accumulate op initial (cdr sequence)))))
 
 (define (augend s)
-  (accumulate make-sum 0 (cddr s))
+  (accumulate make-sum 0 (cddr s)) ; use accumulate to make-sum n terms
   )
 
 (define (product? x) (and (pair? x) (eq? (car x) '*)))
