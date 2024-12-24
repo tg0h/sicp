@@ -64,6 +64,7 @@
 (define (_union-set set1 set2)
   (cond
     ((null? set2) set1)
+    ((< (car set1) (car set2)) (_union-set (cdr set1) set2))
     (else true
           )
     )
