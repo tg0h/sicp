@@ -82,3 +82,9 @@
 ;; (deriv '(+ (+ y 1 2) v ) 'x)
 
 (deriv '(* x y (+ x 3)) 'x)
+(deriv '(* (* x y ) x ) 'x)
+
+;; (deriv '( ( x + 3 ) * x  ) 'x)
+;; (multiplicand '( ( x + 3 ) * x  ))
+;; (multiplier '( ( x + 3 ) * x  ))
+

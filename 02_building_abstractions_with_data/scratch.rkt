@@ -49,6 +49,9 @@
               expr))
 
 (define (sum? expr)
-  (eq? '+ (smallest-op expr)))
+  ;; (eq? '+ (smallest-op expr))
+  (if (memq '+ expr) true false)
+  )
 
 (sum? '(a + b * c))
+(sum? '(a + ( b * c ) ))
