@@ -3,7 +3,7 @@
 (define (element-of-set? x set)
   (cond ((null? set) false)
         ((equal? x (car set)) true)
-        ((< x (car set)) false)
+        ((< x (car set)) false) ; early return for ordered sets
         (else (element-of-set? x (cdr set)))))
 
 
