@@ -18,8 +18,8 @@
 
 (define (adjoin-set x set)
   (cond
-    ((element-of-set? x set) set)
-    ((null? set) x)
+    ((null? set) (list x))
+    ((= x (car set)) set)
     ((< x (car set)) (cons x set))
     (else (cons (car set) (adjoin-set x (cdr set))))
     )
@@ -31,7 +31,7 @@
 ;; (cdr (list 1))
 ;; (cons (car (list 1))
 (adjoin-set 1 set1)
-(adjoin-set 6 set1)
+(adjoin-set 999 set1)
 
 (define (intersection-set set1 set2)
   (cond ((or (null? set1) (null? set2)) '())
