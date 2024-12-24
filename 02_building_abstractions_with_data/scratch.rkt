@@ -1,42 +1,54 @@
 #!/usr/bin/env racket
 #lang sicp
 
-(define (=number? exp num) (and (number? exp) (= exp num)))
-(define (_make-sum a1 . rest)
-  (display "a1 is->") (display a1) (display " rest is->") (display rest)
-  (newline)
-  (display "car rest is->") (display (car rest))
-  (newline)
-  (display "cdr rest is->") (display (cdr rest))
-  (newline)
-  (display "null rest is->") (display (null? rest))
-  (newline)
-  (display "dnull rest is->") (display (null? (cdr rest)))
-  (newline)
-  (newline)
-  (let
-      (
-       (rest_length (length rest))
-       (rest_value (car rest))
-       )
-    (cond
-      ((null? (car rest)) a1)
-      ;; ((=number? a1 0) rest_value)
-      ;; ((=number? a2 0) a1)
-      ;; ((and (number? a1) (number? a2)) (+ a1 a2))
-      (else
-       ;; a1
-       (list '+ a1 (_make-sum (car rest) (cdr rest)))
-       ;; (else (list '+ a1 ))
-       )
-      )
-    )
-  )
 
-;; (_make-sum 1 2)
+(define *precedence-table*
+  '( (maxop . 10000)
+     (minop . -10000)
+     (+ . 0)
+     (* . 1) ))
 
-;; (_make-sum 1 nil)
-(_make-sum 1 2 3 )
+(define (operator? x)
+  (define (loop op-pair)
+    (cond ((null? op-pair) #f)
+          ((eq? x (caar op-pair)) #t)
+          (else (loop (cdr op-pair)))))
+  (loop *precedence-table*))
+
+(define (min-precedence a b)
+  (if (precedence<? a b)
+      a
+      b))
+
+(define (precedence<? a b)
+  (< (precedence a) (precedence b)))
+
+(define (precedence op)
+  (define (loop op-pair)
+    (cond ((null? op-pair)
+           (error "Operator not defined -- PRECEDENCE:" op))
+          ((eq? op (caar op-pair))
+           (cdar op-pair))
+          (else
+           (loop (cdr op-pair)))))
+  (loop *precedence-table*))
 
 
-;; (list '+ 1 (list 2 3))
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(define (smallest-op expr)
+  (accumulate (lambda (a b)
+                (if (operator? b)
+                    (min-precedence a b)
+                    a))
+              'maxop
+              expr))
+
+(define (sum? expr)
+  (eq? '+ (smallest-op expr)))
+
+(sum? '(a + b * c))
