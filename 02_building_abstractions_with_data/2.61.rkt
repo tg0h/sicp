@@ -10,19 +10,28 @@
 (define set1 (list 1 2 3 7 8 9))
 (define set2 (list 4 5 6))
 
-(element-of-set? 6 set1)
+;; (element-of-set? 6 set1)
 ;; (define set3 (list 3 3 3))
 
 ;; (element-of-set? 1 set1 )
 ;; (element-of-set? 5 set1 )
 
 (define (adjoin-set x set)
-  (if (element-of-set? x set)
-      set
-      (cons x set)))
+  (cond
+    ((element-of-set? x set) set)
+    ((null? set) x)
+    ((< x (car set)) (cons x set))
+    (else (cons (car set) (adjoin-set x (cdr set))))
+    )
+  )
 
-(adjoin-set 7 set2)
-;; (adjoin-set 1 set1)
+(car (list 1))
+;; (adjoin-set 7 (list 1))
+;; (adjoin-set 7 (cdr (list 1)))
+;; (cdr (list 1))
+;; (cons (car (list 1))
+(adjoin-set 1 set1)
+(adjoin-set 6 set1)
 
 (define (intersection-set set1 set2)
   (cond ((or (null? set1) (null? set2)) '())
