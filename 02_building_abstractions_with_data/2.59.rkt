@@ -5,8 +5,8 @@
         ((equal? x (car set)) true)
         (else (element-of-set? x (cdr set)))))
 
-(define set1 (list 1 2 3))
-(define set2 (list 4 5 6))
+(define set1 (list 3 2 1))
+(define set2 (list 6 4 5))
 (define set3 (list 3 4 5))
 
 (element-of-set? 1 set1 )
@@ -28,3 +28,16 @@
 
 (intersection-set set1 set2)
 (intersection-set set1 set3)
+
+(define (union-set set1 set2)
+  (define (iter result _list)
+    (cond
+      ((null? _list) result)
+      ( (element-of-set? (car _list) result)
+        (iter result (cdr _list))
+        (iter (append (list (car list)) result) (cdr _list))
+        )
+      )
+    )
+  (iter '() (append set1 set2))
+  )
