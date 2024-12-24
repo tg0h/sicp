@@ -7,7 +7,7 @@
 
 (define set1 (list 3 2 1 3 2 1))
 (define set2 (list 3 1 2 9))
-(define set3 (list 3 4 5))
+(define set3 (list 3 3 3))
 
 (element-of-set? 1 set1 )
 ;; (element-of-set? 5 set1 )
@@ -17,7 +17,7 @@
       set
       (cons x set)))
 
-(adjoin-set 1 set1)
+(adjoin-set 1 set3)
 ;; (adjoin-set 1 set1)
 
 (define (intersection-set set1 set2)
@@ -26,7 +26,7 @@
          (cons (car set1) (intersection-set (cdr set1) set2)))
         (else (intersection-set (cdr set1) set2))))
 
-(intersection-set set1 set2)
+(intersection-set set1 set3)
 ;; (intersection-set set1 set3)
 
 (define (union-set set1 set2)
