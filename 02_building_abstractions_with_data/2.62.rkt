@@ -60,3 +60,13 @@
 ;; (union-set (list 1 2 3) (list 2 3 4))
 ;; (append set1 set2)
 
+
+(define (_union-set set1 set2)
+  (cond
+    ((null? set2) set1)
+    (else true
+          )
+    )
+  )
+
+(_union-set (list 1 2 3) '())
