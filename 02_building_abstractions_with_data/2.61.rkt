@@ -3,10 +3,14 @@
 (define (element-of-set? x set)
   (cond ((null? set) false)
         ((equal? x (car set)) true)
+        ((< x (car set)) false)
         (else (element-of-set? x (cdr set)))))
 
-(define set1 (list 1 2 3))
+
+(define set1 (list 1 2 3 7 8 9))
 (define set2 (list 4 5 6))
+
+(element-of-set? 6 set1)
 ;; (define set3 (list 3 3 3))
 
 ;; (element-of-set? 1 set1 )
@@ -17,7 +21,7 @@
       set
       (cons x set)))
 
-;; (adjoin-set 1 set3)
+(adjoin-set 7 set2)
 ;; (adjoin-set 1 set1)
 
 (define (intersection-set set1 set2)
