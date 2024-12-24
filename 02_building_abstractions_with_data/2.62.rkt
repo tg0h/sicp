@@ -25,13 +25,13 @@
     )
   )
 
-(car (list 1))
+;; (car (list 1))
 ;; (adjoin-set 7 (list 1))
 ;; (adjoin-set 7 (cdr (list 1)))
 ;; (cdr (list 1))
 ;; (cons (car (list 1))
-(adjoin-set 1 set1)
-(adjoin-set 999 set1)
+;; (adjoin-set 1 set1)
+;; (adjoin-set 999 set1)
 
 (define (intersection-set set1 set2)
   (cond ((or (null? set1) (null? set2)) '())
@@ -64,10 +64,16 @@
 (define (_union-set set1 set2)
   (cond
     ((null? set2) set1)
-    ((< (car set1) (car set2)) (_union-set (cdr set1) set2))
-    (else true
-          )
+    ((null? set1) set2)
+    ((< (car set1) (car set2)) (cons (car set1) (_union-set (cdr set1) set2)))
+    ((= (car set1) (car set2)) (cons (car set1) (_union-set (cdr set1) (cdr set2))))
+    (else
+     (cons (car set2) (_union-set set1 (cdr set2)))
+     )
     )
   )
 
 (_union-set (list 1 2 3) '())
+(_union-set '() (list 4 5 6))
+(_union-set (list 1 2 3 4) (list 4 5))
+(_union-set (list 7 8 9) (list 4 5))
