@@ -83,7 +83,7 @@
 (define (union-set s1 s2)
   (let (
         (l1 (tree->list-2 s1))
-        (l2 (tree->list-2 s1))
+        (l2 (tree->list-2 s2))
         )
     (let ((ul (_union-set l1 l2)))
       (list->tree ul)
@@ -107,7 +107,16 @@
               ((< x2 x1)
                (_intersection-set set1 (cdr set2)))))))
 
-(_union-set (list 1 2 3) '())
-(_union-set '() (list 4 5 6))
-(_union-set (list 1 2 3 4) (list 4 5))
-(_union-set (list 7 8 9) (list 4 5))
+
+(define (intersection-set s1 s2)
+  (let (
+        (l1 (tree->list-2 s1))
+        (l2 (tree->list-2 s2))
+        )
+    (let ((il (_intersection-set l1 l2)))
+      (list->tree il)
+      )
+    )
+  )
+
+(intersection-set set1 set2)
