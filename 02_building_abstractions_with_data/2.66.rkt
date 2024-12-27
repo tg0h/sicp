@@ -48,7 +48,6 @@
 (define db (list->tree (list tim-record joop-record max-record)))
 db
 
-
 (define (_lookup given-key set-of-records)
   (cond
     ((null? set-of-records) false)
