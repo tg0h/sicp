@@ -65,3 +65,4 @@
 
 (define set2 (list->tree (list 3 4 5)))
 
+(tree->list-2 set1)
