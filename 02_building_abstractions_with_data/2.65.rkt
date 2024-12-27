@@ -92,3 +92,22 @@
   )
 
 (union-set set1 set2)
+
+; this works on ordered lists
+; this is O(n) because it does not use element-of-set?
+(define (_intersection-set set1 set2)
+  (if (or (null? set1) (null? set2))
+      '()
+      (let ((x1 (car set1)) (x2 (car set2)))
+        (cond ((= x1 x2)
+               (cons x1 (_intersection-set (cdr set1)
+                                           (cdr set2))))
+              ((< x1 x2)
+               (_intersection-set (cdr set1) set2))
+              ((< x2 x1)
+               (_intersection-set set1 (cdr set2)))))))
+
+(_union-set (list 1 2 3) '())
+(_union-set '() (list 4 5 6))
+(_union-set (list 1 2 3 4) (list 4 5))
+(_union-set (list 7 8 9) (list 4 5))
