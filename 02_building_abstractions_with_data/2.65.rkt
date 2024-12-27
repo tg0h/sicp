@@ -66,3 +66,29 @@
 (define set2 (list->tree (list 3 4 5)))
 
 (tree->list-2 set1)
+
+
+(define (_union-set set1 set2)
+  (cond
+    ((null? set2) set1)
+    ((null? set1) set2)
+    ((= (car set1) (car set2)) (cons (car set1) (_union-set (cdr set1) (cdr set2))))
+    ((< (car set1) (car set2)) (cons (car set1) (_union-set (cdr set1) set2)))
+    (else
+     (cons (car set2) (_union-set set1 (cdr set2)))
+     )
+    )
+  )
+
+(define (union-set s1 s2)
+  (let (
+        (l1 (tree->list-2 s1))
+        (l2 (tree->list-2 s1))
+        )
+    (let ((ul (_union-set l1 l2)))
+      (list->tree ul)
+      )
+    )
+  )
+
+(union-set set1 set2)
