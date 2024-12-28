@@ -74,7 +74,7 @@
 (define sample-message '(0 1 1 0 0 1 0 1 0 1 1 1 0))
 (define sample-message2 '(0 0 0 0))
 
-(decode sample-message sample-tree)
+;; (decode sample-message sample-tree)
 
 ;; (decode sample-message2 sample-tree)
 
@@ -110,7 +110,7 @@
 ;; (encode '(F F) sample-tree)
 
 
-(make-leaf-set '( (A 8) (B 3)))
+;; (make-leaf-set '( (A 8) (B 3)))
 
 
 (define (generate-huffman-tree pairs)
@@ -119,7 +119,22 @@
 (define (successive-merge l)
   (cond
     ((= (length l) 1) l)
-    (successive-merge (adjoin-set (make-code-tree (car l) (cadr l)) (cddr l)))
+    (else (successive-merge (adjoin-set (make-code-tree (car l) (cadr l)) (cddr l))))
     )
   )
 
+
+
+(define pp '(
+             (WAH 1)
+             (BOOM 1)
+             (GET 2)
+             (A 2)
+             (JOB 2)
+             (SHA 3)
+             (YIP 9)
+             (NA 16)
+             )
+  )
+
+(define song-tree (generate-huffman-tree pp))
