@@ -59,7 +59,7 @@
                    (make-code-tree
                     (make-leaf 'D 1)
                     (make-leaf 'C 1)))))
-sample-tree
+;; sample-tree
 
 ;; (
 ;;  (leaf A 4)
@@ -77,7 +77,7 @@ sample-tree
 
 (decode sample-message sample-tree)
 
-(decode sample-message2 sample-tree)
+;; (decode sample-message2 sample-tree)
 
 
 (define (encode message tree)
@@ -86,17 +86,32 @@ sample-tree
       (append (encode-symbol (car message) tree)
               (encode (cdr message) tree))))
 
+
+
 (define (in-list? symbol list)
   (cond
     ((null? list) false)
     ((eq? symbol (car list)) true)
-    (else in-list? symbol (cdr list))
+    (else (in-list? symbol (cdr list)))
     )
   )
 
-(define (encode-symbol symbol tree)
-  (cond (
-         (leaf? tree) nil)
-        ((in-list? symbol symbols (left-branch tree)) nil))
+;; (in-list? 'F (list 'B 'A 'C))
 
+(define (encode-symbol symbol tree)
+  (cond ((leaf? tree) nil)
+        ((in-list? symbol (symbols (left-branch tree))) (cons 0 (encode-symbol symbol (left-branch tree))))
+        ((in-list? symbol (symbols (right-branch tree))) (cons 1 (encode-symbol symbol (right-branch tree))))
+        (else (error "bad symbol: " symbol))
+        )
   )
+
+
+;; (define words '(A D A B B C A))
+
+;; (car words)
+;; (cdr words)
+;; (cadr words)
+
+(encode '(A D A B B C A) sample-tree)
+(encode '(F F) sample-tree)
