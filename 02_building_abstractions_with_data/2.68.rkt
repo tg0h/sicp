@@ -14,6 +14,7 @@
 
 (define (left-branch tree) (car tree))
 (define (right-branch tree) (cadr tree))
+
 (define (symbols tree)
   (if (leaf? tree)
       (list (symbol-leaf tree)) (caddr tree)))
@@ -79,3 +80,23 @@ sample-tree
 (decode sample-message2 sample-tree)
 
 
+(define (encode message tree)
+  (if (null? message)
+      '()
+      (append (encode-symbol (car message) tree)
+              (encode (cdr message) tree))))
+
+(define (in-list? symbol list)
+  (cond
+    ((null? list) false)
+    ((eq? symbol (car list)) true)
+    (else in-list? symbol (cdr list))
+    )
+  )
+
+(define (encode-symbol symbol tree)
+  (cond (
+         (leaf? tree) nil)
+        ((in-list? symbol symbols (left-branch tree)) nil))
+
+  )
