@@ -88,6 +88,7 @@
 
 
 
+; just use memq lol
 (define (in-list? symbol list)
   (cond
     ((null? list) false)
@@ -100,8 +101,8 @@
 
 (define (encode-symbol symbol tree)
   (cond ((leaf? tree) nil)
-        ((in-list? symbol (symbols (left-branch tree))) (cons 0 (encode-symbol symbol (left-branch tree))))
-        ((in-list? symbol (symbols (right-branch tree))) (cons 1 (encode-symbol symbol (right-branch tree))))
+        ((memq symbol (symbols (left-branch tree))) (cons 0 (encode-symbol symbol (left-branch tree))))
+        ((memq symbol (symbols (right-branch tree))) (cons 1 (encode-symbol symbol (right-branch tree))))
         (else (error "bad symbol: " symbol))
         )
   )
@@ -114,4 +115,4 @@
 ;; (cadr words)
 
 (encode '(A D A B B C A) sample-tree)
-(encode '(F F) sample-tree)
+;; (encode '(F F) sample-tree)
