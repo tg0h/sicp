@@ -138,3 +138,18 @@
   )
 
 (define song-tree (generate-huffman-tree pp))
+
+(define song-encoded (encode '(
+                               GET A JOB
+                                   SHA NA NA NA NA NA NA NA NA
+                                   GET A JOB
+                                   SHA NA NA NA NA NA NA NA NA
+                                   WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP
+                                   SHA BOOM
+                                   )
+                             song-tree
+                             ))
+
+(length song-encoded)
+(decode song-encoded song-tree) ;LOL
+
