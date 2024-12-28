@@ -106,6 +106,19 @@
         )
   )
 
-(encode '(A D A B B C A) sample-tree)
-(encode '(F F) sample-tree)
+;; (encode '(A D A B B C A) sample-tree)
+;; (encode '(F F) sample-tree)
 
+
+(make-leaf-set '( (A 8) (B 3)))
+
+
+(define (generate-huffman-tree pairs)
+  (successive-merge (make-leaf-set pairs)))
+
+(define (successive-merge l)
+  (cond
+    ((= (length l) 1) l)
+    (successive-merge (adjoin-set (make-code-tree (car l) (cadr l)) (cddr l)))
+    )
+  )
