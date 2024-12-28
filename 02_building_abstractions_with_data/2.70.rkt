@@ -118,7 +118,10 @@
 
 (define (successive-merge l)
   (cond
-    ((= (length l) 1) l)
+    ; if you return l instead of car l, you add an extra 0 to every symbol
+    ; so the song length becomes 84+36 = 120 instead of 84
+    ; there are 36 symbols (words) in the song
+    ((= (length l) 1) (car l)) ; car l, not l
     (else (successive-merge (adjoin-set (make-code-tree (car l) (cadr l)) (cddr l))))
     )
   )
@@ -138,18 +141,39 @@
   )
 
 (define song-tree (generate-huffman-tree pp))
+song-tree
 
-(define song-encoded (encode '(
-                               GET A JOB
-                                   SHA NA NA NA NA NA NA NA NA
-                                   GET A JOB
-                                   SHA NA NA NA NA NA NA NA NA
-                                   WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP
-                                   SHA BOOM
-                                   )
+(define song-encoded (encode '(GET
+                               A JOB SHA NA NA NA NA NA NA NA NA GET A JOB SHA NA NA NA NA NA NA NA NA WAH YIP YIP YIP YIP YIP YIP YIP YIP YIP SHA BOOM)
                              song-tree
                              ))
 
-(length song-encoded)
-(decode song-encoded song-tree) ;LOL
+;; (
+;;  ((leaf NA 16)
+;;   ((leaf YIP 9)
+;;    ((
+;;      (leaf GET 2)
+;;      ((leaf BOOM 1)
+;;       (leaf WAH 1)
+;;       (BOOM WAH) 2)
+;;      (GET BOOM WAH) 4)
+;;     (
+;;      (leaf SHA 3)
+;;      (
+;;       (leaf JOB 2)
+;;       (leaf A 2)
+;;       (JOB A) 4)
+;;      (SHA JOB A) 7)
+;;     (GET BOOM WAH SHA JOB A) 11)
+;;    (YIP GET BOOM WAH SHA JOB A) 20)
+;;   (NA YIP GET BOOM WAH SHA JOB A) 36)
+;;  )
 
+;; song-encoded
+(length song-encoded)
+;; (encode '(GET) song-tree)
+;; (length (encode '(GET) song-tree))
+;; (decode song-encoded song-tree) ;LOL
+;;
+
+(encode '(GET A) song-tree)
