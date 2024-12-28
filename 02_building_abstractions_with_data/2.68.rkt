@@ -115,4 +115,23 @@
 ;; (cadr words)
 
 (encode '(A D A B B C A) sample-tree)
-;; (encode '(F F) sample-tree)
+(encode '(F F) sample-tree)
+
+;; (define (_encode message tree)
+;;   (if (null? message)
+;;       '()
+;;       (append (_encode-symbol (car message) tree)
+;;               (_encode (cdr message) tree))))
+;; (define (_encode-symbol sym tree)
+;;   (if (leaf? tree)
+;;       (if (eq? sym (symbol-leaf tree))
+;;           '()
+;;           (error "missing symbol: ENCODE-SYMBOL" sym))
+;;       (let ((left (left-branch tree)))
+;;         (if (memq sym (symbols left))
+;;             (cons 0 (_encode-symbol sym left))
+;;             (cons 1 (_encode-symbol sym (right-branch tree)))))))
+;;
+;; (_encode-symbol 'F sample-tree)
+;; (eq? 'F (symbol-leaf  (list 'leaf 'C 1)))
+
