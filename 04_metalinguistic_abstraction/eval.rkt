@@ -6,7 +6,7 @@
 (define (variable? exp) (symbol? exp))
 
 (define (assignment? exp) (tagged-list? exp 'set!))
-(define (assignment-variable exp) (cadr exp)) 
+(define (assignment-variable exp) (cadr exp))
 (define (assignment-value exp) (caddr exp))
 
 (define (tagged-list? exp tag)
@@ -15,6 +15,16 @@
       false))
 (define (quoted? exp) (tagged-list? exp 'quote))
 (define (text-of-quotation exp) (cadr exp))
+
+(define (definition? exp) (tagged-list? exp 'define))
+(define (definition-variable exp)
+  (if (symbol? (cadr exp)) (cadr exp)
+      (caadr exp)))
+(define (definition-value exp)
+  (if (symbol? (cadr exp))
+      (caddr exp)
+      (make-lambda (cdadr exp)   ;formalparameters 
+                   (cddr exp)))) ;body
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
