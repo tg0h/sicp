@@ -23,8 +23,15 @@
 (define (definition-value exp)
   (if (symbol? (cadr exp))
       (caddr exp)
-      (make-lambda (cdadr exp)   ;formalparameters 
+      (make-lambda (cdadr exp)   ;formalparameters
                    (cddr exp)))) ;body
+
+(define (lambda? exp) (tagged-list? exp 'lambda))
+(define (lambda-parameters exp) (cadr exp))
+(define (lambda-body exp) (cddr exp))
+
+(define (make-lambda parameters body) 
+  (cons 'lambda (cons parameters body)))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
