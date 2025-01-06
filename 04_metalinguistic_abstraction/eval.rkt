@@ -39,15 +39,16 @@
 ; symbols
 (define (variable? exp) (symbol? exp))
 
+(define (tagged-list? exp tag)
+  (if (pair? exp)
+      (eq? (car exp) tag)
+      false))
+
 ; assignment
 (define (assignment? exp) (tagged-list? exp 'set!))
 (define (assignment-variable exp) (cadr exp))
 (define (assignment-value exp) (caddr exp))
 
-(define (tagged-list? exp tag)
-  (if (pair? exp)
-      (eq? (car exp) tag)
-      false))
 
 ; quote
 (define (quoted? exp) (tagged-list? exp 'quote))
