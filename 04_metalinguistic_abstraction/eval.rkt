@@ -95,7 +95,8 @@
                      (sequence->exp (cond-actions first))
                      (expand-clauses rest))))))
 
-
+(define (true? x) (not (eq? x false))) 
+(define (false? x) (eq? x false))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
