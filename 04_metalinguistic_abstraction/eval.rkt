@@ -95,6 +95,7 @@
                      (sequence->exp (cond-actions first))
                      (expand-clauses rest))))))
 
+; test predicates
 (define (true? x) (not (eq? x false)))
 (define (false? x) (eq? x false))
 
