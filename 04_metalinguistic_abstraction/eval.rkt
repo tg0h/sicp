@@ -249,6 +249,11 @@
                        (eval (assignment-value exp) env)
                        env)
   'ok)
+(define (eval-definition exp env) 
+  (define-variable! (definition-variable exp)
+                                    (eval (definition-value exp) env)
+                                    env)
+  'ok)
 
 
 (define input-prompt ";;; M-Eval input:")
@@ -256,7 +261,7 @@
 (define (driver-loop)
   (prompt-for-input input-prompt)
   (let ((input (read)))
-    (let ((output (eval input the-global-environment))) 
+    (let ((output (eval input the-global-environment)))
       (announce-output output-prompt)
       (user-print output)))
   (driver-loop))
