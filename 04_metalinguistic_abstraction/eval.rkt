@@ -1,5 +1,17 @@
 #lang sicp
 
+(define (self-evaluating? exp)
+  (cond ((number? exp) true)
+        ((string? exp) true) (else false)))
+(define (variable? exp) (symbol? exp))
+
+(define (tagged-list? exp tag)
+  (if (pair? exp)
+      (eq? (car exp) tag)
+      false))
+(define (quoted? exp) (tagged-list? exp 'quote))
+(define (text-of-quotation exp) (cadr exp))
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
@@ -43,8 +55,15 @@
       (eval (if-consequent exp) env)
       (eval (if-alternative exp) env)))
 
-(define (eval-sequence exps env) 
+(define (eval-sequence exps env)
   (cond ((last-exp? exps)
-                                        (eval (first-exp exps) env))
-                                       (else
-                                        (eval (first-exp exps) env) (eval-sequence (rest-exps exps) env))))
+         (eval (first-exp exps) env))
+        (else
+         (eval (first-exp exps) env)
+         (eval-sequence (rest-exps exps) env))))
+
+(define (eval-assignment exp env)
+  (set-variable-value! (assignment-variable exp)
+                       (eval (assignment-value exp) env)
+                       env)
+  'ok)
