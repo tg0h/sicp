@@ -287,6 +287,9 @@
 (define output-prompt ";;; M-Eval value:")
 (define (driver-loop)
   (prompt-for-input input-prompt)
+  ; read returns a list of the complete expression that the user types
+  ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
+  ; eg user types 'x -> read returns list with quote and symbol x (quote x)
   (let ((input (read)))
     (let ((output (eval input the-global-environment)))
       (announce-output output-prompt)
