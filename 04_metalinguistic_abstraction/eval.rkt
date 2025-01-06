@@ -105,6 +105,10 @@
 (define (procedure-parameters p) (cadr p)) (define (procedure-body p) (caddr p))
 (define (procedure-environment p) (cadddr p))
 
+(define (enclosing-environment env) (cdr env)) 
+(define (first-frame env) (car env))
+(define the-empty-environment '())
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
