@@ -67,7 +67,12 @@
         (else (make-begin seq))))
 (define (make-begin seq) (cons 'begin seq))
 
-(define (application? exp) (pair? exp)) (define (operator exp) (car exp)) (define (operands exp) (cdr exp)) (define (no-operands? ops) (null? ops)) (define (first-operand ops) (car ops)) (define (rest-operands ops) (cdr ops))
+(define (application? exp) (pair? exp)) 
+(define (operator exp) (car exp)) 
+(define (operands exp) (cdr exp)) 
+(define (no-operands? ops) (null? ops)) 
+(define (first-operand ops) (car ops)) 
+(define (rest-operands ops) (cdr ops))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
