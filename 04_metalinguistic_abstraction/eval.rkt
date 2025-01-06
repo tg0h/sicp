@@ -1,6 +1,6 @@
 #lang sicp
 
-(define apply-in-underlying-scheme apply)
+;; (define apply-in-underlying-scheme apply)
 
 (define (list-of-values exps env)
   (if (no-operands? exps)
@@ -210,6 +210,7 @@
         (list 'cdr cdr)
         (list 'cons cons)
         (list 'null? null?)
+        (list '+ +) ; implement + COOOOOOL
         ;; ⟨more primitives⟩
         ))
 (define (primitive-procedure-names)
@@ -219,10 +220,12 @@
        primitive-procedures))
 
 (define (apply-primitive-procedure proc args)
-  (apply-in-underlying-scheme
-   (primitive-implementation proc) args))
+  (
+   ;; apply-in-underlying-scheme
+   ; use the underlying apply (note our implemented apply is called meta-apply
+   apply (primitive-implementation proc) args))
 
-(define (apply procedure arguments)
+(define (meta-apply procedure arguments)
   (cond ((primitive-procedure? procedure)
          (apply-primitive-procedure procedure arguments))
         ((compound-procedure? procedure)
@@ -233,7 +236,7 @@
            arguments
            (procedure-environment procedure))))
         (else (error
-               "Unknown procedure type: APPLY" procedure))))
+               "Unknown procedure type: meta-apply" procedure))))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
@@ -249,8 +252,8 @@
          (eval-sequence (begin-actions exp) env))
         ((cond? exp) (eval (cond->if exp) env))
         ((application? exp)
-         (apply (eval (operator exp) env)
-                (list-of-values (operands exp) env)))
+         (meta-apply (eval (operator exp) env)
+                     (list-of-values (operands exp) env)))
         (else
          (error "Unknown expression type: EVAL" exp))))
 
@@ -280,5 +283,3 @@
 
 (define the-global-environment (setup-environment))
 (driver-loop)
-
-
