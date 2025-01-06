@@ -163,7 +163,7 @@
             ((eq? var (car vars)) (car vals))
             (else (scan (cdr vars) (cdr vals)))))
     (if (eq? env the-empty-environment)
-        (error "Unbound variable" var)
+        (error "Unbound variable lolz" var)
         (let ((frame (first-frame env)))
           (scan (frame-variables frame)
                 (frame-values frame)))))
@@ -240,7 +240,7 @@
                "Unknown procedure type: meta-apply" procedure))))
 
 (define (eval exp env)
-  (cond ((self-evaluating? exp) ;; primitive
+  (cond ((self-evaluating? exp) ;; primitive - string or number
          exp)
         ((variable? exp) ;; variable
          (lookup-variable-value exp env))
