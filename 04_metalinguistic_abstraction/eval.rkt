@@ -296,5 +296,7 @@
       (user-print output)))
   (driver-loop))
 
+;; setup environment sets up the primitives like
+;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
 (driver-loop)
