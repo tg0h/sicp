@@ -249,10 +249,10 @@
                        (eval (assignment-value exp) env)
                        env)
   'ok)
-(define (eval-definition exp env) 
+(define (eval-definition exp env)
   (define-variable! (definition-variable exp)
-                                    (eval (definition-value exp) env)
-                                    env)
+    (eval (definition-value exp) env)
+    env)
   'ok)
 
 
@@ -265,3 +265,15 @@
       (announce-output output-prompt)
       (user-print output)))
   (driver-loop))
+
+(define (prompt-for-input string)
+  (newline) (newline) (display string) (newline))
+(define (announce-output string) (newline) (display string) (newline))
+
+(define (user-print object)
+(if (compound-procedure? object)
+      (display (list 'compound-procedure
+                     (procedure-parameters object)
+                     (procedure-body object)
+                     '<procedure-env>))
+      (display object)))
