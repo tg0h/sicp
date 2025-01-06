@@ -1,10 +1,14 @@
 #lang sicp
 
+; numbers or strings
 (define (self-evaluating? exp)
   (cond ((number? exp) true)
         ((string? exp) true) (else false)))
+
+; symbols
 (define (variable? exp) (symbol? exp))
 
+; assignment
 (define (assignment? exp) (tagged-list? exp 'set!))
 (define (assignment-variable exp) (cadr exp))
 (define (assignment-value exp) (caddr exp))
@@ -13,9 +17,12 @@
   (if (pair? exp)
       (eq? (car exp) tag)
       false))
+
+; quote
 (define (quoted? exp) (tagged-list? exp 'quote))
 (define (text-of-quotation exp) (cadr exp))
 
+; definition
 (define (definition? exp) (tagged-list? exp 'define))
 (define (definition-variable exp)
   (if (symbol? (cadr exp)) (cadr exp)
@@ -26,6 +33,7 @@
       (make-lambda (cdadr exp)   ;formalparameters
                    (cddr exp)))) ;body
 
+; lambda
 (define (lambda? exp) (tagged-list? exp 'lambda))
 (define (lambda-parameters exp) (cadr exp))
 (define (lambda-body exp) (cddr exp))
@@ -41,6 +49,9 @@
 (define (if-alternative exp)
   (if (not (null? (cdddr exp))) (cadddr exp)
       'false))
+
+(define (make-if predicate consequent alternative)
+  (list 'if predicate consequent alternative))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
