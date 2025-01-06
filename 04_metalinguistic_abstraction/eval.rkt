@@ -30,8 +30,17 @@
 (define (lambda-parameters exp) (cadr exp))
 (define (lambda-body exp) (cddr exp))
 
-(define (make-lambda parameters body) 
+(define (make-lambda parameters body)
   (cons 'lambda (cons parameters body)))
+
+
+; conditionals
+(define (if? exp) (tagged-list? exp 'if))
+(define (if-predicate exp) (cadr exp))
+(define (if-consequent exp) (caddr exp))
+(define (if-alternative exp)
+  (if (not (null? (cdddr exp))) (cadddr exp)
+      'false))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
