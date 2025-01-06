@@ -1,5 +1,7 @@
 #lang sicp
 
+(define apply-in-underlying-scheme apply)
+
 ; numbers or strings
 (define (self-evaluating? exp)
   (cond ((number? exp) true)
@@ -170,7 +172,6 @@
     (define-variable! 'false false initial-env)
     initial-env))
 
-(define the-global-environment (setup-environment))
 
 (define (primitive-procedure? proc) (tagged-list? proc 'primitive))
 (define (primitive-implementation proc) (cadr proc))
@@ -192,7 +193,18 @@
   (apply-in-underlying-scheme
    (primitive-implementation proc) args))
 
-(define apply-in-underlying-scheme apply)
+(define (apply procedure arguments)
+  (cond ((primitive-procedure? procedure)
+         (apply-primitive-procedure procedure arguments))
+        ((compound-procedure? procedure)
+         (eval-sequence
+          (procedure-body procedure)
+          (extend-environment
+           (procedure-parameters procedure)
+           arguments
+           (procedure-environment procedure))))
+        (else (error
+               "Unknown procedure type: APPLY" procedure))))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
@@ -213,18 +225,6 @@
         (else
          (error "Unknown expression type: EVAL" exp))))
 
-(define (apply procedure arguments)
-  (cond ((primitive-procedure? procedure)
-         (apply-primitive-procedure procedure arguments))
-        ((compound-procedure? procedure)
-         (eval-sequence
-          (procedure-body procedure)
-          (extend-environment
-           (procedure-parameters procedure)
-           arguments
-           (procedure-environment procedure))))
-        (else (error
-               "Unknown procedure type: APPLY" procedure))))
 
 (define (list-of-values exps env)
   (if (no-operands? exps)
@@ -281,6 +281,7 @@
       (user-print output)))
   (driver-loop))
 
-
+(define the-global-environment (setup-environment))
+(driver-loop)
 
 
