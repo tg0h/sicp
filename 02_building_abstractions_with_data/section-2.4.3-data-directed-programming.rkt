@@ -1,4 +1,4 @@
-
+#lang sicp
 ; section 3.3.3
 (define (make-table)
   (let ((local-table (list '*table*)))
@@ -28,6 +28,7 @@
             ((eq? m 'insert-proc!) insert!)
             (else (error "Unknown operation: TABLE" m))))
     dispatch))
+
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
