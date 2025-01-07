@@ -21,7 +21,7 @@
          (eval-sequence (rest-exps exps) env))))
 
 (define (eval-assignment exp env)
-  (set-variable-value! (assignment-variable exp)
+  (set-variable-value! (assignment-variable exp) ; does the variable exist? search all envs
                        (eval (assignment-value exp) env)
                        env)
   'ok)
@@ -56,6 +56,8 @@
 ; definition
 (define (definition? exp) (tagged-list? exp 'define))
 (define (definition-variable exp)
+  ;; (define x 2) - simple
+  ;; (define (square x) (* x x))
   (if (symbol? (cadr exp)) (cadr exp)
       (caadr exp)))
 (define (definition-value exp)
@@ -242,13 +244,13 @@
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
          exp)
-        ((variable? exp) ;; variable
+        ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
          (lookup-variable-value exp env))
-        ((quoted? exp) ;; quoted
+        ((quoted? exp) ;; quoted - a list starting with the symbol quote
          (text-of-quotation exp))
-        ((assignment? exp) ;; assignment
+        ((assignment? exp) ;; assignment - set! x 2
          (eval-assignment exp env))
-        ((definition? exp) ;; definition
+        ((definition? exp) ;; definition - add the variable to the environment, the value can be simple or a lambda
          (eval-definition exp env))
         ((if? exp) ;; if
          (eval-if exp env))
