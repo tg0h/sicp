@@ -34,12 +34,10 @@
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
 
-(define (get-record division employee-name)
-  ((get 'get-record division) employee-name)
-  )
 
 
 ;; (get-record 'division-a 'tim)
+
 
 (define (install-division-a)
   (define division-a-file '())
@@ -71,6 +69,15 @@
   (add-employee-record 'tim 1 'sg)
   (add-employee-record 'jo 2 'uk)
   )
-
 (install-division-a)
-(get-record 'division-a 'tim)
+
+
+(define (make-division-file type ) (list type))
+(define (get-division-type file) (car file))
+
+(define division-a-file (make-division-file 'division-a))
+
+
+(define (get-record file employee-name)
+  ((get 'get-record (get-division-type file)) employee-name)
+  )
