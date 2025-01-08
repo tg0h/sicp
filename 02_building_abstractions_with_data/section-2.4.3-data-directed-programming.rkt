@@ -42,6 +42,8 @@
   (if (pair? datum) (cdr datum)
       (error "Bad tagged datum: CONTENTS" datum)))
 
+; install the rectangular functions into the global table
+; with key '<method name> '(rectangular)
 (define (install-rectangular-package)
   ;; internal procedures
   (define (real-part z) (car z))
@@ -67,6 +69,8 @@
        (lambda (r a) (tag (make-from-mag-ang r a))))
   'done)
 
+; install the polar functions into the global table
+; with key '<method name> '(polar)
 (define (install-polar-package)
   ;; internal procedures
   (define (magnitude z) (car z))
