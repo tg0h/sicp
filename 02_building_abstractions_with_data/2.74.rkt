@@ -49,6 +49,18 @@
       (set! division-a-file (cons record division-a-file))
       )
     )
+(define (get-employee-value employee-record key)
+  (define (loop key employee-values)
+    (cond
+      ((null? employee-values) nil)
+      (else
+       (let ((kv (car employee-values)))
+         (if (eq? key (car kv))
+             (cdr kv) ;return val if match
+             (loop key (cdr employee-values))))))) ;else continue searching
+  (if (null? employee-record ) nil
+      (loop key (cdr employee-record))) ; start looping
+  )
   (define (get-record name)
     (define (iter name file)
       (if (null? file) nil
@@ -57,7 +69,7 @@
             (cond
               ((null? file) nil)
               ((eq? name (car record)) record)
-              (else iter name (cdr file))
+              (else (iter name (cdr file)))
               )
             )
           )
