@@ -81,42 +81,66 @@
         ((and (number? b) (number? e)) (power b e))
         (else (list '** b e))))
 
+;; (define (deriv exp var)
+;;   (cond ((number? exp) 0)
+;;         ((variable? exp) (if (same-variable? exp var) 1 0))
+;;         ((sum? exp) (make-sum (deriv (addend exp) var)
+;;                               (deriv (augend exp) var)))
+;;         ((product? exp)
+;;          (make-sum
+;;           (make-product (multiplier exp)
+;;                         (deriv (multiplicand exp) var))
+;;           (make-product (deriv (multiplier exp) var)
+;;                         (multiplicand exp))))
+;;
+;;         ((exponentiation? exp)
+;;          (make-product
+;;           (make-product (exponent exp)
+;;                         (make-exponent (base exp) (- (exponent exp) 1)))
+;;           (deriv (base exp) var))
+;;          )
+;;         (else
+;;          (error "unknown expression type: DERIV" exp))))
+
 (define (deriv exp var)
   (cond ((number? exp) 0)
         ((variable? exp) (if (same-variable? exp var) 1 0))
-        ((sum? exp) (make-sum (deriv (addend exp) var)
-                              (deriv (augend exp) var)))
-        ((product? exp)
-         (make-sum
-          (make-product (multiplier exp)
-                        (deriv (multiplicand exp) var))
-          (make-product (deriv (multiplier exp) var)
-                        (multiplicand exp))))
+        (else (
+               (get 'deriv (operator exp))
+               (operands exp) var))))
 
-        ((exponentiation? exp)
-         (make-product
-          (make-product (exponent exp)
-                        (make-exponent (base exp) (- (exponent exp) 1)))
-          (deriv (base exp) var))
-         )
-        (else
-         (error "unknown expression type: DERIV" exp))))
-
-(define (deriv exp var)
-  (cond ((number? exp) 0)
-        ((variable? exp)
-         (if (same-variable? exp var) 1 0))
-        (else ((get 'deriv (operator exp))
-               (operands exp) var)))) 
-
-(define (operator exp) (car exp)) 
+(define (operator exp) (car exp))
 (define (operands exp) (cdr exp))
+
+(define (deriv-sum operands var)
+  (let
+      ((op1 (car operands))
+       (op2 (cadr operands)))
+    (make-sum (deriv op1 var) (deriv op2 var))
+    )
+  )
+
+(define (deriv-product operands var)
+  (let
+      ((op1 (car operands))
+       (op2 (cadr operands)))
+    (make-sum
+     (make-product op1 (deriv op2 var))
+     (make-product op2 (deriv op1 var))
+     )
+    )
+  )
+
+;; (put 'imag-part '(polar) imag-part)
+(put 'deriv '+ deriv-sum)
+(put 'deriv '* deriv-product)
+
 
 
 ;; '(** u n)
 ;; (base '(** u n))
 ;; (exponent '(** u n))
-;; (deriv '(+ x 3) 'x)
+(deriv '(+ x 3) 'x)
 
 ;; (deriv '(+ x y) 'x)
 
@@ -124,12 +148,12 @@
 
 ;; (deriv '(* (* x y) (+ x 3)) 'x)
 
-(define test '(** x 5))
+;; (define test '(** x 5))
 
-(exponentiation? test)
-(exponent test)
-(base test)
-(make-exponent (base test) (- (exponent test) 1))
+;; (exponentiation? test)
+;; (exponent test)
+;; (base test)
+;; (make-exponent (base test) (- (exponent test) 1))
 
-(deriv '(** x 5) 'x)
-(deriv (deriv '(** x 5) 'x) 'x)
+;; (deriv '(** x 5) 'x)
+;; (deriv (deriv '(** x 5) 'x) 'x)
