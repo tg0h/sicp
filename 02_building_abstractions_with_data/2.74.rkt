@@ -80,6 +80,7 @@
     (iter name division-a-file)
     )
   (put 'get-record 'division-a get-record)
+  (put 'get-salary 'division-a get-salary)
   ; install seed data
   (add-employee-record 'tim 1 'sg)
   (add-employee-record 'jo 2 'uk)
@@ -97,4 +98,9 @@
   ((get 'get-record (get-division-type file)) employee-name)
   )
 
+(define (get-salary file employee-name)
+  ((get 'get-salary (get-division-type file)) employee-name)
+  )
+
 (get-record division-a-file 'tim)
+(get-salary division-a-file 'tim)
