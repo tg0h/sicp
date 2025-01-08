@@ -51,7 +51,7 @@
       (set! division-a-file (cons record division-a-file))
       )
     )
-  (define (find-employee-record name)
+  (define (get-record name)
     (define (iter name file)
       (if (null? file) nil
           (let
