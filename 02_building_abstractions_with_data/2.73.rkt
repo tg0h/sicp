@@ -112,28 +112,33 @@
 (define (operator exp) (car exp))
 (define (operands exp) (cdr exp))
 
-(define (deriv-sum operands var)
-  (let
-      ((op1 (car operands))
-       (op2 (cadr operands)))
-    (make-sum (deriv op1 var) (deriv op2 var))
+(define (install-deriv-sum )
+  (define (deriv-sum operands var)
+    (let
+        ((op1 (car operands))
+         (op2 (cadr operands)))
+      (make-sum (deriv op1 var) (deriv op2 var))
+      )
     )
+  (put 'deriv '+ deriv-sum)
   )
 
-(define (deriv-product operands var)
-  (let
-      ((op1 (car operands))
-       (op2 (cadr operands)))
-    (make-sum
-     (make-product op1 (deriv op2 var))
-     (make-product op2 (deriv op1 var))
-     )
+(define (install-deriv-product)
+  (define (deriv-product operands var)
+    (let
+        ((op1 (car operands))
+         (op2 (cadr operands)))
+      (make-sum
+       (make-product op1 (deriv op2 var))
+       (make-product op2 (deriv op1 var))
+       )
+      )
     )
+  (put 'deriv '* deriv-product)
   )
 
-;; (put 'imag-part '(polar) imag-part)
-(put 'deriv '+ deriv-sum)
-(put 'deriv '* deriv-product)
+(install-deriv-sum)
+(install-deriv-product)
 
 
 
@@ -142,11 +147,11 @@
 ;; (exponent '(** u n))
 (deriv '(+ x 3) 'x)
 
-;; (deriv '(+ x y) 'x)
+(deriv '(+ x y) 'x)
 
-;; (deriv '(* x y) 'x)
+(deriv '(* x y) 'x)
 
-;; (deriv '(* (* x y) (+ x 3)) 'x)
+(deriv '(* (* x y) (+ x 3)) 'x)
 
 ;; (define test '(** x 5))
 
