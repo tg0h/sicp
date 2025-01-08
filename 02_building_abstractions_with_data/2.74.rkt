@@ -48,19 +48,28 @@
     )
   (define (add-employee-record name salary country)
     (let ((record (make-employee-record name salary country)))
-      (cons record division-a-file)
+      (set! division-a-file (cons record division-a-file))
       )
     )
   (define (find-employee-record name)
+    (define (iter name file)
+      (if (null? file) nil
+          (let
+              ((record (car file)))
+            (cond
+              ((null? file) nil)
+              ((eq? name (car record)) record)
+              (else iter name (cdr file))
+              )
+            )
+          )
+      )
+    (iter name division-a-file)
     )
-  (define (get-record employee-name)
-    ;; ...
-    (display employee-name)
-    (newline)
-    (display "ok")
-    )
-  (define (make-division-a-file) 'division-a)
   (put 'get-record 'division-a get-record)
+  ; install seed data
+  (add-employee-record 'tim 1 'sg)
+  (add-employee-record 'jo 2 'uk)
   )
 
 (install-division-a)
