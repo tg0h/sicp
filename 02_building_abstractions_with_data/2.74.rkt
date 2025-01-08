@@ -33,3 +33,24 @@
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
+
+(define (get-record division employee-name)
+  ((get 'get-record division) employee-name)
+  )
+
+
+;; (get-record 'division-a 'tim)
+
+(define (install-division-a)
+  (define division-a-file (list (list 'tim 1)))
+  (define (get-record employee-name)
+    ;; ...
+    (display employee-name)
+    (newline)
+    (display "ok")
+    )
+  (put 'get-record 'division-a get-record)
+  )
+
+(install-division-a)
+(get-record 'division-a 'tim)
