@@ -83,7 +83,7 @@
           (atan y x)))
   ;; interface to the rest of the system
   (define (tag x) (attach-tag 'polar x))
-  (put 'real-part '(polar) real-part)
+  (put 'real-part '(polar) real-part) ; real-part is a procedure that carries its environment - it is aware of magnitude
   (put 'imag-part '(polar) imag-part)
   (put 'magnitude '(polar) magnitude)
   (put 'angle '(polar) angle)
