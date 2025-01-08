@@ -107,6 +107,7 @@
         ((variable? exp) (if (same-variable? exp var) 1 0))
         (else (
                (get 'deriv (operator exp))
+               ;; (get (operator exp) 'deriv) ; what if you switch the position ?
                (operands exp) var))))
 
 (define (operator exp) (car exp))
@@ -137,22 +138,23 @@
   (put 'deriv '* deriv-product)
   )
 
-(define (install-exponentiation-product)
+(define (install-deriv-exponentiation)
   (define (deriv-exponentiation operands var)
     (let
         ((op1 (car operands))
          (op2 (cadr operands)))
       (make-product
-       (make-product (exponent exp)
-                     (make-exponent (base exp) (- (exponent exp) 1)))
-       (deriv (base exp) var))
+       (make-product op2
+                     (make-exponent op1 (- op2 1)))
+       (deriv op1 var))
       )
     )
-  (put 'deriv '* deriv-exponentiation)
+  (put 'deriv '** deriv-exponentiation)
   )
 
 (install-deriv-sum)
 (install-deriv-product)
+(install-deriv-exponentiation)
 
 
 
@@ -174,5 +176,5 @@
 ;; (base test)
 ;; (make-exponent (base test) (- (exponent test) 1))
 
-;; (deriv '(** x 5) 'x)
-;; (deriv (deriv '(** x 5) 'x) 'x)
+(deriv '(** x 5) 'x)
+(deriv (deriv '(** x 5) 'x) 'x)
