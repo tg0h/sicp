@@ -97,7 +97,21 @@
           (error "No method for these types: APPLY-GENERIC"
                  (list op type-tags))))))
 
-(define (real-part z) (apply-generic 'real-part z)) 
-(define (imag-part z) (apply-generic 'imag-part z)) 
-(define (magnitude z) (apply-generic 'magnitude z)) 
+(define (real-part z) (apply-generic 'real-part z))
+(define (imag-part z) (apply-generic 'imag-part z))
+(define (magnitude z) (apply-generic 'magnitude z))
 (define (angle z) (apply-generic 'angle z))
+
+(define (make-from-real-imag x y)
+  ((get 'make-from-real-imag 'rectangular) x y))
+(define (make-from-mag-ang r a)
+  ((get 'make-from-mag-ang 'polar) r a))
+
+
+(install-rectangular-package)
+(define z1 (make-from-real-imag 1 1))
+z1
+
+;; (install-polar-package)
+(define z2 (make-from-mag-ang 1.41 0.78))
+z2
