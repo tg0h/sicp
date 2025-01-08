@@ -90,6 +90,8 @@
   'done)
 
 (define (apply-generic op . args)
+  ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
+  ; for now only one arg eg real-part z not real-part z1 z2
   (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
     (let ((proc (get op type-tags)))
       (if proc
