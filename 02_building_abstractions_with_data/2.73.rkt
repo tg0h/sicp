@@ -137,6 +137,20 @@
   (put 'deriv '* deriv-product)
   )
 
+(define (install-exponentiation-product)
+  (define (deriv-exponentiation operands var)
+    (let
+        ((op1 (car operands))
+         (op2 (cadr operands)))
+      (make-product
+       (make-product (exponent exp)
+                     (make-exponent (base exp) (- (exponent exp) 1)))
+       (deriv (base exp) var))
+      )
+    )
+  (put 'deriv '* deriv-exponentiation)
+  )
+
 (install-deriv-sum)
 (install-deriv-product)
 
