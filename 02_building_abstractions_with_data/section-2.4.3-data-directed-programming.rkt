@@ -90,10 +90,10 @@
   'done)
 
 (define (apply-generic op . args)
-  (let ((type-tags (map type-tag args)))
+  (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
     (let ((proc (get op type-tags)))
       (if proc
-          (apply proc (map contents args))
+          (apply proc (map contents args)) ; get the contents ( ( 1 . 1 ) ) from the args eg ('rectangular ( 1 . 1 ) )
           (error "No method for these types: APPLY-GENERIC"
                  (list op type-tags))))))
 
