@@ -93,6 +93,7 @@
        (lambda (r a) (tag (make-from-mag-ang r a))))
   'done)
 
+; dispatch method
 (define (apply-generic op . args)
   ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
   ; for now only one arg eg real-part z not real-part z1 z2
@@ -103,6 +104,7 @@
           (error "No method for these types: APPLY-GENERIC"
                  (list op type-tags))))))
 
+; this doesn't change
 (define (real-part z) (apply-generic 'real-part z))
 (define (imag-part z) (apply-generic 'imag-part z))
 (define (magnitude z) (apply-generic 'magnitude z))
