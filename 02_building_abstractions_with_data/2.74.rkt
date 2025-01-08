@@ -81,3 +81,5 @@
 (define (get-record file employee-name)
   ((get 'get-record (get-division-type file)) employee-name)
   )
+
+(get-record division-a-file 'tim)
