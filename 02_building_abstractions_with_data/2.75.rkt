@@ -12,16 +12,16 @@
   dispatch)
 
 
-; in the old data style, apply generic is more complicated
-(define (_apply-generic op . args)
-  ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
-  ; for now only one arg eg real-part z not real-part z1 z2
-  (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
-    (let ((proc (get op type-tags)))
-      (if proc
-          (apply proc (map contents args)) ; get the contents ( ( 1 . 1 ) ) from the args eg ('rectangular ( 1 . 1 ) )
-          (error "No method for these types: APPLY-GENERIC"
-                 (list op type-tags))))))
+;; ; in the old data style, apply generic is more complicated
+;; (define (_apply-generic op . args)
+;;   ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
+;;   ; for now only one arg eg real-part z not real-part z1 z2
+;;   (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
+;;     (let ((proc (get op type-tags)))
+;;       (if proc
+;;           (apply proc (map contents args)) ; get the contents ( ( 1 . 1 ) ) from the args eg ('rectangular ( 1 . 1 ) )
+;;           (error "No method for these types: APPLY-GENERIC"
+;;                  (list op type-tags))))))
 
 ; in message passing style, the arg is intelligent (a function)
 (define (apply-generic op arg) (arg op))
@@ -32,3 +32,17 @@ z1
 (z1 'imag-part)
 (z1 'magnitude)
 
+
+(define (make-from-mag-ang x y)
+  (define (dispatch op)
+    (cond ((eq? op 'real-part) (* x (cos y)))
+          ((eq? op 'imag-part) (* x (sin y)))
+          ((eq? op 'magnitude) x )
+          ((eq? op 'angle) y)
+          (else (error "Unknown op: MAKE-FROM-REAL-IMAG" op))))
+  dispatch)
+
+(define z2 (make-from-mag-ang 1.41 0.78))
+(z2 'real-part)
+(z2 'imag-part)
+(z2 'magnitude)
