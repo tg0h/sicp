@@ -12,7 +12,8 @@
   dispatch)
 
 
-(define (apply-generic op . args)
+; in the old data style, apply generic is more complicated
+(define (_apply-generic op . args)
   ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
   ; for now only one arg eg real-part z not real-part z1 z2
   (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
@@ -22,6 +23,7 @@
           (error "No method for these types: APPLY-GENERIC"
                  (list op type-tags))))))
 
+; in message passing style, the arg is intelligent (a function)
 (define (apply-generic op arg) (arg op))
 
 (define z1 (make-from-real-imag 1 1))
