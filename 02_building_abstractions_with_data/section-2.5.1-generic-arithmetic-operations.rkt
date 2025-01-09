@@ -204,8 +204,7 @@
   (put 'div '(complex complex)
        (lambda (z1 z2) (tag (div-complex z1 z2))))
   (put 'make-from-real-imag 'complex
-       ;; (lambda (x y) (tag (make-from-real-imag x y))))
-       (lambda (x y) 1))
+       (lambda (x y) (tag (make-from-real-imag x y))))
   (put 'make-from-mag-ang 'complex
        (lambda (r a) (tag (make-from-mag-ang r a))))
   'done)
@@ -213,8 +212,10 @@
 (define (make-complex-from-real-imag x y) ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a) ((get 'make-from-mag-ang 'complex) r a))
 
+(install-rectangular-package)
+(install-polar-package)
 (install-complex-package)
-((get 'make-from-real-imag 'complex) 1 1)
-;; (define z1 (make-complex-from-real-imag 1 1))
-;; (define z2 (make-complex-from-mag-ang 1.41 0.78))
-;; (add z1 z2)
+;; ((get 'make-from-real-imag 'complex) 1 1)
+(define z1 (make-complex-from-real-imag 1 1))
+(define z2 (make-complex-from-mag-ang 1.41 0.78))
+(add z1 z2)
