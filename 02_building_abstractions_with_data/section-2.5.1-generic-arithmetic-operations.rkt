@@ -75,6 +75,7 @@
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
 
 (define (install-rational-package) ;; internal procedures
+  ;; these procedures do not need to be aware of the tags
   (define (numer x) (car x))
   (define (denom x) (cdr x))
   (define (make-rat n d)
