@@ -104,3 +104,22 @@
 
 (get-record division-a-file 'tim)
 (get-salary division-a-file 'tim)
+
+(define (find-employee-record files name)
+  (define (loop name files)
+    (let ((f (car files)))
+      (let ((emp (get-record f name)))
+        (if (null? emp)
+            (loop name (cdr files))
+            emp)
+        )))
+  (if (null? files)
+      nil
+      (loop name files))
+  )
+
+
+;; (get-record (list 'division-a) 'tim)
+(find-employee-record (list (list 'division-a)) 'tim)
+
+
