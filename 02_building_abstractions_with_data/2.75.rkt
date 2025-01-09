@@ -27,10 +27,10 @@
 (define (apply-generic op arg) (arg op))
 
 (define z1 (make-from-real-imag 1 1))
-z1
-(z1 'real-part)
-(z1 'imag-part)
-(z1 'magnitude)
+;; z1
+;; (z1 'real-part)
+;; (z1 'imag-part)
+;; (z1 'magnitude)
 
 
 (define (make-from-mag-ang x y)
@@ -39,7 +39,7 @@ z1
           ((eq? op 'imag-part) (* x (sin y)))
           ((eq? op 'magnitude) x )
           ((eq? op 'angle) y)
-          (else (error "Unknown op: MAKE-FROM-REAL-IMAG" op))))
+          (else (error "Unknown op: MAKE-FROM-MAG-ANG" op))))
   dispatch)
 
 (define z2 (make-from-mag-ang 1.41 0.78))
