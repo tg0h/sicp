@@ -74,6 +74,11 @@
 
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
 
+;; (install-scheme-number-package)
+;; (define s1 (make-scheme-number 1))
+;; (define s2 (make-scheme-number 2))
+;; (add s1 s2)
+
 (define (install-rational-package) ;; internal procedures
   ;; these procedures do not need to be aware of the tags
   (define (numer x) (car x))
@@ -95,6 +100,7 @@
   (define (div-rat x y)
     (make-rat (* (numer x) (denom y))
               (* (denom x) (numer y))))
+
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational)
@@ -110,6 +116,11 @@
   'done)
 
 (define (make-rational n d) ((get 'make 'rational) n d))
+
+;; (install-rational-package)
+;; (define r1 (make-rational 1 2))
+;; (define r2 (make-rational 3 4))
+;; (add r1 r2)
 
 (define (install-complex-package)
   ;; imported procedures from rectangular and polar packages
