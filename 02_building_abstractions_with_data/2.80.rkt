@@ -252,11 +252,12 @@
 ;; (install-generic-arithmetic-package)
 ;; ((get 'make 'rational) 1 1)
 (define r1 (make-rational 0 2))
-;; (define r2 (make-rational 3 4))
+(define r2 (make-rational 3 4))
 ;; (define r3 (make-rational 2 4))
 ;; (add r1 r2)
 ;; (get 'numer '(rational))
 (zero? r1 )
+(add (add r1 r2) r2)
 ;; (numer r1)
 ;; (denom r1)
 
