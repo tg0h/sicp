@@ -242,10 +242,10 @@
 
 (install-scheme-number-package)
 (install-generic-arithmetic-package)
-(define s1 (make-scheme-number 1))
-(define s2 (make-scheme-number 2))
-(define s3 (make-scheme-number 0))
-(zero? s3)
+;; (define s1 (make-scheme-number 1))
+;; (define s2 (make-scheme-number 2))
+;; (define s3 (make-scheme-number 0))
+;; (zero? s3)
 
 (install-rational-package)
 ;; (install-generic-arithmetic-package)
