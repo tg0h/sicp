@@ -58,6 +58,23 @@
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
+(define (equ? x y) (apply-generic 'equ? x y))
+
+(define (install-generic-arithmetic-package)
+  ;; internal procedures
+  (define (equ?-complex z1 z2)
+    (= (magnitude z1) (magnitude z2)))
+  (define (equ?-rational r1 r2)
+    (let ((numer (get 'numer '(rational)))
+          (denom (get 'denom '(rational))))
+      (and (= (numer r1) (numer r2))
+           (= (denom r1) (denom r2)))))
+  (define (equ?-scheme-number n1 n2) (= n1 n2))
+  ;; interface to the rest of the system
+  (put 'equ? '(complex complex) equ?-complex)
+  (put 'equ? '(rational rational) equ?-rational)
+  (put 'equ? '(scheme-number scheme-number) equ?-scheme-number)
+  'done)
 
 (define (install-scheme-number-package)
   (define (tag x) (attach-tag 'scheme-number x))
@@ -74,10 +91,13 @@
 
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
 
-;; (install-scheme-number-package)
-;; (define s1 (make-scheme-number 1))
-;; (define s2 (make-scheme-number 2))
+(install-scheme-number-package)
+(install-generic-arithmetic-package)
+(define s1 (make-scheme-number 1))
+(define s2 (make-scheme-number 2))
+(define s3 (make-scheme-number 1))
 ;; (add s1 s2)
+(equ? s1 s3)
 
 (define (install-rational-package) ;; internal procedures
   ;; these procedures do not need to be aware of the tags
@@ -103,6 +123,8 @@
 
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
+  (put 'numer '(rational) numer)
+  (put 'denom '(rational) denom)
   (put 'add '(rational rational)
        (lambda (x y) (tag (add-rat x y))))
   (put 'sub '(rational rational)
@@ -117,11 +139,20 @@
 
 (define (make-rational n d) ((get 'make 'rational) n d))
 
-;; (install-rational-package)
+(define (numer r) (apply-generic 'numer r))
+(define (denom r) (apply-generic 'denom r))
+
+(install-rational-package)
+(install-generic-arithmetic-package)
 ;; ((get 'make 'rational) 1 1)
-;; (define r1 (make-rational 1 2))
-;; (define r2 (make-rational 3 4))
+(define r1 (make-rational 1 2))
+(define r2 (make-rational 3 4))
+(define r3 (make-rational 2 4))
 ;; (add r1 r2)
+;; (get 'numer '(rational))
+(equ? r1 r3)
+;; (numer r1)
+;; (denom r1)
 
 (define (square x) (* x x))
 (define (install-rectangular-package)
@@ -201,6 +232,10 @@
 
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
+  ;; (put 'magnitude '(complex) magnitude)
+  (put 'magnitude '(complex)
+       (lambda (z1) (magnitude z1))
+       ) ; expose magnitude so that generic arithmetic package equ can use this to determine equality for complex numbers
   (put 'add '(complex complex)
        (lambda (z1 z2) (tag (add-complex z1 z2))))
   (put 'sub '(complex complex)
@@ -218,9 +253,73 @@
 (define (make-complex-from-real-imag x y) ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a) ((get 'make-from-mag-ang 'complex) r a))
 
-(install-complex-package)
+;; (install-complex-package)
+;; (install-generic-arithmetic-package)
 ;; ((get 'make-from-real-imag 'complex) 1 1)
-(define z1 (make-complex-from-real-imag 1 1))
-(define z2 (make-complex-from-mag-ang 1.41 0.78))
-(add z1 z2)
-(magnitude z1)
+;; (define z1 (make-complex-from-real-imag 1 1))
+;; (define z3 (make-complex-from-real-imag 1 1))
+;; (define z2 (make-complex-from-mag-ang 1.41 0.78))
+;; (add z1 z2)
+;; (magnitude z1)
+;; (magnitude z3)
+;; (equ? z1 z3)
+;; ;; (contents z1)
+
+; section 3.3.3
+(define (make-table)
+  (let ((local-table (list '*table*)))
+    (define (lookup key-1 key-2)
+      (let ((subtable
+             (assoc key-1 (cdr local-table))))
+        (if subtable
+            (let ((record
+                   (assoc key-2 (cdr subtable))))
+              (if record (cdr record) false)) false)))
+    (define (insert! key-1 key-2 value)
+      (let ((subtable
+             (assoc key-1 (cdr local-table))))
+        (if subtable
+            (let ((record
+                   (assoc key-2 (cdr subtable))))
+              (if record
+                  (set-cdr! record value) (set-cdr! subtable
+                                                    (cons (cons key-2 value)
+                                                          (cdr subtable)))))
+            (set-cdr! local-table
+                      (cons (list key-1 (cons key-2 value))
+                            (cdr local-table)))))
+      'ok)
+    (define (dispatch m)
+      (cond ((eq? m 'lookup-proc) lookup)
+            ((eq? m 'insert-proc!) insert!)
+            (else (error "Unknown operation: TABLE" m))))
+    dispatch))
+
+(define operation-table (make-table))
+(define get (operation-table 'lookup-proc))
+(define put (operation-table 'insert-proc!))
+
+
+(define (attach-tag type-tag contents) (cons type-tag contents))
+(define (type-tag datum) (if (pair? datum)
+                             (car datum)
+                             (error "Bad tagged datum: TYPE-TAG" datum)))
+(define (contents datum)
+  (if (pair? datum) (cdr datum)
+      (error "Bad tagged datum: CONTENTS" datum)))
+
+(define (apply-generic op . args)
+  ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
+  ; for now only one arg eg real-part z not real-part z1 z2
+  (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args)) ; get the contents ( ( 1 . 1 ) ) from the args eg ('rectangular ( 1 . 1 ) )
+          (error "No method for these types: APPLY-GENERIC"
+                 (list op type-tags))))))
+
+
+(define (add x y) (apply-generic 'add x y))
+(define (sub x y) (apply-generic 'sub x y))
+(define (mul x y) (apply-generic 'mul x y))
+(define (div x y) (apply-generic 'div x y))
