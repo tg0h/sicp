@@ -35,13 +35,27 @@
 (define put (operation-table 'insert-proc!))
 
 
-(define (attach-tag type-tag contents) (cons type-tag contents))
-(define (type-tag datum) (if (pair? datum)
-                             (car datum)
-                             (error "Bad tagged datum: TYPE-TAG" datum)))
+(define (attach-tag type-tag contents)
+  (if (number? contents)
+      contents
+      (cons type-tag contents)
+      )
+  )
+
+(define (type-tag datum)
+  ;; (if (pair? datum) (car datum)
+  (cond ((pair? datum) (car datum))
+        ((number? datum) "scheme-number") ; hardcode to scheme-number
+        (error "Bad tagged datum: TYPE-TAG" datum)))
+
 (define (contents datum)
-  (if (pair? datum) (cdr datum)
-      (error "Bad tagged datum: CONTENTS" datum)))
+  ;; (if (pair? datum) (cdr datum)
+  ;;     (error "Bad tagged datum: CONTENTS" datum)))
+  (cond ((pair? datum) (cdr datum))
+        ((number? datum) datum)
+        (else (error "Bad tagged datum: CONTENTS" datum))
+        )
+  )
 
 (define (apply-generic op . args)
   ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
