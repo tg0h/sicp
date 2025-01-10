@@ -258,3 +258,11 @@
                          (apply-generic op a1 (t2->t1 a2)))
                         (else (error "No method for these types" (list op type-tags))))))
               (error "No method for these types" (list op type-tags)))))))
+
+
+(define (scheme-number->scheme-number n) n)
+(define (complex->complex z) z)
+(put-coercion 'scheme-number
+              'scheme-number
+              scheme-number->scheme-number)
+(put-coercion 'complex 'complex complex->complex)
