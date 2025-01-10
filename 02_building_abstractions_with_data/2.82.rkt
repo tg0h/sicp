@@ -264,6 +264,39 @@
           ))))
 
 (define (apply-generic op . args)
+  (define (coerce op arg1 arg2 type)
+    (let ((type1 (type-tag arg1))
+          (type2 (type-tag arg2)))
+      (let (
+            (t1->type (get-coercion type1 type))
+            (t2->type (get-coercion type2 type))
+            )
+        (cond
+          ((and
+            (eq? type1 type)
+            (eq? type2 type))
+           (apply-generic op arg1 arg2))
+          ((and
+            t1->type
+            (not (eq? type1 type))
+            (eq? type2 type))
+           (apply-generic op (t1->type arg1) arg2))
+          ((and
+            (eq? type1 type)
+            t2->type
+            (not (eq? type2 type)))
+           (apply-generic op arg1 (t2->type arg2)))
+          ((and
+            t1->type
+            (not (eq? type1 type))
+            t2->type
+            (not (eq? type2 type)))
+           (apply-generic op (t1->type arg1) (t2->type arg2)))
+          (else (error "coerce type conversion not found" ))
+          )
+        )
+      )
+    )
   (define (loop-op op args type-tags)
     (if (= (length args) 2)
         (let ((type1 (car type-tags))
@@ -274,13 +307,15 @@
                 (t2->t1 (get-coercion type2 type1)))
             (cond ((and t1->t2
                         (not (eq? type1 type2)))
-                   (_apply-generic op (t1->t2 a1) a2))
+                   (apply-generic op (t1->t2 a1) a2))
                   ((and t2->t1 (not (eq? type1 type2)))
-                   (_apply-generic op a1 (t2->t1 a2))
+                   (apply-generic op a1 (t2->t1 a2))
                    )
                   (else (error "No method for these types" (list op type-tags)))
-                  )))
-        (error "No method for these types" (list op type-tags))
+                  ))
+          )
+        (error "No method for these types" (list op type-tags)
+               )
         )
     )
   (let ((type-tags (map type-tag args)))
