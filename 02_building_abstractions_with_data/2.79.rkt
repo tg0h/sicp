@@ -59,6 +59,28 @@
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
 
+;; (define (install-generic-arithmetic)
+;;   ;; internal procedures
+;;   (define (equ-complex z1 z2)
+;;     (sqrt (+ (square (real-part z1))
+;;              (square (imag-part z2)))))
+;;   (define (angle z)
+;;     (atan (imag-part z) (real-part z)))
+;;   (define (make-from-mag-ang r a)
+;;     (cons (* r (cos a)) (* r (sin a))))
+;;   ;; interface to the rest of the system
+;;   ;; (define (tag x) (attach-tag 'rectangular x))
+;;
+;;   (put 'real-part '(rectangular) real-part)
+;;   (put 'imag-part '(rectangular) imag-part)
+;;   (put 'magnitude '(rectangular) magnitude)
+;;   (put 'angle '(rectangular) angle)
+;;   (put 'make-from-real-imag 'rectangular
+;;        (lambda (x y) (tag (make-from-real-imag x y))))
+;;   (put 'make-from-mag-ang 'rectangular
+;;        (lambda (r a) (tag (make-from-mag-ang r a))))
+;;   'done)
+
 (define (install-scheme-number-package)
   (define (tag x) (attach-tag 'scheme-number x))
   (put 'add '(scheme-number scheme-number)
@@ -201,6 +223,10 @@
 
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
+  ;; (put 'magnitude '(complex) magnitude)
+  (put 'magnitude '(complex)
+       (lambda (z1) (magnitude z1))
+       ) ; expose magnitude so that generic arithmetic package equ can use this to determine equality for complex numbers
   (put 'add '(complex complex)
        (lambda (z1 z2) (tag (add-complex z1 z2))))
   (put 'sub '(complex complex)
@@ -223,4 +249,5 @@
 (define z1 (make-complex-from-real-imag 1 1))
 (define z2 (make-complex-from-mag-ang 1.41 0.78))
 (add z1 z2)
-(magnitude z1)
+;; (magnitude z1)
+;; (contents z1)
