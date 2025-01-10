@@ -65,19 +65,15 @@
   (define (equ?-complex z1 z2)
     (= (magnitude z1) (magnitude z2)))
   (define (equ?-rational r1 r2)
-    (let (
-          (numer (get 'numer '(rational)))
-          (denom  (get 'denom '(rational)))
-          )
-      (and
-       (= (numer r1) (numer r2))
-       (= (denom r1) (denom r2))
-       )
-      )
-    )
+    (let ((numer (get 'numer '(rational)))
+          (denom (get 'denom '(rational))))
+      (and (= (numer r1) (numer r2))
+           (= (denom r1) (denom r2)))))
+  (define (equ?-scheme-number n1 n2) (= n1 n2))
   ;; interface to the rest of the system
   (put 'equ? '(complex complex) equ?-complex)
   (put 'equ? '(rational rational) equ?-rational)
+  (put 'equ? '(scheme-number scheme-number) equ?-scheme-number)
   'done)
 
 (define (install-scheme-number-package)
@@ -95,10 +91,13 @@
 
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
 
-;; (install-scheme-number-package)
-;; (define s1 (make-scheme-number 1))
-;; (define s2 (make-scheme-number 2))
+(install-scheme-number-package)
+(install-generic-arithmetic-package)
+(define s1 (make-scheme-number 1))
+(define s2 (make-scheme-number 2))
+(define s3 (make-scheme-number 1))
 ;; (add s1 s2)
+(equ? s1 s3)
 
 (define (install-rational-package) ;; internal procedures
   ;; these procedures do not need to be aware of the tags
