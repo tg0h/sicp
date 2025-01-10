@@ -72,6 +72,7 @@
     )
   ;; interface to the rest of the system
   (put 'equ? '(complex complex) equ?-complex)
+  (put 'equ? '(rational rational) equ?-rational)
   'done)
 
 (define (install-scheme-number-package)
