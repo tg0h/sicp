@@ -64,6 +64,12 @@
   ;; internal procedures
   (define (equ?-complex z1 z2)
     (= (magnitude z1) (magnitude z2)))
+  (define (equ?-rational r1 r2)
+    (and
+     (= (numer r1) (numer r2))
+     (= (denom r1) (denom r2))
+     )
+    )
   ;; interface to the rest of the system
   (put 'equ? '(complex complex) equ?-complex)
   'done)
@@ -112,6 +118,8 @@
 
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
+  (put 'numer '(rational) numer)
+  (put 'denom '(rational) denom)
   (put 'add '(rational rational)
        (lambda (x y) (tag (add-rat x y))))
   (put 'sub '(rational rational)
@@ -125,6 +133,9 @@
   'done)
 
 (define (make-rational n d) ((get 'make 'rational) n d))
+
+(define (numer r) (apply-generic 'numer r))
+(define (denom r) (apply-generic 'denom r))
 
 ;; (install-rational-package)
 ;; ((get 'make 'rational) 1 1)
