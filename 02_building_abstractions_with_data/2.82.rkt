@@ -260,7 +260,20 @@
                          (apply-generic op a1 (t2->t1 a2))
                          )
                         (else (error "No method for these types" (list op type-tags))))))
-              (error "No method for these types" (list op type-tags)))))))
+              (error "No method for these types" (list op type-tags)))
+          ))))
+
+(define (loop-op op args cast-type)
+  (cond
+    (not (pair? args) (error "args is not a pair" args))
+    ((< (length args) 2) (error "must provide more than 1 args" args))
+    ((null? args) (error "args is nil"))
+    (else
+     (let ((type-tags (map type-tag args)))
+       )
+     )
+    )
+  )
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
 (put-coercion 'scheme-number
@@ -279,5 +292,7 @@
 (define s2 (make-scheme-number 2))
 
 (define z1 (make-complex-from-real-imag 1 1))
+;; (add s1 z1)
+;; (add s1 s1 s1)
 ;; (exp s1 s1)
 ;; (exp z1 z1)
