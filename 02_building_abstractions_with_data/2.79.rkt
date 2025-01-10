@@ -58,28 +58,15 @@
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
+(define (equ? x y) (apply-generic 'equ? x y))
 
-;; (define (install-generic-arithmetic)
-;;   ;; internal procedures
-;;   (define (equ-complex z1 z2)
-;;     (sqrt (+ (square (real-part z1))
-;;              (square (imag-part z2)))))
-;;   (define (angle z)
-;;     (atan (imag-part z) (real-part z)))
-;;   (define (make-from-mag-ang r a)
-;;     (cons (* r (cos a)) (* r (sin a))))
-;;   ;; interface to the rest of the system
-;;   ;; (define (tag x) (attach-tag 'rectangular x))
-;;
-;;   (put 'real-part '(rectangular) real-part)
-;;   (put 'imag-part '(rectangular) imag-part)
-;;   (put 'magnitude '(rectangular) magnitude)
-;;   (put 'angle '(rectangular) angle)
-;;   (put 'make-from-real-imag 'rectangular
-;;        (lambda (x y) (tag (make-from-real-imag x y))))
-;;   (put 'make-from-mag-ang 'rectangular
-;;        (lambda (r a) (tag (make-from-mag-ang r a))))
-;;   'done)
+(define (install-generic-arithmetic-package)
+  ;; internal procedures
+  (define (equ?-complex z1 z2)
+    (= (magnitude z1) (magnitude z2)))
+  ;; interface to the rest of the system
+  (put 'equ? '(complex complex) equ?-complex)
+  'done)
 
 (define (install-scheme-number-package)
   (define (tag x) (attach-tag 'scheme-number x))
@@ -245,9 +232,13 @@
 (define (make-complex-from-mag-ang r a) ((get 'make-from-mag-ang 'complex) r a))
 
 (install-complex-package)
+(install-generic-arithmetic-package)
 ;; ((get 'make-from-real-imag 'complex) 1 1)
 (define z1 (make-complex-from-real-imag 1 1))
+(define z3 (make-complex-from-real-imag 1 1))
 (define z2 (make-complex-from-mag-ang 1.41 0.78))
 (add z1 z2)
-;; (magnitude z1)
+(magnitude z1)
+(magnitude z3)
+(equ? z1 z3)
 ;; (contents z1)
