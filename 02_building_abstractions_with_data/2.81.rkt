@@ -251,13 +251,16 @@
                     (a2 (cadr args)))
                 (let ((t1->t2 (get-coercion type1 type2))
                       (t2->t1 (get-coercion type2 type1)))
-                  (cond
-                    (and t1->t2 (not (eq? type1 type2)))
-                    (apply-generic op (t1->t2 a1) a2))
-                  (and t2->t1 (not (eq? type1 type2)))
-                  (apply-generic op a1 (t2->t1 a2)))
-                (else (error "No method for these types" (list op type-tags))))))
-      (error "No method for these types" (list op type-tags)))))))
+                  (cond (
+                         (and t1->t2 (not (eq? type1 type2)))
+                         (apply-generic op (t1->t2 a1) a2)
+                         )
+                        (
+                         (and t2->t1 (not (eq? type1 type2)))
+                         (apply-generic op a1 (t2->t1 a2))
+                         )
+                        (else (error "No method for these types" (list op type-tags))))))
+              (error "No method for these types" (list op type-tags)))))))
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
 (put-coercion 'scheme-number
