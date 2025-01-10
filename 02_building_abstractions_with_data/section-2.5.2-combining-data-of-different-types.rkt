@@ -57,24 +57,7 @@
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
-(define (equ? x y) (apply-generic 'equ? x y))
 (define (zero? x ) (apply-generic 'zero? x ))
-
-(define (install-generic-arithmetic-package)
-  ;; internal procedures
-  (define (equ?-complex z1 z2)
-    (= (magnitude z1) (magnitude z2)))
-  (define (equ?-rational r1 r2)
-    (let ((numer (get 'numer '(rational)))
-          (denom (get 'denom '(rational))))
-      (and (= (numer r1) (numer r2))
-           (= (denom r1) (denom r2)))))
-  (define (equ?-scheme-number n1 n2) (= n1 n2))
-  ;; interface to the rest of the system
-  (put 'equ? '(complex complex) equ?-complex)
-  (put 'equ? '(rational rational) equ?-rational)
-  (put 'equ? '(scheme-number scheme-number) equ?-scheme-number)
-  'done)
 
 (define (install-scheme-number-package)
   (define (tag x) (attach-tag 'scheme-number x))
@@ -91,7 +74,6 @@
   'done)
 
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
-
 
 (define (install-rational-package) ;; internal procedures
   ;; these procedures do not need to be aware of the tags
@@ -114,12 +96,10 @@
   (define (div-rat x y)
     (make-rat (* (numer x) (denom y))
               (* (denom x) (numer y))))
-  (define (zero? r) (= (numer r) 0))
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'numer '(rational) numer)
   (put 'denom '(rational) denom)
-  (put 'zero? '(rational) zero?)
   (put 'add '(rational rational)
        (lambda (x y) (tag (add-rat x y))))
   (put 'sub '(rational rational)
@@ -216,9 +196,7 @@
 
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
-  (define (zero? z) (and (= (real-part z) 0) (= (imag-part z) 0)))
   ;; (put 'magnitude '(complex) magnitude)
-  (put 'zero? '(complex) zero?)
   (put 'magnitude '(complex)
        (lambda (z1) (magnitude z1))
        ) ; expose magnitude so that generic arithmetic package equ can use this to determine equality for complex numbers
@@ -245,7 +223,6 @@
 ;; (define s1 (make-scheme-number 1))
 ;; (define s2 (make-scheme-number 2))
 ;; (define s3 (make-scheme-number 0))
-;; (zero? s3)
 
 (install-rational-package)
 ;; (install-generic-arithmetic-package)
@@ -255,23 +232,19 @@
 ;; ;; (define r3 (make-rational 2 4))
 ;; ;; (add r1 r2)
 ;; ;; (get 'numer '(rational))
-;; (zero? r1 )
 ;; (add (add r1 r2) r2)
 ;; ;; (numer r1)
 ;; ;; (denom r1)
 ;;
 ;; ;; (add s1 s2)
-;; ;; (equ? s1 s3)
 ;; (install-complex-package)
 ;; ;; (install-generic-arithmetic-package)
 ;; ;; ((get 'make-from-real-imag 'complex) 1 1)
 ;; ;; (define z1 (make-complex-from-real-imag 1 1))
 ;; (define z3 (make-complex-from-real-imag 0 0))
 ;; ;; (define z2 (make-complex-from-mag-ang 1.41 0.78))
-;; (zero? z3 )
 ;; (magnitude z1)
 ;; (magnitude z3)
-;; (equ? z1 z3)
 ;; ;; (contents z1)
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
@@ -290,7 +263,8 @@
           (apply proc (map contents args))
           (if (= (length args) 2)
               (let ((type1 (car type-tags))
-                    (type2 (cadr type-tags)) (a1 (car args))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
                     (a2 (cadr args)))
                 (let ((t1->t2 (get-coercion type1 type2))
                       (t2->t1 (get-coercion type2 type1)))
@@ -299,5 +273,4 @@
                         (t2->t1
                          (apply-generic op a1 (t2->t1 a2)))
                         (else (error "No method for these types" (list op type-tags))))))
-              (error "No method for these types"
-                     (list op type-tags)))))))
+              (error "No method for these types" (list op type-tags)))))))
