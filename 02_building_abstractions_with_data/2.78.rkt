@@ -37,7 +37,7 @@
 
 (define (attach-tag type-tag contents)
   (if (number? contents)
-      contents
+      contents ; if number, no op
       (cons type-tag contents)
       )
   )
@@ -45,7 +45,7 @@
 (define (type-tag datum)
   ;; (if (pair? datum) (car datum)
   (cond ((pair? datum) (car datum))
-        ((number? datum) "scheme-number") ; hardcode to scheme-number
+        ((number? datum) 'scheme-number) ; hardcode to scheme-number
         (error "Bad tagged datum: TYPE-TAG" datum)))
 
 (define (contents datum)
@@ -88,10 +88,10 @@
 
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
 
-;; (install-scheme-number-package)
-;; (define s1 (make-scheme-number 1))
-;; (define s2 (make-scheme-number 2))
-;; (add s1 s2)
+(install-scheme-number-package)
+(define s1 (make-scheme-number 1))
+(define s2 (make-scheme-number 2))
+(add s1 s2)
 
 (define (install-rational-package) ;; internal procedures
   ;; these procedures do not need to be aware of the tags
@@ -232,9 +232,9 @@
 (define (make-complex-from-real-imag x y) ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a) ((get 'make-from-mag-ang 'complex) r a))
 
-(install-complex-package)
+;; (install-complex-package)
 ;; ((get 'make-from-real-imag 'complex) 1 1)
-(define z1 (make-complex-from-real-imag 1 1))
-(define z2 (make-complex-from-mag-ang 1.41 0.78))
-(add z1 z2)
-(magnitude z1)
+;; (define z1 (make-complex-from-real-imag 1 1))
+;; (define z2 (make-complex-from-mag-ang 1.41 0.78))
+;; (add z1 z2)
+;; (magnitude z1)
