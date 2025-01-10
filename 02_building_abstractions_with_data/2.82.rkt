@@ -239,7 +239,7 @@
 (define get-coercion (coerce-table 'lookup-proc))
 (define put-coercion (coerce-table 'insert-proc!))
 
-(define (apply-generic op . args)
+(define (_apply-generic op . args)
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
       (if proc
@@ -263,25 +263,25 @@
               (error "No method for these types" (list op type-tags)))
           ))))
 
-(define (_apply-generic op . args)
+(define (apply-generic op . args)
   (define (loop-op op args type-tags)
-          (if (= (length args) 2)
-              (let ((type1 (car type-tags))
-                    (type2 (cadr type-tags))
-                    (a1 (car args))
-                    (a2 (cadr args)))
-                (let ((t1->t2 (get-coercion type1 type2))
-                      (t2->t1 (get-coercion type2 type1)))
-                  (cond ((and t1->t2
-                              (not (eq? type1 type2)))
-                         (_apply-generic op (t1->t2 a1) a2))
-                        ((and t2->t1 (not (eq? type1 type2)))
-                         (_apply-generic op a1 (t2->t1 a2))
-                         )
-                        (else (error "No method for these types" (list op type-tags)))
-                        )))
-              (error "No method for these types" (list op type-tags))
-              )
+    (if (= (length args) 2)
+        (let ((type1 (car type-tags))
+              (type2 (cadr type-tags))
+              (a1 (car args))
+              (a2 (cadr args)))
+          (let ((t1->t2 (get-coercion type1 type2))
+                (t2->t1 (get-coercion type2 type1)))
+            (cond ((and t1->t2
+                        (not (eq? type1 type2)))
+                   (_apply-generic op (t1->t2 a1) a2))
+                  ((and t2->t1 (not (eq? type1 type2)))
+                   (_apply-generic op a1 (t2->t1 a2))
+                   )
+                  (else (error "No method for these types" (list op type-tags)))
+                  )))
+        (error "No method for these types" (list op type-tags))
+        )
     )
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
@@ -307,23 +307,21 @@
           ;;     )
           ))))
 
-(define (loop-op op args cast-type)
-  (cond
-    (not (pair? args) (error "args is not a pair" args))
-    ((< (length args) 2) (error "must provide more than 1 args" args))
-    ((null? args) (error "args is nil"))
-    ((=(length args) 2) apply-generic op)
-    (else
-     (let ((type-tags (map type-tag args)))
-       )
-     )
-    )
-  )
+;; (define (loop-op op args cast-type)
+;;   (cond
+;;     (not (pair? args) (error "args is not a pair" args))
+;;     ((< (length args) 2) (error "must provide more than 1 args" args))
+;;     ((null? args) (error "args is nil"))
+;;     ((=(length args) 2) apply-generic op)
+;;     (else
+;;      (let ((type-tags (map type-tag args)))
+;;        )
+;;      )
+;;     )
+;;   )
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
-(put-coercion 'scheme-number
-              'complex
-              scheme-number->complex)
+(put-coercion 'scheme-number 'complex scheme-number->complex)
 
 ;; (define (scheme-number->scheme-number n) n)
 ;; (put-coercion 'scheme-number 'scheme-number scheme-number->scheme-number)
@@ -337,7 +335,7 @@
 (define s2 (make-scheme-number 2))
 
 (define z1 (make-complex-from-real-imag 1 1))
-;; (add s1 z1)
+(add s1 z1)
 ;; (add s1 s1 s1)
 ;; (exp s1 s1)
 ;; (exp z1 z1)
