@@ -275,6 +275,13 @@
 ;; ;; (contents z1)
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
+(put-coercion 'scheme-number
+              'complex
+              scheme-number->complex)
+
+(define coerce-table (make-table))
+(define get-coercion (coerce-table 'lookup-proc))
+(define put-coercion (coerce-table 'insert-proc!))
 
 (define (apply-generic op . args)
   (let ((type-tags (map type-tag args)))
