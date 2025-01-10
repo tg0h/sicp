@@ -114,10 +114,6 @@
 
 (define (make-rational n d) ((get 'make 'rational) n d))
 
-(define (numer r) (apply-generic 'numer r))
-(define (denom r) (apply-generic 'denom r))
-
-
 (define (square x) (* x x))
 (define (install-rectangular-package)
   ;; internal procedures
