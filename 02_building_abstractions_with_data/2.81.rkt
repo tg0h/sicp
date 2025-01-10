@@ -70,6 +70,9 @@
        (lambda (x y) (tag (* x y))))
   (put 'div '(scheme-number scheme-number)
        (lambda (x y) (tag (/ x y))))
+  (put 'exp '(scheme-number scheme-number) 
+       (lambda (x y) (tag (expt x y))))
+  ; using primitive expt
   (put 'make 'scheme-number (lambda (x) (tag x)))
   'done)
 
@@ -266,3 +269,5 @@
               'scheme-number
               scheme-number->scheme-number)
 (put-coercion 'complex 'complex complex->complex)
+
+(define (exp x y) (apply-generic 'exp x y))
