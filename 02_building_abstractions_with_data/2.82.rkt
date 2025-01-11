@@ -53,7 +53,7 @@
 ;;                  (list op type-tags))))))
 
 
-(define (add x y) (apply-generic 'add x y))
+;; (define (add x y) (apply-generic 'add x y))
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
@@ -356,9 +356,12 @@
 (define z1 (make-complex-from-real-imag 1 1))
 
 
-(define (add-n . args)
+;; (define (add x y) (add-n x y))
+(define (add . args)
   (apply apply-generic (cons 'add args))
   )
 
 
-(add-n s1 z1 r1)
+;; (add s1 z1 r1)
+(add s1 z1)
+;; (add s1 z1 )
