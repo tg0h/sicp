@@ -1,6 +1,5 @@
 #lang sicp
 
-; section 3.3.3
 (define (make-table)
   (let ((local-table (list '*table*)))
     (define (lookup key-1 key-2)
@@ -43,24 +42,26 @@
   (if (pair? datum) (cdr datum)
       (error "Bad tagged datum: CONTENTS" datum)))
 
-(define (apply-generic op . args)
-  ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
-  ; for now only one arg eg real-part z not real-part z1 z2
-  (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
-    (let ((proc (get op type-tags)))
-      (if proc
-          (apply proc (map contents args)) ; get the contents ( ( 1 . 1 ) ) from the args eg ('rectangular ( 1 . 1 ) )
-          (error "No method for these types: APPLY-GENERIC"
-                 (list op type-tags))))))
+;; (define (apply-generic op . args)
+;;   ; use map type-tag because we want to be generic, we want to provide many contents and many types for the contents
+;;   ; for now only one arg eg real-part z not real-part z1 z2
+;;   (let ((type-tags (map type-tag args))) ; get the type-tag ('rectangular) from the args eg ('rectangular ( 1 . 1 ) )
+;;     (let ((proc (get op type-tags)))
+;;       (if proc
+;;           (apply proc (map contents args)) ; get the contents ( ( 1 . 1 ) ) from the args eg ('rectangular ( 1 . 1 ) )
+;;           (error "No method for these types: APPLY-GENERIC"
+;;                  (list op type-tags))))))
 
 
 (define (add x y) (apply-generic 'add x y))
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
+(define (zero? x ) (apply-generic 'zero? x ))
 
 (define (install-scheme-number-package)
   (define (tag x) (attach-tag 'scheme-number x))
+  (put 'zero? '(scheme-number) (lambda (x) (= x 0)))
   (put 'add '(scheme-number scheme-number)
        (lambda (x y) (tag (+ x y))))
   (put 'sub '(scheme-number scheme-number)
@@ -73,11 +74,6 @@
   'done)
 
 (define (make-scheme-number n) ((get 'make 'scheme-number) n))
-
-;; (install-scheme-number-package)
-;; (define s1 (make-scheme-number 1))
-;; (define s2 (make-scheme-number 2))
-;; (add s1 s2)
 
 (define (install-rational-package) ;; internal procedures
   ;; these procedures do not need to be aware of the tags
@@ -100,9 +96,10 @@
   (define (div-rat x y)
     (make-rat (* (numer x) (denom y))
               (* (denom x) (numer y))))
-
   ;; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
+  (put 'numer '(rational) numer)
+  (put 'denom '(rational) denom)
   (put 'add '(rational rational)
        (lambda (x y) (tag (add-rat x y))))
   (put 'sub '(rational rational)
@@ -116,12 +113,6 @@
   'done)
 
 (define (make-rational n d) ((get 'make 'rational) n d))
-
-;; (install-rational-package)
-;; ((get 'make 'rational) 1 1)
-;; (define r1 (make-rational 1 2))
-;; (define r2 (make-rational 3 4))
-;; (add r1 r2)
 
 (define (square x) (* x x))
 (define (install-rectangular-package)
@@ -201,6 +192,10 @@
 
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
+  ;; (put 'magnitude '(complex) magnitude)
+  (put 'magnitude '(complex)
+       (lambda (z1) (magnitude z1))
+       ) ; expose magnitude so that generic arithmetic package equ can use this to determine equality for complex numbers
   (put 'add '(complex complex)
        (lambda (z1 z2) (tag (add-complex z1 z2))))
   (put 'sub '(complex complex)
@@ -218,9 +213,48 @@
 (define (make-complex-from-real-imag x y) ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a) ((get 'make-from-mag-ang 'complex) r a))
 
+
+(install-scheme-number-package)
+;; (define s1 (make-scheme-number 1))
+;; (define s2 (make-scheme-number 2))
+;; (define s3 (make-scheme-number 0))
+;; (add s1 s2)
+
+(install-rational-package)
+;; ((get 'make 'rational) 1 1)
+;; (define r1 (make-rational 0 2))
+;; (define r2 (make-rational 3 4))
+;; (define r3 (make-rational 2 4))
+;; (add r1 r2)
 (install-complex-package)
-;; ((get 'make-from-real-imag 'complex) 1 1)
-(define z1 (make-complex-from-real-imag 1 1))
-(define z2 (make-complex-from-mag-ang 1.41 0.78))
-(add z1 z2)
-(magnitude z1)
+;; (define z1 (make-complex-from-real-imag 1 1))
+;; (define z2 (make-complex-from-mag-ang 1.41 0.78))
+;; (define z3 (make-complex-from-real-imag 0 0))
+
+(define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
+(put-coercion 'scheme-number
+              'complex
+              scheme-number->complex)
+
+(define coerce-table (make-table))
+(define get-coercion (coerce-table 'lookup-proc))
+(define put-coercion (coerce-table 'insert-proc!))
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (if (= (length args) 2)
+              (let ((type1 (car type-tags))
+                    (type2 (cadr type-tags))
+                    (a1 (car args))
+                    (a2 (cadr args)))
+                (let ((t1->t2 (get-coercion type1 type2))
+                      (t2->t1 (get-coercion type2 type1)))
+                  (cond (t1->t2
+                         (apply-generic op (t1->t2 a1) a2))
+                        (t2->t1
+                         (apply-generic op a1 (t2->t1 a2)))
+                        (else (error "No method for these types" (list op type-tags))))))
+              (error "No method for these types" (list op type-tags)))))))
