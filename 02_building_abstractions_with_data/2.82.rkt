@@ -307,12 +307,12 @@
         (if (or (= (length args) 2) (eq? result false))
             result
             (begin
-             ;;  (newline)
-             ;;  (display "coerce:========>")
-             ;;  (display "op: ")(display op)(newline)
-             ;;  (display "result: ")(display result)(newline)
-             ;;  (display (cons result (cddr args)) )
-             ;; (newline)
+              ;;  (newline)
+              ;;  (display "coerce:========>")
+              ;;  (display "op: ")(display op)(newline)
+              ;;  (display "result: ")(display result)(newline)
+              ;;  (display (cons result (cddr args)) )
+              ;; (newline)
               (coerce op (cons result (cddr args)) type)
               )
             )
@@ -359,30 +359,11 @@
 (define s2 (make-scheme-number 2))
 
 (define z1 (make-complex-from-real-imag 1 1))
-;; (add s1 s1 )
-;; (add s1 z1 )
 
 
-;; (define (add x y) (apply-generic 'add x y))
 (define (add-n . args)
-  ;; (display "n")
-  ;; (display "args is")
-  ;; (display args)
-  ;; (newline)
-  ;; (display "cons add args")
-  ;; (display (cons 'add args))
-  ;; (newline)
   (apply apply-generic (cons 'add args))
   )
 
-;; (define add-2 (get 'add (list 'scheme-number 'scheme-number)))
-;; (display (list 1 1))
-;; (apply add-2 (list 1 1))
 
-;; (eq? false false)
-(add-n s1 z1 z1)
-;; (add s1 s1 s1)
-;; (exp s1 s1)
-;; (exp z1 z1)
-
-
+(add-n s1 z1)
