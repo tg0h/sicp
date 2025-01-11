@@ -265,6 +265,9 @@
 (define (apply-generic op . args)
   (define (coerce-2 op arg1 arg2 type)
     (display "inside-coerce2")
+    (newline)
+    (display "arg1")(display arg1)(newline)
+    (display "arg2")(display arg2)(newline)
     (let ((type1 (type-tag arg1))
           (type2 (type-tag arg2)))
       (let ((t1->type (get-coercion type1 type))
@@ -282,8 +285,9 @@
     (display "inside-coerce")
     (newline)
     (let ((arg1 (car args))
-          (arg2 (cdr args)))
+          (arg2 (cadr args)))
       (let ((result (coerce-2 op arg1 arg2 type)))
+        (display "coerce-result: ")(display result)
         (if (= (length args) 2)
             result
             (coerce op (cons result (cddr args) type))))))
@@ -292,7 +296,7 @@
       ((null? type-tags ) (error "unable to coerce"))
       (else
        (let ((result (coerce op args (car type-tags))))
-         (if (result)
+         (if result
              result
              (loop-type op args (cdr type-tags))
              )))))
@@ -305,6 +309,7 @@
             (display args)
             (newline)
             (display type-tags)
+            (newline)
             (loop-type op args type-tags)
             )
           ))))
