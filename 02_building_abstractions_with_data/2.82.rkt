@@ -264,7 +264,7 @@
 
 (define (apply-generic op . args)
   (define (coerce-2 op arg1 arg2 type)
-    (display "inside-coerce2")
+    (display "inside-coerce2>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     (newline)
     (display "arg1")(display arg1)(display " | ")
     (display "arg2")(display arg2)(newline)
@@ -294,6 +294,7 @@
            (apply-generic op (t1->type arg1) (t2->type arg2)))
           (else false)))))
   (define (coerce op args type)
+    (newline)
     (display "inside-coerce")
     (newline)
     (display args)
@@ -321,14 +322,14 @@
              result
              (loop-type op args (cdr type-tags))
              )))))
+
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
       (display "APPLY-GENERIC:") (newline)
       (display args) (newline)
       (display type-tags) (newline)
-      (display proc) (newline)
-      (display (map contents args)) (newline)
-      ;; (display (apply proc (map contents args)))
+      (display "=============")
+      (newline)
       (if proc
           (apply proc (map contents args))
           (
@@ -360,13 +361,13 @@
 
 ;; (define (add x y) (apply-generic 'add x y))
 (define (add-n . args)
-  (display "n")
-  (display "args is")
-  (display args)
-  (newline)
-  (display "cons add args")
-  (display (cons 'add args))
-  (newline)
+  ;; (display "n")
+  ;; (display "args is")
+  ;; (display args)
+  ;; (newline)
+  ;; (display "cons add args")
+  ;; (display (cons 'add args))
+  ;; (newline)
   (apply apply-generic (cons 'add args))
   )
 
@@ -374,7 +375,7 @@
 ;; (display (list 1 1))
 ;; (apply add-2 (list 1 1))
 
-(add-n s1 s1 s1)
+(add-n s1 z1 z1)
 ;; (add s1 s1 s1)
 ;; (exp s1 s1)
 ;; (exp z1 z1)
