@@ -216,7 +216,6 @@
 (define (make-complex-from-real-imag x y) ((get 'make-from-real-imag 'complex) x y))
 (define (make-complex-from-mag-ang r a) ((get 'make-from-mag-ang 'complex) r a))
 
-
 (install-scheme-number-package)
 ;; (define s1 (make-scheme-number 1))
 ;; (define s2 (make-scheme-number 2))
@@ -265,6 +264,7 @@
 
 (define (apply-generic op . args)
   (define (coerce-2 op arg1 arg2 type)
+    (display "inside-coerce2")
     (let ((type1 (type-tag arg1))
           (type2 (type-tag arg2)))
       (let ((t1->type (get-coercion type1 type))
@@ -279,6 +279,8 @@
            (apply-generic op (t1->type arg1) (t2->type arg2)))
           (else false)))))
   (define (coerce op args type)
+    (display "inside-coerce")
+    (newline)
     (let ((arg1 (car args))
           (arg2 (cdr args)))
       (let ((result (coerce-2 op arg1 arg2 type)))
@@ -298,7 +300,13 @@
     (let ((proc (get op type-tags)))
       (if proc
           (apply proc (map contents args))
-          (loop-type op args type-tags)
+          (
+           begin
+            (display args)
+            (newline)
+            (display type-tags)
+            (loop-type op args type-tags)
+            )
           ))))
 
 
