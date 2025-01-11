@@ -314,6 +314,33 @@
           (loop-type op args type-tags)
           ))))
 
+
+(define (coerce-2 op arg1 arg2 type)
+  (let ((type1 (type-tag arg1))
+        (type2 (type-tag arg2)))
+    (let ((t1->type (get-coercion type1 type))
+          (t2->type (get-coercion type2 type)))
+      (cond
+        ((and (eq? type1 type) (eq? type2 type)) (apply-generic op arg1 arg2))
+        ((and t1->type (not (eq? type1 type)) (eq? type2 type))
+         (apply-generic op (t1->type arg1) arg2))
+        ((and (eq? type1 type) t2->type (not (eq? type2 type)))
+         (apply-generic op arg1 (t2->type arg2)))
+        ((and t1->type (not (eq? type1 type)) t2->type (not (eq? type2 type)))
+         (apply-generic op (t1->type arg1) (t2->type arg2)))
+        (else false)))))
+
+(define (coerce op args type)
+  (let ((arg1 (car args))
+        (arg2 (cdr args)))
+    (let ((result (coerce-2 op arg1 arg2 type)))
+      (if (= (length args) 2)
+          result
+          (coerce op (cons result (cddr args) type))
+          )
+      )
+    )
+  )
 (define (loop-type op args type-tags)
   (cond
     ((null? type-tags ) (error "unable to coerce"))
