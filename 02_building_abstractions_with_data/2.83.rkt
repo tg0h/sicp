@@ -1,13 +1,6 @@
 #lang sicp
 
 
-(define (attach-tag type-tag contents) (cons type-tag contents))
-(define (type-tag datum) (if (pair? datum)
-                             (car datum)
-                             (error "Bad tagged datum: TYPE-TAG" datum)))
-(define (contents datum)
-  (if (pair? datum) (cdr datum)
-      (error "Bad tagged datum: CONTENTS" datum)))
 
 
 (define (make-table)
@@ -42,6 +35,21 @@
 (define get-coercion (coerce-table 'lookup-proc))
 (define put-coercion (coerce-table 'insert-proc!))
 
-(define (raise number)
+(define (attach-tag type-tag contents) (cons type-tag contents))
+(define (type-tag datum) (if (pair? datum)
+                             (car datum)
+                             (error "Bad tagged datum: TYPE-TAG" datum)))
+(define (contents datum)
+  (if (pair? datum) (cdr datum)
+      (error "Bad tagged datum: CONTENTS" datum)))
 
-  )
+(define tower '(integer rational real complex))
+tower
+
+;; (define (raise number)
+;;   (let
+;;       ((type (type-tag number))
+;;
+;;        )
+;;     )
+;;   )
