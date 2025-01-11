@@ -337,8 +337,8 @@
 (put-coercion 'scheme-number 'complex scheme-number->complex)
 
 
-;; (define (scheme-number->scheme-number n) n)
-;; (put-coercion 'scheme-number 'scheme-number scheme-number->scheme-number)
+(define (rational->complex n) ( make-complex-from-real-imag ( / (car (contents n)) (cdr (contents n))) 0))
+(put-coercion 'rational 'complex rational->complex)
 
 ;; (define (complex->complex z) z)
 ;; (put-coercion 'complex 'complex complex->complex)
@@ -350,6 +350,8 @@
 
 ;; (define r1 (make-rational 0 2))
 (define r1 (make-rational 1 2))
+(rational->complex r1)
+
 
 (define z1 (make-complex-from-real-imag 1 1))
 
