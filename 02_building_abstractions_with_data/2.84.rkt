@@ -288,24 +288,37 @@
   )
 
 (define (_apply-generic op . args)
+  (define (loop-raise arg1 type)
+    (let ((arg-next-type (raise arg1)))
+      (let ((next-type (type-tag arg-next-type))
+            )
+        (if (eq? next-type type) arg-next-type
+            (loop-raise arg-next-type type)
+            )
+        )
+      )
+    )
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
       (if proc
           (apply proc (map contents args))
           (if (= (length args) 2)
-              (let ((type1 (car type-tags))
+              (
+               let ((type1 (car type-tags))
                     (type2 (cadr type-tags))
                     (a1 (car args))
                     (a2 (cadr args)))
-                (let ((t1->t2 (get-coercion type1 type2))
-                      (t2->t1 (get-coercion type2 type1)))
-                  (cond (t1->t2
-                         (apply-generic op (t1->t2 a1) a2))
-                        (t2->t1
-                         (apply-generic op a1 (t2->t1 a2)))
-                        (else (error "No method for these types" (list op type-tags))))))
-              (error "No method for these types" (list op type-tags)))))))
+                (
+                 (if (type-lower? type1 type2)
+                     (apply-generic op (loop-raise a1) a2)
+                     (apply-generic op a1 (loop-raise a2))
+                     )
+                 )
+                (error "No method for these types" (list op type-tags))
+                )
+              ))))
+  )
 
 
 
-(memq 'complex (memq 'complex tower))
+;; (memq 'complex (memq 'complex tower))
