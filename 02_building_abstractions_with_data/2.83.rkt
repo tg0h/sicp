@@ -44,12 +44,27 @@
       (error "Bad tagged datum: CONTENTS" datum)))
 
 (define tower '(integer rational real complex))
-tower
 
-;; (define (raise number)
-;;   (let
-;;       ((type (type-tag number))
-;;
-;;        )
-;;     )
-;;   )
+(define (next-type type)
+  (define (loop type type-list)
+    (cond
+      ((eq? type 'complex) (error "unable to raise complex"))
+      ((eq? type (car type-list)) (cadr type-list))
+      (else (loop type (cdr type-list)))
+      )
+    )
+  (loop type tower)
+  )
+
+(next-type 'complex)
+(define (raise number)
+  (let ((type (type-tag number)))
+    (let ((raise-type (next-type type)))
+      (let ((type->raise-type (get-coercion type raise-type)))
+        (type->raise-type number)
+        )
+      )
+    )
+  )
+
+(get-coercion type raise-type)
