@@ -304,11 +304,15 @@
           (arg2 (cadr args)))
       (let ((result (coerce-2 op arg1 arg2 type)))
         ;; (display "coerce-result: ")(display result)
-        (if (= (length args) 2)
+        (if (or (= (length args) 2) (eq? result false))
             result
             (begin
-              (display "-------------------------")(newline)
-              (display (cons result (cddr args)) )
+             ;;  (newline)
+             ;;  (display "coerce:========>")
+             ;;  (display "op: ")(display op)(newline)
+             ;;  (display "result: ")(display result)(newline)
+             ;;  (display (cons result (cddr args)) )
+             ;; (newline)
               (coerce op (cons result (cddr args)) type)
               )
             )
@@ -375,7 +379,10 @@
 ;; (display (list 1 1))
 ;; (apply add-2 (list 1 1))
 
+;; (eq? false false)
 (add-n s1 z1 z1)
 ;; (add s1 s1 s1)
 ;; (exp s1 s1)
 ;; (exp z1 z1)
+
+
