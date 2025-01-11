@@ -277,7 +277,15 @@
                         (t2->t1
                          (apply-generic op a1 (t2->t1 a2)))
                         (else (error "No method for these types" (list op type-tags))))))
+
               (error "No method for these types" (list op type-tags)))))))
+
+;; (get-coercion type raise-type)
+(define (type-lower? type1 type2)
+  ( if (eq? type1 type2) false
+       (memq type2 (memq type1 tower))
+       )
+  )
 
 (define (_apply-generic op . args)
   (let ((type-tags (map type-tag args)))
@@ -299,11 +307,5 @@
               (error "No method for these types" (list op type-tags)))))))
 
 
-;; (get-coercion type raise-type)
-(define (type-lower? type1 type2)
-  ( if (eq? type1 type2) false
-       (memq type2 (memq type1 tower))
-       )
-  )
 
 (memq 'complex (memq 'complex tower))
