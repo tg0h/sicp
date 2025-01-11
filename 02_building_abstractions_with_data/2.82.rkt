@@ -306,10 +306,12 @@
         (if (= (length args) 2)
             result
             (begin
-              (display "-------------------------")
-              (coerce op (cons result (cddr args) type))
+              (display "-------------------------")(newline)
+              (display (cons result (cddr args)) )
+              (coerce op (cons result (cddr args)) type)
               )
-            ))))
+            )
+        )))
   (define (loop-type op args type-tags)
     (cond
       ((null? type-tags ) (error "unable to coerce"))
