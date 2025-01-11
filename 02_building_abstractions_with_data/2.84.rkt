@@ -258,3 +258,23 @@
                          (apply-generic op a1 (t2->t1 a2)))
                         (else (error "No method for these types" (list op type-tags))))))
               (error "No method for these types" (list op type-tags)))))))
+
+(define (raise number)
+  (define tower '(integer rational real complex))
+  (define (next-type type)
+    (define (loop type type-list)
+      (cond
+        ((eq? type 'complex) (error "unable to raise complex"))
+        ((eq? type (car type-list)) (cadr type-list))
+        (else (loop type (cdr type-list)))))
+    (loop type tower))
+  (let ((type (type-tag number)))
+    (let ((raise-type (next-type type)))
+      (let ((type->raise-type (get-coercion type raise-type)))
+        (type->raise-type number)
+        )
+      )
+    )
+  )
+
+;; (get-coercion type raise-type)
