@@ -295,24 +295,18 @@
           (else false)))))
   (define (coerce op args type)
     (newline)
-    (display "inside-coerce")
-    (newline)
-    (display args)
-    (display " | ")
-    (display type) (newline)
+    (display "calling coerce with type ")
+    (display op) (display " | ") (display args) (display " |> ") (display type) (newline)
     (let ((arg1 (car args))
           (arg2 (cadr args)))
       (let ((result (coerce-2 op arg1 arg2 type)))
         ;; (display "coerce-result: ")(display result)
         (if (or (= (length args) 2) (eq? result false))
-            result
             (begin
-              ;;  (newline)
-              ;;  (display "coerce:========>")
-              ;;  (display "op: ")(display op)(newline)
-              ;;  (display "result: ")(display result)(newline)
-              ;;  (display (cons result (cddr args)) )
-              ;; (newline)
+              (display "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   returning coerce: <|")(display result)(newline)
+              result
+              )
+            (begin
               (coerce op (cons result (cddr args)) type)
               )
             )
@@ -329,11 +323,6 @@
 
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
-      (display "APPLY-GENERIC:") (newline)
-      (display args) (newline)
-      (display type-tags) (newline)
-      (display "=============")
-      (newline)
       (if proc
           (apply proc (map contents args))
           (
@@ -366,4 +355,4 @@
   )
 
 
-(add-n s1 z1)
+(add-n s1 z1 s1)
