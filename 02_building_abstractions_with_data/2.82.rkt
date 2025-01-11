@@ -264,57 +264,6 @@
           ))))
 
 (define (apply-generic op . args)
-  (define (coerce op arg1 arg2 type)
-    (let ((type1 (type-tag arg1))
-          (type2 (type-tag arg2)))
-      (let (
-            (t1->type (get-coercion type1 type))
-            (t2->type (get-coercion type2 type))
-            )
-        (cond
-          ((and
-            (eq? type1 type)
-            (eq? type2 type))
-           (apply-generic op arg1 arg2))
-          ((and
-            t1->type
-            (not (eq? type1 type))
-            (eq? type2 type))
-           (apply-generic op (t1->type arg1) arg2))
-          ((and
-            (eq? type1 type)
-            t2->type
-            (not (eq? type2 type)))
-           (apply-generic op arg1 (t2->type arg2)))
-          ((and
-            t1->type
-            (not (eq? type1 type))
-            t2->type
-            (not (eq? type2 type)))
-           (apply-generic op (t1->type arg1) (t2->type arg2)))
-          (else (error "coerce type conversion not found" ))
-          )
-        )
-      )
-    )
-  (define (loop-type op args type-tags)
-    (
-     if
-     (= (length args) 2)
-     ( coerce op (car args) (cadr args)
-              )
-     (error "No method for these types" (list op type-tags)
-            )
-     )
-    )
-  (let ((type-tags (map type-tag args)))
-    (let ((proc (get op type-tags)))
-      (if proc
-          (apply proc (map contents args))
-          (loop-type op args type-tags)
-          ))))
-
-
 (define (coerce-2 op arg1 arg2 type)
   (let ((type1 (type-tag arg1))
         (type2 (type-tag arg2)))
@@ -329,7 +278,6 @@
         ((and t1->type (not (eq? type1 type)) t2->type (not (eq? type2 type)))
          (apply-generic op (t1->type arg1) (t2->type arg2)))
         (else false)))))
-
 (define (coerce op args type)
   (let ((arg1 (car args))
         (arg2 (cdr args)))
@@ -337,7 +285,6 @@
       (if (= (length args) 2)
           result
           (coerce op (cons result (cddr args) type))))))
-
 (define (loop-type op args type-tags)
   (cond
     ((null? type-tags ) (error "unable to coerce"))
@@ -347,6 +294,14 @@
            result
            (loop-type op args (cdr type-tags))
            )))))
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (loop-type op args type-tags)
+          ))))
+
+
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
 (put-coercion 'scheme-number 'complex scheme-number->complex)
