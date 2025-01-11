@@ -336,11 +336,8 @@
     (let ((result (coerce-2 op arg1 arg2 type)))
       (if (= (length args) 2)
           result
-          (coerce op (cons result (cddr args) type))
-          )
-      )
-    )
-  )
+          (coerce op (cons result (cddr args) type))))))
+
 (define (loop-type op args type-tags)
   (cond
     ((null? type-tags ) (error "unable to coerce"))
@@ -349,11 +346,7 @@
        (if (result)
            result
            (loop-type op args (cdr type-tags))
-           )
-       )
-     )
-    )
-  )
+           )))))
 
 (define (scheme-number->complex n) (make-complex-from-real-imag (contents n) 0))
 (put-coercion 'scheme-number 'complex scheme-number->complex)
