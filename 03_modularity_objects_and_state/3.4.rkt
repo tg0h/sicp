@@ -13,17 +13,17 @@
     (display "calling the cops")
     )
   (define (password-wrong amount)
-    (begin
-      (set! password-consecutive-wrong-count (+ password-consecutive-wrong-count 1))
-      (if (= password-consecutive-wrong-count 7)
-          (call-the-cops)
-          (begin
-            ;; "tim"
-            (error "Incorrect Password " password-consecutive-wrong-count)
-            ;; (error password-consecutive-wrong-count)
-            )
+    (set! password-consecutive-wrong-count (+ password-consecutive-wrong-count 1))
+    (display amount)
+    (display password-consecutive-wrong-count)
+    (if (= password-consecutive-wrong-count 7)
+        (call-the-cops)
+        (begin
+          ;; "tim"
+          (error "Incorrect Password " password-consecutive-wrong-count)
+          ;; (error password-consecutive-wrong-count)
           )
-      )
+        )
     )
   (define (dispatch pw m)
     (cond
@@ -47,9 +47,9 @@
 ;; 60
 ((acc 'secret-password 'withdraw) 40)
 
-((acc 'some-other-password 'deposit) 50)
-((acc 'some-other-password 'deposit) 50)
-((acc 'some-other-password 'deposit) 50)
+((acc 'some-other-password 'deposit) 5)
+((acc 'some-other-password2 'deposit) 4)
+((acc 'some-other-password 'deposit) 3)
 ;; ((acc 'some-other-password 'deposit) 50)
 ;; ((acc 'some-other-password 'deposit) 50)
 ;; ((acc 'some-other-password 'deposit) 50)
