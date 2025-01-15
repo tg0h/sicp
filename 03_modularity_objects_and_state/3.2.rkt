@@ -6,17 +6,17 @@
   (newline)
   )
 
-;; (define (make-monitored function) 
-;;    (define times-called 0) 
-;;    (define (mf message) 
-;;      (cond ((eq? message 'how-many-calls?) times-called) 
-;;            ((eq? message 'reset-count) (set! times-called 0)) 
-;;            (else (set! times-called (+ times-called 1)) 
-;;                  (function message)))) 
-;;    mf) 
+;; (define (make-monitored function)
+;;    (define times-called 0)
+;;    (define (mf message)
+;;      (cond ((eq? message 'how-many-calls?) times-called)
+;;            ((eq? message 'reset-count) (set! times-called 0))
+;;            (else (set! times-called (+ times-called 1))
+;;                  (function message))))
+;;    mf)
 
 (define (make-monitored f)
-  (let ((counter 0))
+  (let ((counter 0)) ;; don't like nesting, use define instead of let
     (define (proxy x)
       (cond
         ((eq? x 'how-many-calls? ) counter)
