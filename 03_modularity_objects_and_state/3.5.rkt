@@ -38,22 +38,31 @@
   )
 
 (define (square x) (* x x))
-(define (pred)
-  (<
-   (+
-    (square (- (random1) 1))
-    (square (- (random1) 1))
-    )
-   1
-   )
-  )
-;; (define (estimate-integral P x1 x2 y1 y2 trials)
-;;
+
+;; (define (pred x1 x2 y1 y2)
+;;   lambda
+;;   (let (
+;;         (rand_x (random-in-range x1 x2))
+;;         (rand_y (random-in-range y1 y2))
+;;         )
+;;     (<
+;;      (+
+;;       (square (- rand_x 1))
+;;       (square (- rand_y 1))
+;;       )
+;;      1
+;;      )
+;;     )
 ;;   )
 
-(pred)
 
 (define (random-in-range low high)
   (let ((range (- high low)))
     (+ low (random range))))
+(define (estimate-integral P x1 x2 y1 y2 trials)
+  (monte-carlo trials pred )
+  )
+
+;; (pred)
+
 
