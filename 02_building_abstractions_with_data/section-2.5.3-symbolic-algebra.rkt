@@ -103,10 +103,13 @@
                         (add-terms (rest-terms L1)
                                    (rest-terms L2)))))))))
 
-(define (mul-terms L1 L2) (if (empty-termlist? L1) (the-empty-termlist)
-                              (add-terms (mul-term-by-all-terms (first-term L1) L2)
-                                         (mul-terms (rest-terms L1) L2))))
-(define (mul-term-by-all-terms t1 L) (if (empty-termlist? L)
+(define (mul-terms L1 L2)
+  (if (empty-termlist? L1) (the-empty-termlist)
+      (add-terms (mul-term-by-all-terms (first-term L1) L2)
+                 (mul-terms (rest-terms L1) L2))))
+
+(define (mul-term-by-all-terms t1 L) 
+  (if (empty-termlist? L)
                                          (the-empty-termlist)
                                          (let ((t2 (first-term L)))
                                            (adjoin-term
