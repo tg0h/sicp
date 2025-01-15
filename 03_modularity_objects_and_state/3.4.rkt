@@ -1,6 +1,7 @@
-
 #lang sicp
+
 (define (make-account balance password)
+  (define password-consecutive-wrong-count 0)
   (define (withdraw amount)
     (if (>= balance amount)
         (begin (set! balance (- balance amount)) balance)
@@ -8,14 +9,27 @@
   (define (deposit amount)
     (set! balance (+ balance amount))
     balance)
+  (define (call-the-cops)
+    (display "calling the cops")
+    )
   (define (dispatch pw m)
     (cond
-      ((not (eq? pw password)) (error "Incorrect Password"))
-      ((and (eq? pw password) (eq? m 'withdraw)) withdraw)
-      ((and (eq? pw password) (eq? m 'deposit)) deposit)
-      (else (error "Unknown request: MAKE-ACCOUNT"
-                   m))))
-  dispatch)
+      ((not (eq? pw password)) ((set! password-consecutive-wrong-count (+ password-consecutive-wrong-count 1))
+                                (if (= password-consecutive-wrong-count 7) (call-the-cops)
+                                    (error "Incorrect Password " password-consecutive-wrong-count))
+                                )
+                               ((and (eq? pw password) (eq? m 'withdraw))
+                                (set! password-consecutive-wrong-count 0)
+                                withdraw
+                                )
+                               ((and (eq? pw password) (eq? m 'deposit))
+                                (set! password-consecutive-wrong-count 0)
+                                deposit
+                                )
+                               (else (error "Unknown request: MAKE-ACCOUNT"
+                                            m))))
+    dispatch)
+  )
 
 
 (define acc (make-account 100 'secret-password))
