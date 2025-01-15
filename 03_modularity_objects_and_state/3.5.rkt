@@ -25,4 +25,35 @@
 
 
 
-(monte-carlo 10000 cesaro-test)
+;; (monte-carlo 10000 cesaro-test)
+
+
+
+(define (random1)
+  (let (
+        (r (random 10000))
+        )
+    (/ r 10000.0)
+    )
+  )
+
+(define (square x) (* x x))
+(define (pred)
+  (<
+   (+
+    (square (- (random1) 1))
+    (square (- (random1) 1))
+    )
+   1
+   )
+  )
+;; (define (estimate-integral P x1 x2 y1 y2 trials)
+;;
+;;   )
+
+(pred)
+
+(define (random-in-range low high)
+  (let ((range (- high low)))
+    (+ low (random range))))
+
