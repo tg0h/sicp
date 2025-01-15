@@ -17,19 +17,18 @@
       ((not (eq? pw password)) ((set! password-consecutive-wrong-count (+ password-consecutive-wrong-count 1))
                                 (if (= password-consecutive-wrong-count 7) (call-the-cops)
                                     (error "Incorrect Password " password-consecutive-wrong-count))
-                                )
-                               ((and (eq? pw password) (eq? m 'withdraw))
-                                (set! password-consecutive-wrong-count 0)
-                                withdraw
-                                )
-                               ((and (eq? pw password) (eq? m 'deposit))
-                                (set! password-consecutive-wrong-count 0)
-                                deposit
-                                )
-                               (else (error "Unknown request: MAKE-ACCOUNT"
-                                            m))))
-    dispatch)
-  )
+                                ))
+      ((and (eq? pw password) (eq? m 'withdraw))
+       (set! password-consecutive-wrong-count 0)
+       withdraw
+       )
+      ((and (eq? pw password) (eq? m 'deposit))
+       (set! password-consecutive-wrong-count 0)
+       deposit
+       )
+      (else (error "Unknown request: MAKE-ACCOUNT"
+                   m))))
+  dispatch)
 
 
 (define acc (make-account 100 'secret-password))
@@ -38,4 +37,10 @@
 ;; 60
 ((acc 'secret-password 'withdraw) 40)
 
+((acc 'some-other-password 'deposit) 50) "Incorrect password"
+((acc 'some-other-password 'deposit) 50) "Incorrect password"
+((acc 'some-other-password 'deposit) 50) "Incorrect password"
+((acc 'some-other-password 'deposit) 50) "Incorrect password"
+((acc 'some-other-password 'deposit) 50) "Incorrect password"
+((acc 'some-other-password 'deposit) 50) "Incorrect password"
 ((acc 'some-other-password 'deposit) 50) "Incorrect password"
