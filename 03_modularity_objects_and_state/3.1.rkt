@@ -2,8 +2,7 @@
 
 (define (make-accumulator initial)
   (define (add number)
-    (set! initial (+ initial number)
-          )
+    (set! initial (+ initial number))
     initial
     )
   add
