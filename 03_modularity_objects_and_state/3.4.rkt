@@ -20,7 +20,9 @@
         (call-the-cops)
         (begin
           ;; "tim"
-          (error "Incorrect Password " password-consecutive-wrong-count)
+          (display "Incorrect Password ")
+          (display password-consecutive-wrong-count)
+          (newline)
           ;; (error password-consecutive-wrong-count)
           )
         )
@@ -49,8 +51,11 @@
 
 ((acc 'some-other-password 'deposit) 5)
 ((acc 'some-other-password2 'deposit) 4)
-((acc 'some-other-password 'deposit) 3)
-;; ((acc 'some-other-password 'deposit) 50)
-;; ((acc 'some-other-password 'deposit) 50)
-;; ((acc 'some-other-password 'deposit) 50)
+;; ((acc 'some-other-password 'deposit) 3)
+((acc 'some-other-password 'deposit) 50)
+((acc 'secret-password 'withdraw) 40)
+((acc 'some-other-password 'deposit) 50)
+((acc 'some-other-password 'deposit) 50)
+((acc 'some-other-password 'deposit) 50)
+((acc 'some-other-password 'deposit) 50)
 ;; ((acc 'some-other-password 'deposit) 50)
