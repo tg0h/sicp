@@ -6,26 +6,30 @@
   (newline)
   )
 
+;; (define (make-monitored function) 
+;;    (define times-called 0) 
+;;    (define (mf message) 
+;;      (cond ((eq? message 'how-many-calls?) times-called) 
+;;            ((eq? message 'reset-count) (set! times-called 0)) 
+;;            (else (set! times-called (+ times-called 1)) 
+;;                  (function message)))) 
+;;    mf) 
+
 (define (make-monitored f)
-  (let
-      ((counter 0))
+  (let ((counter 0))
     (define (proxy x)
       (cond
-        ((x eq? 'how-many-calls? ) counter)
-        ((x eq? 'reset-count ) (set! counter 0))
+        ((eq? x 'how-many-calls? ) counter)
+        ((eq? x 'reset-count ) (set! counter 0))
         (else
-         (begin
-           (set! counter (+ counter 1))
-           (f x)
-           )
-         )
-        )
-      )
-    proxy
-    )
-  )
+         (set! counter (+ counter 1))
+         (f x)
+         )))
+    proxy))
 
-(make-monitored dummy)
-(dummy 1)
-(dummy 2)
-(dummy 'how-many-calls?)
+(define m (make-monitored dummy))
+(m 1)
+(m 2)
+(m 'how-many-calls?)
+(m 'reset-count)
+(m 'how-many-calls?)
