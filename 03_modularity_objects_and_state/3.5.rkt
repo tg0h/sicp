@@ -24,6 +24,14 @@
 
 ;; (monte-carlo 10000 cesaro-test)
 
+
+;; (random-in-range 5.0 10.0)
+
+
+(experiment)
+
+(define (estimate-integral pred x1 x2 y1 y2 trials)
+  (monte-carlo trials pred )
 (define (pred x1 x2 y1 y2)
   (define (square x) (* x x))
   (define (random-in-range low high)
@@ -44,15 +52,7 @@
          1)))
   experiment
   )
-
-;; (random-in-range 5.0 10.0)
-
-
-(experiment)
-
-;; (define (estimate-integral pred x1 x2 y1 y2 trials)
-;;   (monte-carlo trials pred )
-;;   )
+  )
 
 ;; (pred)
 
