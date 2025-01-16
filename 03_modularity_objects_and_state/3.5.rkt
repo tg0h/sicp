@@ -34,7 +34,7 @@
     (define range (- high low))
     (+ low (random range))
     )
-  (define (experiment)
+  (lambda ()
     (let (
           (rand_x (random-in-range x1 x2))
           (rand_y (random-in-range y1 y2))
@@ -46,8 +46,7 @@
       (< (+ (square (- rand_x 1))
             (square (- rand_y 1)))
          1)))
-  experiment
-  )
+)
 
 (define (estimate-integral pred x1 x2 y1 y2 trials)
   (* (monte-carlo trials (pred x1 x2 y1 y2)) 4.0)
