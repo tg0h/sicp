@@ -1,10 +1,10 @@
 #lang sicp
 
 (define (f x)
-  (define y 0)
+  (define called 0)
   (lambda ()
-    (set! y (+ y 1))
-    (if (and (= y 2) (= x 1)) 0 x)
+    (set! called (+ called 1))
+    (if (and (= called 2) (= x 1)) 0 x)
     ;; y
     ;; (cond
     ;;   ((= x 0)
