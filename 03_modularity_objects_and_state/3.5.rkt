@@ -22,46 +22,31 @@
                  trials-passed))))
   (iter trials 0))
 
-
-
-
 ;; (monte-carlo 10000 cesaro-test)
 
-
-
-(define (random1)
-  (let (
-        (r (random 10000))
-        )
-    (/ r 10000.0)
-    )
-  )
-
-(define (square x) (* x x))
-
 (define (pred x1 x2 y1 y2)
+  (define (square x) (* x x))
+  (define (random-in-range low high)
+    (define range (- high low))
+    (+ low (random range))
+    )
   (define (experiment)
     (let (
           (rand_x (random-in-range x1 x2))
           (rand_y (random-in-range y1 y2))
           )
-      (<
-       (+
-        (square (- rand_x 1))
-        (square (- rand_y 1))
-        )
-       1
-       )
-      )
-    )
+      (display rand_x)
+      (newline)
+      (display rand_y)
+      (newline)
+      (< (+ (square (- rand_x 1))
+            (square (- rand_y 1)))
+         1)))
   experiment
   )
 
-(define (random-in-range low high)
-  (define range (- high low))
-  (+ low (random range))
-  )
 ;; (random-in-range 5.0 10.0)
+
 
 (experiment)
 
