@@ -46,7 +46,7 @@
       (< (+ (square (- rand_x 1))
             (square (- rand_y 1)))
          1)))
-)
+  )
 
 (define (estimate-integral pred x1 x2 y1 y2 trials)
   (* (monte-carlo trials (pred x1 x2 y1 y2)) 4.0)
