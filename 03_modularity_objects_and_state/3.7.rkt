@@ -19,10 +19,10 @@
     )
   (define (dispatch pw m)
     (cond
-      ((not (password-correct? password)) (error "Incorrect Password"))
-      ((and (password-correct? password) (eq? m 'withdraw)) withdraw)
-      ((and (password-correct? password) (eq? m 'deposit)) deposit)
-      ((and (password-correct? password) (eq? m 'add-password)) add-password)
+      ((not (password-correct? pw)) (error "Incorrect Password"))
+      ((and (password-correct? pw) (eq? m 'withdraw)) withdraw)
+      ((and (password-correct? pw) (eq? m 'deposit)) deposit)
+      ((and (password-correct? pw) (eq? m 'add-password)) add-password)
       (else (error "Unknown request: MAKE-ACCOUNT"
                    m))))
   (add-password password)
