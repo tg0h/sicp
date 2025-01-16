@@ -28,10 +28,6 @@
 ;; (random-in-range 5.0 10.0)
 
 
-(experiment)
-
-(define (estimate-integral pred x1 x2 y1 y2 trials)
-  (monte-carlo trials pred )
 (define (pred x1 x2 y1 y2)
   (define (square x) (* x x))
   (define (random-in-range low high)
@@ -43,16 +39,21 @@
           (rand_x (random-in-range x1 x2))
           (rand_y (random-in-range y1 y2))
           )
-      (display rand_x)
-      (newline)
-      (display rand_y)
-      (newline)
+      ;; (display rand_x)
+      ;; (newline)
+      ;; (display rand_y)
+      ;; (newline)
       (< (+ (square (- rand_x 1))
             (square (- rand_y 1)))
          1)))
   experiment
   )
+
+(define (estimate-integral pred x1 x2 y1 y2 trials)
+  (* (monte-carlo trials (pred x1 x2 y1 y2)) 4.0)
   )
+
+(estimate-integral pred 0.0 2.0 0.0 2.0 10000)
 
 ;; (pred)
 
