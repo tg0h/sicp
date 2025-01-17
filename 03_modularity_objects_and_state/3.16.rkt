@@ -23,9 +23,12 @@
 (cdr z)
 (count-pairs z)
 
+(define a '(a))
+
+(define aa (cons a a))
+aa
+(cons aa aa)
 ;; (count-pairs (cons ab ab)) ; 5
+(count-pairs (cons aa aa)) ; 7
 
-(define my-structure (cons (cons 1 2) (cons (cons 3 4) (cons 5 6))))
-
-(count-pairs my-structure)
 
