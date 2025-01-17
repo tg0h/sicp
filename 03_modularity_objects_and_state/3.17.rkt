@@ -1,5 +1,7 @@
 #lang sicp
 
+(define counted '())
+
 (define (count-pairs x)
   (define (search x counted)
     (cond ((null? counted) false)
@@ -25,5 +27,8 @@
             )
         )
     )
-  (count x '())
+  (count x counted)
   )
+
+(define l3 '( a b c))
+(count-pairs l3)
