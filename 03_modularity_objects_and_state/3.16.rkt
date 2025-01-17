@@ -14,3 +14,9 @@ l3
 (count-pairs l3) ; 3
 
 (count-pairs (cons (list 'a) (list 'b))) ; also 3
+
+(define ab '(a b))
+ab
+
+(count-pairs (cons ab ab))
+
