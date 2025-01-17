@@ -19,20 +19,25 @@
 (define z (cons ab (cdr ab)))
 ;; (set-cdr! z (cdr ab))
 
-(car z)
-(cdr z)
-(count-pairs z)
+;; (car z)
+;; (cdr z)
+;; (count-pairs z)
+
+(define abab (cons ab ab))
+;; abab
+;; (count-pairs (cons ab ab))
+(count-pairs abab)
+;; (count-pairs ab)
 
 (define a '(a))
 (define aa (cons a a))
 ;; aa
 ;; (cons aa aa)
 ;; (count-pairs (cons ab ab)) ; 5
-(count-pairs (cons aa aa)) ; 7
 
 
-(define inf '( a b c))
-(set-cdr! (cddr inf) inf)
+;; (define inf '( a b c))
+;; (set-cdr! (cddr inf) inf)
 ;; inf
 
 ;; (count-pairs inf)
