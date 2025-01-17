@@ -31,3 +31,8 @@
 (count-pairs (cons aa aa)) ; 7
 
 
+(define inf '( a b c))
+(set-cdr! (cddr inf) inf)
+;; inf
+
+;; (count-pairs inf)
