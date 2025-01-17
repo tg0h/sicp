@@ -26,14 +26,13 @@
 (define abab (cons ab ab))
 ;; abab
 ;; (count-pairs (cons ab ab))
-(count-pairs abab)
 ;; (count-pairs ab)
 
 (define a '(a))
 (define aa (cons a a))
 ;; aa
 ;; (cons aa aa)
-;; (count-pairs (cons ab ab)) ; 5
+(count-pairs (cons ab ab)) ; 5
 
 
 ;; (define inf '( a b c))
