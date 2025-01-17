@@ -6,7 +6,7 @@
   (define (search x counted)
     (display "search: ")
     (display x)
-    (display " ")
+    (display " || ")
     (display counted)
     (cond ((null? counted)
            (display " false")
