@@ -24,10 +24,9 @@
 (count-pairs z)
 
 (define a '(a))
-
 (define aa (cons a a))
-aa
-(cons aa aa)
+;; aa
+;; (cons aa aa)
 ;; (count-pairs (cons ab ab)) ; 5
 (count-pairs (cons aa aa)) ; 7
 
