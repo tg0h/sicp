@@ -11,6 +11,6 @@
 
 l3
 
-(count-pairs l3)
+(count-pairs l3) ; 3
 
-(count-pairs (cons (list 'a) (list 'b)))
+(count-pairs (cons (list 'a) (list 'b))) ; also 3
