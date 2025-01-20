@@ -31,3 +31,12 @@
          (error "DELETE! called with an empty queue" queue))
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
               queue)))
+
+(define q1 (make-queue))
+
+(insert-queue! q1 'a)
+
+(insert-queue! q1 'b)
+
+(delete-queue! q1 )
+(delete-queue! q1 )
