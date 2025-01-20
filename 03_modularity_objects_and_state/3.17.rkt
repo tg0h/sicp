@@ -3,24 +3,24 @@
 (define counted '())
 
 (define (count-pairs x)
-  (define (counted-before? x)
+  (define (counted-before? x search-list)
     (display "search: ")
     (display x)
     (display " in: ")
-    (display counted)
-    (cond ((null? counted)
+    (display search-list)
+    (cond ((null? search-list)
            (display " FALSE")
            (newline)
            false
            )
-          ((eq? x (car counted))
+          ((eq? x (car search-list))
            (display " true")
            (newline)
            true
            )
           (else
            (display " ->> ")
-           (counted-before? x (cdr counted))
+           (counted-before? x (cdr search-list))
            ))
     )
   (define (count x)
@@ -39,7 +39,7 @@
        (newline)
        0
        )
-      ((counted-before? x )
+      ((counted-before? x counted)
        (display "COUNTED BEFORE")
        (+ (count (car x))
           (count (cdr x)))
