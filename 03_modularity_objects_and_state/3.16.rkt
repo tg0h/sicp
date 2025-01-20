@@ -20,18 +20,19 @@
 ;; (count-pairs (cons ab ab))
 ;; (count-pairs ab)
 
-(define a '(a))
 ;; aa
 ;; (cons aa aa)
 (count-pairs (cons ab ab)) ; 5
 
+
+(define a '(a))
 (count-pairs (cons (cons a a) (cons a a))) ; 7
 (define _a (cons a a))
-(count-pairs (cons _a _a)) 
+(count-pairs (cons _a _a))
 
 
-             ;; (define inf '( a b c))
-             ;; (set-cdr! (cddr inf) inf)
-             ;; inf
+;; (define inf '( a b c))
+;; (set-cdr! (cddr inf) inf)
+;; inf
 
-             ;; (count-pairs inf)
+;; (count-pairs inf)
