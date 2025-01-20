@@ -9,3 +9,8 @@
 
 (define (empty-queue? queue) (null? (front-ptr queue)))
 (define (make-queue) (cons '() '()))
+
+(define (front-queue queue)
+  (if (empty-queue? queue)
+      (error "FRONT called with an empty queue" queue)
+      (car (front-ptr queue))))
