@@ -8,3 +8,4 @@
   (set-cdr! queue item))
 
 (define (empty-queue? queue) (null? (front-ptr queue)))
+(define (make-queue) (cons '() '()))
