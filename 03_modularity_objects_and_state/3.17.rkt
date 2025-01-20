@@ -9,7 +9,7 @@
     (display " in: ")
     (display counted)
     (cond ((null? counted)
-           (display " false")
+           (display " FALSE")
            (newline)
            false
            )
@@ -24,7 +24,7 @@
            ))
     )
   (define (count x counted)
-    (display ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> x is:")
+    (display "count >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> x is:")
     (display x)
     (display " | counted is:")
     (display counted)
@@ -34,9 +34,16 @@
     ;;   )
     ;; (display counted-before?)
     (cond
-      ((not (pair? x)) 0)
-      ((counted-before? x counted) (+ (count (car x) counted)
-                                      (count (cdr x) counted)))
+      ((not (pair? x))
+       (display "return 0")
+       (newline)
+       0
+       )
+      ((counted-before? x counted)
+       (display "COUNTED BEFORE")
+       (+ (count (car x) counted)
+          (count (cdr x) counted))
+       )
       (else
        (display "add x:")
        (display x)
