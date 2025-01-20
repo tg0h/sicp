@@ -1,18 +1,24 @@
 #lang sicp
 
 (define (make-queue)
-  (let (
-        (front-ptr ... )
-        (rear-ptr ... ))
-    ⟨definitions of internal procedures⟩
+  (define q (cons '() '()))
+  (let ((front-ptr  (car q))
+        (rear-ptr (cdr q)))
+    (define (front-queue)
+      (if (empty-queue? q)
+          (error "FRONT called with an empty queue" q)
+          (car (front-ptr q))))
     (define (dispatch m)
-      ((cond ((eq? m 'front-queue) )
-             )
+      ((cond ((eq? m 'front-queue) front-queue))
        )
-      dispatch))
+      )
+    dispatch
+
+    )
   )
 
 (define (empty-queue? queue) (null? (front-ptr queue)))
+
 ;; (define (make-queue) (cons '() '()))
 ;; (define (front-ptr queue) (car queue))
 ;; (define (rear-ptr queue) (cdr queue))
@@ -39,3 +45,21 @@
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
               queue)))
 
+
+(define z (make-queue))
+
+;; (z 'front-queue)
+(z 'insert-queue! 'a)
+;; (define q1 (make-queue))
+;;
+;; (insert-queue! q1 'a)
+;; (print-queue q1)
+;;
+;; (insert-queue! q1 'b)
+;; (print-queue q1)
+;;
+;; (delete-queue! q1 )
+;; (print-queue q1)
+;; (delete-queue! q1 )
+;; (print-queue q1)
+;;
