@@ -8,6 +8,19 @@
       (if (empty-queue? q)
           (error "FRONT called with an empty queue" q)
           (car (front-ptr q))))
+    (define (set-front-ptr! item) (set-car! q item))
+    (define (set-rear-ptr! item) (set-cdr! q item))
+    (define (empty-queue?) (null? (front-ptr)))
+    (define (insert-queue! item)
+      (let ((new-pair (cons item '())))
+        (cond ((empty-queue?)
+               (set-front-ptr!  new-pair)
+               (set-rear-ptr!  new-pair)
+               q)
+              (else
+               (set-cdr! (rear-ptr ) new-pair)
+               (set-rear-ptr!  new-pair)
+               q))))
     (define (dispatch m)
       ((cond ((eq? m 'front-queue) front-queue))
        )
@@ -17,7 +30,6 @@
     )
   )
 
-(define (empty-queue? queue) (null? (front-ptr queue)))
 
 ;; (define (make-queue) (cons '() '()))
 ;; (define (front-ptr queue) (car queue))
