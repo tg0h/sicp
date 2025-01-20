@@ -16,12 +16,6 @@
 (count-pairs z) ; returns 4
 
 (define abab (cons ab ab))
-;; abab
-;; (count-pairs (cons ab ab))
-;; (count-pairs ab)
-
-;; aa
-;; (cons aa aa)
 (count-pairs (cons ab ab)) ; 5
 
 (define a '(a))
