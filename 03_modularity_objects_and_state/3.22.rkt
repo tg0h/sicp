@@ -2,11 +2,8 @@
 
 (define (make-queue)
   (define q (cons '() '()))
-  (let ((front-ptr
-         (lambda ()
-           (car q))
-         )
-        (rear-ptr (cdr q)))
+  (let ((front-ptr (lambda () (car q)))
+        (rear-ptr (lambda () (cdr q))))
     (define (front-queue)
       (display "front-q")
       (if (empty-queue?)
@@ -16,23 +13,21 @@
           ))
     (define (set-front-ptr! item) (set-car! q item))
     (define (set-rear-ptr! item) (set-cdr! q item))
-    (define (empty-queue?)
-      ;; (display (null? (front-ptr)))
-      (display "EMPTY_Q")
-      ;; 1
-      (front-ptr)
-      ;; (null? (front-ptr))
+    (define (empty-queue?) ;; (display "EMPTY_Q")
+      (null? (front-ptr))
       )
-    (define (insert-queue! item)
-      (let ((new-pair (cons item '())))
-        (cond ((empty-queue?)
-               (set-front-ptr!  new-pair)
-               (set-rear-ptr!  new-pair)
-               q)
-              (else
-               (set-cdr! (rear-ptr ) new-pair)
-               (set-rear-ptr!  new-pair)
-               q))))
+    ;; (define (insert-queue! item)
+    ;;   (display "insert-q")
+    ;;   (let ((new-pair (cons item '())))
+    ;;     (cond ((empty-queue?)
+    ;;            (set-front-ptr!  new-pair)
+    ;;            (set-rear-ptr!  new-pair)
+    ;;            q)
+    ;;           (else
+    ;;            (set-cdr! (rear-ptr ) new-pair)
+    ;;            (set-rear-ptr!  new-pair)
+    ;;            q))))
+    (define (insert-queue! x) x)
     (define (delete-queue! )
       (cond ((empty-queue? )
              (error "DELETE! called with an empty queue" q))
@@ -42,7 +37,10 @@
       (display "CALLING DISPATCH")
       ((cond
          ((eq? m 'front-queue) front-queue)
-         ((eq? m 'insert-queue!) insert-queue!)
+         ((eq? m 'insert-queue!)
+          (display "return insert q")
+          insert-queue!
+          )
          ((eq? m 'delete-queue!) delete-queue!)
          )
        )
@@ -53,10 +51,10 @@
   )
 
 (define z (make-queue))
-z
+;; z
 
-(z 'front-queue)
-;; ((z 'insert-queue!) 'a)
+;; (z 'front-queue)
+(z 'insert-queue!)
 ;; (define q1 (make-queue))
 ;;
 ;; (insert-queue! q1 'a)
