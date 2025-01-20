@@ -23,7 +23,8 @@
            queue)
           (else
            (set-cdr! (rear-ptr queue) new-pair)
-           (set-rear-ptr! queue new-pair) queue))))
+           (set-rear-ptr! queue new-pair)
+           queue))))
 
 (define (delete-queue! queue)
   (cond ((empty-queue? queue)
