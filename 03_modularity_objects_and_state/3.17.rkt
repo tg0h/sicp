@@ -29,10 +29,6 @@
     (display " | counted is:")
     (display counted)
     (newline)
-    ;; (define counted-before?
-    ;;   (search x counted)
-    ;;   )
-    ;; (display counted-before?)
     (cond
       ((not (pair? x))
        (display "return 0")
@@ -62,28 +58,6 @@
        )
 
       )
-    ;; (if counted-before?
-    ;;     (begin
-    ;;       ;; (set! counted (cons x counted))
-    ;;       (if (not (pair? x))
-    ;;           0
-    ;;           (+ (count (car x) counted)
-    ;;              (count (cdr x) counted))
-    ;;           ))
-    ;;     (begin
-    ;;       (set! counted (cons x counted))
-    ;;       (display "add ")
-    ;;       (display x)
-    ;;       (newline)
-    ;;       (if (not (pair? x))
-    ;;           0
-    ;;           (+ (count (car x) counted)
-    ;;              (count (cdr x) counted)
-    ;;
-    ;;              1)
-    ;;           )
-    ;;       )
-    ;;     )
     )
   (count x )
   )
