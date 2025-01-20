@@ -9,16 +9,12 @@
 
 (define l3 '( a b c))
 
-;; l3
-
 ;; (count-pairs l3) ; 3
 ;; (count-pairs (cons (list 'a) (list 'b))) ; also 3
 
 (define ab '(a b))
 
 (define z (cons ab (cdr ab)))
-;; (set-cdr! z (cdr ab))
-
 (count-pairs z) ; returns 4
 
 (define abab (cons ab ab))
