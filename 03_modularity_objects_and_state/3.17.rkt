@@ -73,13 +73,15 @@
 ;; ab
 
 ;; (eq? x ab)
-(define _a '(a ))
+(define a '(a ))
 
 ;; (define abab (cons ab ab))
-(define _aa (cons _a _a))
+(define aa (cons a a))
 ;; (count-pairs abab)
 
-(count-pairs _aa)
+(count-pairs aa)
+
+(count-pairs (cons (cons a a) (cons a a))) ; 7
 
 ;; (eq? _a _a)
 

@@ -8,12 +8,10 @@
          1)))
 
 (define l3 '( a b c))
-
 ;; (count-pairs l3) ; 3
 ;; (count-pairs (cons (list 'a) (list 'b))) ; also 3
 
 (define ab '(a b))
-
 (define z (cons ab (cdr ab)))
 (count-pairs z) ; returns 4
 
@@ -23,14 +21,17 @@
 ;; (count-pairs ab)
 
 (define a '(a))
-(define aa (cons a a))
 ;; aa
 ;; (cons aa aa)
-;; (count-pairs (cons ab ab)) ; 5
+(count-pairs (cons ab ab)) ; 5
+
+(count-pairs (cons (cons a a) (cons a a))) ; 7
+(define _a (cons a a))
+(count-pairs (cons _a _a)) 
 
 
-;; (define inf '( a b c))
-;; (set-cdr! (cddr inf) inf)
-;; inf
+             ;; (define inf '( a b c))
+             ;; (set-cdr! (cddr inf) inf)
+             ;; inf
 
-;; (count-pairs inf)
+             ;; (count-pairs inf)
