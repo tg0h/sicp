@@ -37,3 +37,6 @@
 (count-pairs (cons _a _a)) ;displays 2
 
 
+(define ab '(a b))
+(define z (cons ab (cdr ab)))
+(count-pairs z) ; returns 4
