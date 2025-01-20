@@ -4,34 +4,21 @@
 
 (define (count-pairs x)
   (define (counted-before? x search-list)
-    (cond ((null? search-list)
-           false
-           )
-          ((eq? x (car search-list))
-           true
-           )
-          (else
-           (counted-before? x (cdr search-list))
-           ))
+    (cond ((null? search-list) false)
+          ((eq? x (car search-list)) true)
+          (else (counted-before? x (cdr search-list))))
     )
   (define (count x)
     (cond
-      ((not (pair? x))
-       0
-       )
+      ((not (pair? x)) 0)
       ((counted-before? x counted)
        (+ (count (car x))
-          (count (cdr x)))
-       )
+          (count (cdr x))))
       (else
        (set! counted (cons x counted))
        (+ (count (car x))
           (count (cdr x))
-          1 )
-       )
-
-      )
-    )
+          1 ))))
   (count x )
   )
 
