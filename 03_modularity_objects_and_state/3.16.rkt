@@ -19,9 +19,7 @@
 (define z (cons ab (cdr ab)))
 ;; (set-cdr! z (cdr ab))
 
-;; (car z)
-;; (cdr z)
-;; (count-pairs z)
+(count-pairs z) ; returns 4
 
 (define abab (cons ab ab))
 ;; abab
@@ -32,7 +30,7 @@
 (define aa (cons a a))
 ;; aa
 ;; (cons aa aa)
-(count-pairs (cons ab ab)) ; 5
+;; (count-pairs (cons ab ab)) ; 5
 
 
 ;; (define inf '( a b c))
