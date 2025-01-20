@@ -24,87 +24,89 @@
            ))
     )
   (define (count x counted)
-    (display ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>count counted is:")
+    (display ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> x is:")
+    (display x)
+    (display " | counted is:")
     (display counted)
-    (newline) 
-             ;; (define counted-before?
-             ;;   (search x counted)
-             ;;   )
-             ;; (display counted-before?)
-             (cond
-               ((not (pair? x)) 0)
-               ((counted-before? x counted) (+ (count (car x) counted)
-                                               (count (cdr x) counted)))
-               (else
-                (display "add x:")
-                (display x)
-                ;; (newline)
-                (display " counted: ")
-                (display counted)
-                (newline)
-                (set! counted (cons x counted))
-                (display "after add: ")
-                (display counted)
-                (newline)
-                (newline)
-                (+ (count (car x) counted)
-                   (count (cdr x) counted)
-                   1 )
-                )
+    (newline)
+    ;; (define counted-before?
+    ;;   (search x counted)
+    ;;   )
+    ;; (display counted-before?)
+    (cond
+      ((not (pair? x)) 0)
+      ((counted-before? x counted) (+ (count (car x) counted)
+                                      (count (cdr x) counted)))
+      (else
+       (display "add x:")
+       (display x)
+       ;; (newline)
+       (display " counted: ")
+       (display counted)
+       (newline)
+       (set! counted (cons x counted))
+       (display "after add: ")
+       (display counted)
+       (newline)
+       (newline)
+       (+ (count (car x) counted)
+          (count (cdr x) counted)
+          1 )
+       )
 
-               )
-             ;; (if counted-before?
-             ;;     (begin
-             ;;       ;; (set! counted (cons x counted))
-             ;;       (if (not (pair? x))
-             ;;           0
-             ;;           (+ (count (car x) counted)
-             ;;              (count (cdr x) counted))
-             ;;           ))
-             ;;     (begin
-             ;;       (set! counted (cons x counted))
-             ;;       (display "add ")
-             ;;       (display x)
-             ;;       (newline)
-             ;;       (if (not (pair? x))
-             ;;           0
-             ;;           (+ (count (car x) counted)
-             ;;              (count (cdr x) counted)
-             ;;
-             ;;              1)
-             ;;           )
-             ;;       )
-             ;;     )
-             )
-    (count x counted)
+      )
+    ;; (if counted-before?
+    ;;     (begin
+    ;;       ;; (set! counted (cons x counted))
+    ;;       (if (not (pair? x))
+    ;;           0
+    ;;           (+ (count (car x) counted)
+    ;;              (count (cdr x) counted))
+    ;;           ))
+    ;;     (begin
+    ;;       (set! counted (cons x counted))
+    ;;       (display "add ")
+    ;;       (display x)
+    ;;       (newline)
+    ;;       (if (not (pair? x))
+    ;;           0
+    ;;           (+ (count (car x) counted)
+    ;;              (count (cdr x) counted)
+    ;;
+    ;;              1)
+    ;;           )
+    ;;       )
+    ;;     )
     )
+  (count x counted)
+  )
 
-  (define l3 '( a b c))
-  ;; (count-pairs l3)
+(define l3 '( a b c))
+;; (count-pairs l3)
 
 
-  ;; (define ab '(a b))
-  ;; (define x ab)
-  ;; (set-cdr! ab 'c)
-  ;; x
-  ;; ab
+;; (define ab '(a b))
+;; (define x ab)
+;; (set-cdr! ab 'c)
+;; x
+;; ab
 
-  ;; (eq? x ab)
-  (define _a '(a ))
+;; (eq? x ab)
+(define _a '(a ))
 
-  ;; (define abab (cons ab ab))
-  (define _aa (cons _a _a))
-  ;; (count-pairs abab)
+;; (define abab (cons ab ab))
+(define _aa (cons _a _a))
+;; (count-pairs abab)
 
-  (count-pairs _aa)
+(count-pairs _aa)
 
-  ;; (eq? _a _a)
+;; (eq? _a _a)
 
-  ;; (define (search x counted)
-  ;;   (cond ((null? counted) false)
-  ;;         ((eq? x (car counted)) true)
-  ;;         (else (search x (cdr counted))))
-  ;;   )
-  ;; (search l3 counted)
+;; (define (search x counted)
+;;   (cond ((null? counted) false)
+;;         ((eq? x (car counted)) true)
+;;         (else (search x (cdr counted))))
+;;   )
+;; (search l3 counted)
 
-  ;; (eq? ab ab)
+;; (eq? ab ab)
