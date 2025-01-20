@@ -40,3 +40,10 @@
 (define ab '(a b))
 (define z (cons ab (cdr ab)))
 (count-pairs z) ; returns 4
+
+(define (has-cycle? l)
+  (define seen-before '())
+  (if (memq (car l) seen-before) true
+    
+  )
+  )
