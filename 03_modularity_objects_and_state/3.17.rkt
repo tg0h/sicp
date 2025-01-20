@@ -42,8 +42,11 @@
 
 (count-pairs aa)
 
-(count-pairs (cons (cons a a) (cons a a))) ; 7
+(count-pairs (cons (cons a a) (cons a a))) ; displays 3
+; the first cons a a is a distinct object different from the second cons a a
 
 (define _a (cons a a))
-(count-pairs (cons _a _a))
+; _a and _a are the same object, so only has 2
+(count-pairs (cons _a _a)) ;displays 2
+
 
