@@ -38,7 +38,7 @@
       ((cond
          ((eq? m 'front-queue) front-queue)
          ((eq? m 'insert-queue!)
-          (display "return insert q")
+          ;; (display "return insert q")
           insert-queue!
           )
          ((eq? m 'delete-queue!) delete-queue!)
