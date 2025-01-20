@@ -24,7 +24,6 @@
 ;; (cons aa aa)
 (count-pairs (cons ab ab)) ; 5
 
-
 (define a '(a))
 (count-pairs (cons (cons a a) (cons a a))) ; 7
 (define _a (cons a a))
