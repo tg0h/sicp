@@ -6,3 +6,5 @@
   (set-car! queue item))
 (define (set-rear-ptr! queue item)
   (set-cdr! queue item))
+
+(define (empty-queue? queue) (null? (front-ptr queue)))
