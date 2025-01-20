@@ -32,11 +32,22 @@
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
               queue)))
 
+(define (print-queue q)
+  (display "PRINT: ")
+  (display (front-ptr q))
+  (newline)
+  )
+
 (define q1 (make-queue))
 
 (insert-queue! q1 'a)
+(print-queue q1)
 
 (insert-queue! q1 'b)
+(print-queue q1)
 
 (delete-queue! q1 )
+(print-queue q1)
 (delete-queue! q1 )
+(print-queue q1)
+
