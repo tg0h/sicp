@@ -11,12 +11,10 @@
         (if record
             (cdr record)
             false)))
-
     (define (assoc key records)
       (cond ((null? records) false)
             ((same-key? key (caar records)) (car records))
             (else (assoc key (cdr records)))))
-
     (define (insert! key value table)
       (let ((record (assoc key (cdr table))))
         (if record
@@ -40,12 +38,13 @@
     )
   )
 
-(define (within-5? k1 k2)
-  (<= (abs (- k1 k2)) 5))
+(define (within-5? k1 k2) (<= (abs (- k1 k2)) 5))
 
 (define operation-table (make-table within-5?))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
 
-(put 10 'tim)
-(get 10 'tim)
+((operation-table 'insert-proc!) 10 'tim)
+
+;; (put 10 'tim)
+;; (get 10 'tim)
