@@ -51,8 +51,21 @@
 (define (front-delete-dequeue! queue)
   (cond ((empty-queue? queue)
          (error "front-DELETE! called with an empty queue" queue))
-        (else (set-front-ptr! queue (cdr (front-ptr queue)))
-              queue)))
+        ((eq? (front-ptr queue) (rear-ptr queue))
+         (set-front-ptr! queue
+                         ;; (next-item-pointer (front-ptr queue))
+                         nil
+                         )
+         (set-rear-ptr! queue
+                        ;; (next-item-pointer (front-ptr queue))
+                        nil
+                        )
+         queue
+         )
+        (else
+         (set-previous-item! (next-item-pointer (front-ptr queue)) nil) ; delink 2nd item from 1st item
+         (set-front-ptr! queue (next-item-pointer (front-ptr queue))) ; point front-ptr to 2nd item
+         queue)))
 
 (define (rear-delete-dequeue! queue)
   (cond ((empty-queue? queue)
