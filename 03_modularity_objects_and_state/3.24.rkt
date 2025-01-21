@@ -4,7 +4,7 @@
 ;; (define (make-table)
 ;; (list '*table*))
 
-(define (make-table)
+(define (make-table same-key?)
   (let ((local-table (list '*table*)))
     (define (lookup key table)
       (let ((record (assoc key (cdr table))))
@@ -32,6 +32,17 @@
     dispatch))
 
 
+(define (abs x)
+  (cond
+      ((> x 0) x)
+      ((= x 0) 0)
+      ((< x 0) (- x))
+  )
+)
+
+(define (same-key? k1 k2)
+  (<= (- k1  k2) 5)
+  )
 (define operation-table (make-table))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
