@@ -21,14 +21,14 @@
       (car (rear-ptr queue))))
 
 (define (insert-queue! queue item)
-  (let ((new-pair (cons item '())))
+  (let ((new-item (list item '() '())))
     (cond ((empty-queue? queue)
-           (set-front-ptr! queue new-pair)
-           (set-rear-ptr! queue new-pair)
+           (set-front-ptr! queue new-item)
+           (set-rear-ptr! queue new-item)
            queue)
           (else
-           (set-cdr! (rear-ptr queue) new-pair)
-           (set-rear-ptr! queue new-pair)
+           (set-cdr! (rear-ptr queue) new-item)
+           (set-rear-ptr! queue new-item)
            queue))))
 
 (define (front-delete-dequeue! queue)
@@ -53,14 +53,14 @@
 
 (insert-queue! q1 'a)
 (front-dequeue q1)
-(rear-dequeue q1)
+;; (rear-dequeue q1)
 ;; (print-queue q1)
 
-(insert-queue! q1 'b)
+;; (insert-queue! q1 'b)
 ;; (print-queue q1)
 
-(front-delete-dequeue! q1 )
+;; (front-delete-dequeue! q1 )
 ;; (print-queue q1)
-(front-delete-dequeue! q1 )
+;; (front-delete-dequeue! q1 )
 ;; (print-queue q1)
 
