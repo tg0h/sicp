@@ -5,7 +5,6 @@
   (let ((front-ptr (lambda () (car q)))
         (rear-ptr (lambda () (cdr q))))
     (define (front-queue)
-      (display "front-q")
       (if (empty-queue?)
           (error "FRONT called with an empty queue" q)
           (car (front-ptr))
@@ -50,6 +49,7 @@
 ;; (z 'insert-queue!)
 ((z 'insert-queue!) 'a)
 ((z 'insert-queue!) 'b)
+((z 'front-queue))
 ;; (define q1 (make-queue))
 ;;
 ;; (print-queue q1)
@@ -58,7 +58,8 @@
 ;; (print-queue q1)
 ;;
 ((z 'delete-queue!))
-((z 'delete-queue!))
+((z 'front-queue))
+;; ((z 'delete-queue!))
 ;; ((z 'delete-queue!))
 ;; (print-queue q1)
 ;; (delete-queue! q1 )
