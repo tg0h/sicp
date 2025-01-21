@@ -20,6 +20,10 @@
       (error "REAR-dequeue called with an empty queue" queue)
       (car (rear-ptr queue))))
 
+(define (make-list-item item)
+  (list item '() '())
+  )
+
 (define (insert-queue! queue item)
   (let ((new-item (list item '() '())))
     (cond ((empty-queue? queue)
