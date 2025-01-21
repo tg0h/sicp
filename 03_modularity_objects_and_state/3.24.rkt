@@ -14,7 +14,7 @@
 
     (define (assoc key records)
       (cond ((null? records) false)
-            ((equal? key (caar records)) (car records))
+            ((same-key? key (caar records)) (car records))
             (else (assoc key (cdr records)))))
 
     (define (insert! key value table)
@@ -34,15 +34,15 @@
 
 (define (abs x)
   (cond
-      ((> x 0) x)
-      ((= x 0) 0)
-      ((< x 0) (- x))
+    ((> x 0) x)
+    ((= x 0) 0)
+    ((< x 0) (- x))
+    )
   )
-)
 
-(define (same-key? k1 k2)
-  (<= (- k1  k2) 5)
-  )
-(define operation-table (make-table))
+(define (within-5? k1 k2)
+  (<= (abs (- k1 k2)) 5))
+
+(define operation-table (make-table within-5?))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
