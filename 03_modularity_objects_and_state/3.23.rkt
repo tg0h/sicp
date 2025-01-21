@@ -78,7 +78,7 @@
          )
         (else
          (set-next-item! (previous-item-pointer (rear-ptr queue)) nil) ; delink last item from second-last item
-         (set-front-ptr! queue (next-item-pointer (front-ptr queue))) ; point front-ptr to 2nd item
+         (set-rear-ptr! queue (previous-item-pointer (rear-ptr queue))) ; point rear ptr to second last item
          queue))
   )
 
@@ -99,9 +99,18 @@
 (insert-queue! q1 'b)
 (insert-queue! q1 'c)
 
-(front-delete-dequeue! q1)
-(front-delete-dequeue! q1)
-(front-delete-dequeue! q1)
+;; (front-delete-dequeue! q1)
+;; (front-delete-dequeue! q1)
+;; (front-delete-dequeue! q1)
+(rear-delete-dequeue! q1)
+(rear-dequeue q1)
+(rear-delete-dequeue! q1)
+(rear-dequeue q1)
+(front-dequeue q1)
+(insert-queue! q1 'c)
+(front-dequeue q1)
+(rear-dequeue q1)
+;; (rear-delete-dequeue! q1)
 ;; (front-dequeue q1)
 ;; (rear-dequeue q1)
 
