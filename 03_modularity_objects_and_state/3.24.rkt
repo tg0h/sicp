@@ -30,3 +30,8 @@
             ((eq? m 'insert-proc!) insert!)
             (else (error "Unknown operation: TABLE" m))))
     dispatch))
+
+
+(define operation-table (make-table))
+(define get (operation-table 'lookup-proc))
+(define put (operation-table 'insert-proc!))
