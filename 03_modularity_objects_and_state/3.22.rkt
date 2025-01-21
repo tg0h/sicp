@@ -26,8 +26,7 @@
                (set-rear-ptr!  new-pair)
                q))))
     (define (delete-queue!)
-      (cond ((empty-queue?)
-             (error "DELETE! called with an empty queue" q))
+      (cond ((empty-queue?) (error "DELETE! called with an empty queue" q))
             (else (set-front-ptr! q (cdr (front-ptr)))
                   q)))
     (define (dispatch m)
@@ -58,7 +57,7 @@
 ;; (insert-queue! q1 'b)
 ;; (print-queue q1)
 ;;
-((z 'delete-queue!))
+(z 'delete-queue!)
 ;; (print-queue q1)
 ;; (delete-queue! q1 )
 ;; (print-queue q1)
