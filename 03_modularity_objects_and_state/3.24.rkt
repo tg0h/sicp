@@ -46,3 +46,6 @@
 (define operation-table (make-table within-5?))
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
+
+(put 10 'tim)
+(get 10 'tim)
