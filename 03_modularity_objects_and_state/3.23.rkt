@@ -31,9 +31,15 @@
            (set-rear-ptr! queue new-pair)
            queue))))
 
-(define (front-delete-queue! queue)
+(define (front-delete-dequeue! queue)
   (cond ((empty-queue? queue)
-         (error "DELETE! called with an empty queue" queue))
+         (error "front-DELETE! called with an empty queue" queue))
+        (else (set-front-ptr! queue (cdr (front-ptr queue)))
+              queue)))
+
+(define (rear-delete-dequeue! queue)
+  (cond ((empty-queue? queue)
+         (error "rear-DELETE! called with an empty queue" queue))
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
               queue)))
 
@@ -53,8 +59,8 @@
 (insert-queue! q1 'b)
 ;; (print-queue q1)
 
-(front-delete-queue! q1 )
+(front-delete-dequeue! q1 )
 ;; (print-queue q1)
-(front-delete-queue! q1 )
+(front-delete-dequeue! q1 )
 ;; (print-queue q1)
 
