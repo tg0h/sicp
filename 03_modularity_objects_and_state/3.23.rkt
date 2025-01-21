@@ -51,7 +51,7 @@
 (define (front-delete-dequeue! queue)
   (cond ((empty-queue? queue)
          (error "front-DELETE! called with an empty queue" queue))
-        ((eq? (front-ptr queue) (rear-ptr queue))
+        ((eq? (front-ptr queue) (rear-ptr queue)) ; if there is only 1 item left in queue
          (set-front-ptr! queue
                          ;; (next-item-pointer (front-ptr queue))
                          nil
@@ -65,13 +65,22 @@
         (else
          (set-previous-item! (next-item-pointer (front-ptr queue)) nil) ; delink 2nd item from 1st item
          (set-front-ptr! queue (next-item-pointer (front-ptr queue))) ; point front-ptr to 2nd item
-         queue)))
+         queue))
+  )
 
 (define (rear-delete-dequeue! queue)
   (cond ((empty-queue? queue)
          (error "rear-DELETE! called with an empty queue" queue))
-        (else (set-front-ptr! queue (cdr (front-ptr queue)))
-              queue)))
+        ((eq? (front-ptr queue) (rear-ptr queue)) ; if there is only 1 item left in queue
+         (set-front-ptr! queue nil)
+         (set-rear-ptr! queue nil)
+         queue
+         )
+        (else
+         (set-next-item! (previous-item-pointer (rear-ptr queue)) nil) ; delink last item from second-last item
+         (set-front-ptr! queue (next-item-pointer (front-ptr queue))) ; point front-ptr to 2nd item
+         queue))
+  )
 
 (define (print-queue q)
   (display "PRINT: ")
@@ -80,6 +89,7 @@
   )
 
 (define q1 (make-queue))
+;; q1
 
 (insert-queue! q1 'a)
 ;; (front-dequeue q1)
