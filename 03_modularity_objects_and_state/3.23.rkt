@@ -82,13 +82,18 @@
 (define q1 (make-queue))
 
 (insert-queue! q1 'a)
-(front-dequeue q1)
+;; (front-dequeue q1)
 ;; (rear-dequeue q1)
 ;; (print-queue q1)
 
 (insert-queue! q1 'b)
-(front-dequeue q1)
-(rear-dequeue q1)
+(insert-queue! q1 'c)
+
+(front-delete-dequeue! q1)
+(front-delete-dequeue! q1)
+(front-delete-dequeue! q1)
+;; (front-dequeue q1)
+;; (rear-dequeue q1)
 
 ;; (front-delete-dequeue! q1 )
 ;; (print-queue q1)
