@@ -10,10 +10,15 @@
 (define (empty-queue? queue) (null? (front-ptr queue)))
 (define (make-queue) (cons '() '()))
 
-(define (front-queue queue)
+(define (front-dequeue queue)
   (if (empty-queue? queue)
-      (error "FRONT called with an empty queue" queue)
+      (error "FRONT-dequeue called with an empty queue" queue)
       (car (front-ptr queue))))
+
+(define (rear-dequeue queue)
+  (if (empty-queue? queue)
+      (error "REAR-dequeue called with an empty queue" queue)
+      (car (rear-ptr queue))))
 
 (define (insert-queue! queue item)
   (let ((new-pair (cons item '())))
@@ -41,13 +46,14 @@
 (define q1 (make-queue))
 
 (insert-queue! q1 'a)
-(print-queue q1)
+(front-dequeue q1)
+;; (print-queue q1)
 
 (insert-queue! q1 'b)
-(print-queue q1)
+;; (print-queue q1)
 
 (delete-queue! q1 )
-(print-queue q1)
+;; (print-queue q1)
 (delete-queue! q1 )
-(print-queue q1)
+;; (print-queue q1)
 
