@@ -42,7 +42,7 @@
         (let ((record (assoc key (cdr table))))
           (if record
               (if is-last-key?
-                  record
+                  (cdr record) ; return record value
                   (lookup (cdr keys) record))
               false
               ))))
@@ -51,6 +51,13 @@
             ((equal? key (caar records)) (car records))
             (else (assoc key (cdr records)))))
     (define (insert! keys value table)
+      (display "insert! keys:")
+      (display keys)
+      (display " value: ")
+      (display value)
+      (display " table:")
+      (display table)
+      (newline)
       (define (create-table keys value)
         (cons (car keys)
               (if (null? (cdr keys))
@@ -73,7 +80,7 @@
                   (insert! (cdr keys) value record))
               (set-cdr! table (cons
                                (create-table keys value)
-                               value)))))
+                               (cdr table))))))
       'ok)
     (define (dispatch m)
       (cond
@@ -88,6 +95,16 @@
 (define get (operation-table 'lookup-proc))
 (define put (operation-table 'insert-proc!))
 
-(put '(1) 2)
+;; (put '(1) 2)
 ;; (get '(1 2))
-(get '(1))
+;; (get '(1))
+
+(put '(1 2) 3)
+;; (get '(1))
+(put '(1 3) 5)
+;; (get '(1 2))
+;; (put '(3 4) 5)
+;; (get '(3 4))
+;; (put '(4 5 6) 7)
+;; (get '(4 5 6))
+
