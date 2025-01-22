@@ -1,15 +1,15 @@
 #lang sicp
 
-(define (lookup key-1 key-2 table)
-  (let ((subtable
-         (assoc key-1 (cdr table))))
-    (if subtable
-        (let ((record
-               (assoc key-2 (cdr subtable))))
-          (if record
-              (cdr record)
-              false))
-        false)))
+;; (define (lookup key-1 key-2 table)
+;;   (let ((subtable
+;;          (assoc key-1 (cdr table))))
+;;     (if subtable
+;;         (let ((record
+;;                (assoc key-2 (cdr subtable))))
+;;           (if record
+;;               (cdr record)
+;;               false))
+;;         false)))
 
 ;; (define (insert! key-1 key-2 value table)
 ;;   (let ((subtable (assoc key-1 (cdr table))))
@@ -25,6 +25,17 @@
 ;;                               (cons key-2 value))
 ;;                         (cdr table)))))
 ;;   'ok)
+
+(define (lookup keys table)
+  (let ((key (car keys))
+        (is-last-key? (null? (cdr keys))))
+    (let ((record (assoc key (cdr table))))
+      (if record
+          (if is-last-key?
+              record
+              (lookup (cdr keys) record))
+          false
+          ))))
 
 (define (insert! keys value table)
   (define (create-table keys value)
@@ -43,6 +54,7 @@
           (set-cdr! table (cons
                            (create-table keys value)
                            value))))))
+
 
 (define (make-table)
   (let ((local-table (list '*table*)))
