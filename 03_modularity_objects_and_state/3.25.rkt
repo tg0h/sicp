@@ -75,7 +75,7 @@
           (display is-last-key?)
           (newline)
           (if record
-              (if (is-last-key?)
+              (if is-last-key?
                   (set-cdr! record value)
                   (insert! (cdr keys) value record))
               (set-cdr! table (cons
@@ -102,6 +102,11 @@
 (put '(1 2) 3)
 ;; (get '(1))
 (put '(1 3) 5)
+(get '(1 2) )
+(get '(1 3) )
+(put '(1) 6)
+(get '(1) )
+(get '(1 3) )
 ;; (get '(1 2))
 ;; (put '(3 4) 5)
 ;; (get '(3 4))
