@@ -60,13 +60,12 @@
                                value)))))
       'ok)
     (define (dispatch m)
-      (cond (
-             ((eq? m 'lookup-proc)
-              (lambda (keys) (lookup keys local-table)))
-             ((eq? m 'insert-proc!)
-              (lambda (keys value) (insert! keys value local-table)))
-             )
-            (else (error "Unknown operation: TABLE" m))))
+      (cond
+        ((eq? m 'lookup-proc)
+         (lambda (keys) (lookup keys local-table)))
+        ((eq? m 'insert-proc!)
+         (lambda (keys value) (insert! keys value local-table)))
+        (else (error "Unknown operation: TABLE" m))))
     dispatch))
 
 (define operation-table (make-table))
@@ -74,3 +73,5 @@
 (define put (operation-table 'insert-proc!))
 
 (put '(1 2) 3)
+(get '(1 2))
+;; put
