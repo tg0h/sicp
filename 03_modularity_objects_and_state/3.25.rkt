@@ -27,44 +27,60 @@
 ;;   'ok)
 
 (define (insert! keys value table)
-  (if (null? keys) error "keys are empty")
+  (define (create-table keys value)
+    (cons (car keys)
+          (if (null? (cdr keys))
+              value
+              (create-table (cdr keys) value)
+              )
+          )
+    )
+    (if (null? keys) error "keys are empty")
+    (let ((key (car keys))
+          (is-last-key? (null? (cdr keys))))
+      (let ((record (assoc key (cdr table))))
+        (if record
+            (if (is-last-key?)
+                (set-cdr! record value)
+                (insert! (cdr keys) value record))
+            (set-cdr! table (cons
+                             (create-table keys value)
+                             value))))))
 
-  )
+  (define (make-table)
+    (let ((local-table (list '*table*)))
+      (define (lookup key-1 key-2)
+        (let ((subtable (assoc key-1 (cdr local-table))))
+          (if subtable
+              (let ((record (assoc key-2 (cdr subtable))))
+                (if record
+                    (cdr record)
+                    false))
+              false)))
+      (define (insert! key-1 key-2 value)
+        (let ((subtable
+               (assoc key-1 (cdr local-table))))
+          (if subtable
+              (let ((record
+                     (assoc key-2 (cdr subtable))))
+                (if record
+                    (set-cdr! record value)
+                    (set-cdr! subtable
+                              (cons (cons key-2 value)
+                                    (cdr subtable)))))
+              (set-cdr! local-table
+                        (cons (list key-1 (cons key-2 value))
+                              (cdr local-table)))))
+        'ok)
+      (define (dispatch m)
+        (cond ((eq? m 'lookup-proc) lookup)
+              ((eq? m 'insert-proc!) insert!)
+              (else (error "Unknown operation: TABLE" m))))
+      dispatch))
 
-(define (make-table)
-  (let ((local-table (list '*table*)))
-    (define (lookup key-1 key-2)
-      (let ((subtable (assoc key-1 (cdr local-table))))
-        (if subtable
-            (let ((record (assoc key-2 (cdr subtable))))
-              (if record
-                  (cdr record)
-                  false))
-            false)))
-    (define (insert! key-1 key-2 value)
-      (let ((subtable
-             (assoc key-1 (cdr local-table))))
-        (if subtable
-            (let ((record
-                   (assoc key-2 (cdr subtable))))
-              (if record
-                  (set-cdr! record value)
-                  (set-cdr! subtable
-                            (cons (cons key-2 value)
-                                  (cdr subtable)))))
-            (set-cdr! local-table
-                      (cons (list key-1 (cons key-2 value))
-                            (cdr local-table)))))
-      'ok)
-    (define (dispatch m)
-      (cond ((eq? m 'lookup-proc) lookup)
-            ((eq? m 'insert-proc!) insert!)
-            (else (error "Unknown operation: TABLE" m))))
-    dispatch))
+  (define operation-table (make-table))
+  (define get (operation-table 'lookup-proc))
+  (define put (operation-table 'insert-proc!))
 
-(define operation-table (make-table))
-(define get (operation-table 'lookup-proc))
-(define put (operation-table 'insert-proc!))
-
-(put 'math '+ 43)
-(get 'math '+)
+  (put 'math '+ 43)
+  (get 'math '+)
