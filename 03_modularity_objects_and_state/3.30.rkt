@@ -66,8 +66,16 @@
         (cons 0 nil)
         (cons (make-wire) make-wire-list (- n 1))
         ))
-  (let (
-        (c-n (cons (c-out (make-wire-list (- (length a-n) 1)))))
-        )
-    )
+  (define c-n (cons (c-out (make-wire-list (- (length a-n) 1)))))
+  (define (connect-full-adders a-n b-n s-n c-n)
+    (if (empty? a-n) 'ok
+        (begin
+          (let ((a (car a-n))
+                (b (car b-n))
+                (c-in (cadr c-n))
+                (s (car s-n))
+                (c-out (car c-n)))
+            (full-adder a b c-in s c-out)
+            (connect-full-adders (cdr a-n) (cdr b-n) (cdr s-n) (cdr c-n))))))
+  (connect-full-adders a-n b-n s-n c-n)
   )
