@@ -14,14 +14,6 @@
   'ok
   )
 
-(define (half-adder a b s c)
-(let ((d (make-wire)) (e (make-wire)))
-    (or-gate a b d)
-    (and-gate a b c)
-    (inverter c e)
-    (and-gate d e s)
-    'ok))
-
 ;; (define (logical-not s)
 ;;   (cond ((= s 0) 1)
 ;;         ((= s 1) 0)
@@ -33,16 +25,16 @@
 ;;         ((and (= a 0) (= b 0) ) 0)
 ;;         (else (error "Invalid signal"))))
 
-;; (define (or-gate a1 a2 output)
-;;   (define (or-action-procedure)
-;;     (let ((new-value
-;;            (logical-or (get-signal a1) (get-signal a2))))
-;;       (after-delay
-;;        or-gate-delay
-;;        (lambda () (set-signal! output new-value)))))
-;;   (add-action! a1 or-action-procedure)
-;;   (add-action! a2 or-action-procedure)
-;;   )
+(define (or-gate a1 a2 output)
+  (define (or-action-procedure)
+    (let ((new-value
+           (logical-or (get-signal a1) (get-signal a2))))
+      (after-delay
+       or-gate-delay
+       (lambda () (set-signal! output new-value)))))
+  (add-action! a1 or-action-procedure)
+  (add-action! a2 or-action-procedure)
+  )
 
 (define (inverter input output)
   (define (invert-input)
