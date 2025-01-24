@@ -21,7 +21,7 @@
   (cond ((= a 1) 1)
         ((= b 1) 1)
         ((and (= a 0) (= b 0) ) 0)
-        (else (error "Invalid signal" s))))
+        (else (error "Invalid signal"))))
 
 (define (or-gate a1 a2 output)
   (define (or-action-procedure)
