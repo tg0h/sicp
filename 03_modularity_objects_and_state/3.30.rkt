@@ -66,4 +66,8 @@
         (cons 0 nil)
         (cons (make-wire) make-wire-list (- n 1))
         ))
+  (let (
+        (c-n (cons (c-out (make-wire-list (- (length a-n) 1)))))
+        )
+    )
   )
