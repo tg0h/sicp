@@ -75,7 +75,7 @@
                 (s (car s-n))
                 (c-out (car c-n)))
             (full-adder a b c-in s c-out)
-            (if (null? (cdr a-n)) set-signal! c-in 0)
+            (if (null? (cdr a-n)) set-signal! c-in 0) ; c-n is 0
             (connect-full-adders (cdr a-n) (cdr b-n) (cdr s-n) (cdr c-n))))))
   (connect-full-adders a-n b-n s-n c-n)
   )
