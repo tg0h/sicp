@@ -55,6 +55,16 @@
 ;;     (and-gate d e s)
 ;;     'ok))
 
+;; OR GATE ->
+;; (not
+;;   (
+;;     ( (not (a and b)) and (not a) )
+;;     and
+;;     ( (not (a and b)) and (not b) )
+;;   )
+;; )
+
+
 (define (or-gate a b output)
   (let (
         (c (make-wire))
