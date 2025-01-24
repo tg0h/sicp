@@ -64,6 +64,9 @@
 ;;   )
 ;; )
 
+;; simpler ->
+;; (not ( not a and not b) )
+
 
 (define (or-gate a b output)
   (let (
@@ -84,3 +87,5 @@
     (and-gate f i g)
     (inverter g output)
     'ok))
+
+;; 3 and delays, 2 inverter delays
