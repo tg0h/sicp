@@ -59,3 +59,11 @@
     (half-adder a s sum c2)
     (or-gate c1 c2 c-out)
     'ok))
+
+(define (ripple-carry-adder a-n b-n s-n c-cout)
+  (define (make-wire-list n)
+    (if (= n 0)
+        (cons 0 nil)
+        (cons (make-wire) make-wire-list (- n 1))
+        ))
+  )
