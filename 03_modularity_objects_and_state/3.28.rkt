@@ -13,9 +13,16 @@
   )
 
 (define (logical-not s)
-  (cond ((= s 0) 1) 
-    ((= s 1) 0)
+  (cond ((= s 0) 1)
+        ((= s 1) 0)
         (else (error "Invalid signal" s))))
+
+(define (logical-or a b)
+  (cond ((= a 1) 1)
+        ((= b 1) 1)
+        ((and (= a 0) (= b 0) ) 0)
+        (else (error "Invalid signal" s))))
+
 (define (or-gate a1 a2 output)
   (define (or-action-procedure)
     (let ((new-value
