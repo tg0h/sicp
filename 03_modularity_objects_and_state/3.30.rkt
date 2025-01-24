@@ -62,11 +62,10 @@
 
 (define (ripple-carry-adder a-n b-n s-n c-cout)
   (define (make-wire-list n)
-    (if (= n 0)
-        (cons 0 nil) ; c-1 is 0
+    (if (= n 0) nil
         (cons (make-wire) make-wire-list (- n 1))
         ))
-  (define c-n (cons (c-out (make-wire-list (- (length a-n) 1)))))
+  (define c-n (cons (c-out (make-wire-list (length a-n) ))))
   (define (connect-full-adders a-n b-n s-n c-n)
     (if (empty? a-n) 'ok
         (begin
@@ -76,6 +75,7 @@
                 (s (car s-n))
                 (c-out (car c-n)))
             (full-adder a b c-in s c-out)
+            (if (null? (cdr a-n)) set-signal! c-in 0)
             (connect-full-adders (cdr a-n) (cdr b-n) (cdr s-n) (cdr c-n))))))
   (connect-full-adders a-n b-n s-n c-n)
   )
