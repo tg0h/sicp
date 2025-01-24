@@ -63,7 +63,7 @@
 (define (ripple-carry-adder a-n b-n s-n c-cout)
   (define (make-wire-list n)
     (if (= n 0)
-        (cons 0 nil)
+        (cons 0 nil) ; c-1 is 0
         (cons (make-wire) make-wire-list (- n 1))
         ))
   (define c-n (cons (c-out (make-wire-list (- (length a-n) 1)))))
