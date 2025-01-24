@@ -53,37 +53,3 @@
     (inverter e output)
     'ok))
 
-;; OR GATE ->
-;; (not
-;;   (
-;;     ( (not (a and b)) and (not a) )
-;;     and
-;;     ( (not (a and b)) and (not b) )
-;;   )
-;; )
-
-;; simpler ->
-;; (not ( not a and not b) )
-
-
-(define (or-gate a b output)
-  (let (
-        (c (make-wire))
-        (d (make-wire))
-        (e (make-wire))
-        (f (make-wire))
-        (g (make-wire))
-        (h (make-wire))
-        (i (make-wire))
-        )
-    (and-gate a b c)
-    (inverter c d)
-    (inverter a e)
-    (and-gate d e f)
-    (inverter b h)
-    (and-gate e h i)
-    (and-gate f i g)
-    (inverter g output)
-    'ok))
-
-;; 3 and delays, 2 inverter delays
