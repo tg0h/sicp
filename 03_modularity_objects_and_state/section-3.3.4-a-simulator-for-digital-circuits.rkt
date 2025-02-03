@@ -109,7 +109,20 @@
 
 (define (make-time-segment time queue)
   (cons time queue))
+(define (segment-time s) (car s))
+(define (segment-queue s) (cdr s))
 
+(define (make-agenda) (list 0))
+(define (current-time agenda) (car agenda))
+(define (set-current-time! agenda time)
+  (set-car! agenda time))
+(define (segments agenda) (cdr agenda))
+(define (set-segments! agenda segments)
+  (set-cdr! agenda segments))
+(define (first-segment agenda) (car (segments agenda))) 
+(define (rest-segments agenda) (cdr (segments agenda)))
+
+; queue
 (define (front-ptr queue) (car queue))
 (define (rear-ptr queue) (cdr queue))
 (define (set-front-ptr! queue item)
