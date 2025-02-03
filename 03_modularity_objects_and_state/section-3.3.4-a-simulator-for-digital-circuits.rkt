@@ -29,3 +29,17 @@
   ((wire 'set-signal!) new-value))
 (define (add-action! wire action-procedure)
   ((wire 'add-action!) action-procedure))
+
+(define (after-delay delay action)
+  (add-to-agenda!
+   (+ delay (current-time the-agenda))
+   action
+   the-agenda))
+
+(define (propagate)
+(if (empty-agenda? the-agenda)
+'done
+(let ((first-item (first-agenda-item the-agenda)))
+        (first-item)
+        (remove-first-agenda-item! the-agenda)
+        (propagate))))
