@@ -1,5 +1,6 @@
 #lang sicp
 
+; adder constraint
 (define (adder a1 a2 sum)
   (define (process-new-value)
     (cond ((and (has-value? a1)
@@ -32,6 +33,7 @@
 (define (inform-about-value constraint) (constraint 'I-have-a-value))
 (define (inform-about-no-value constraint) (constraint 'I-lost-my-value))
 
+; multiplier constraint
 (define (multiplier m1 m2 product)
   (define (process-new-value)
     (cond ((or (and (has-value? m1)
@@ -71,6 +73,7 @@
   (connect product me)
   me)
 
+; constant constraint
 (define (constant value connector)
   (define (me request)
     (error "Unknown request: CONSTANT" request))
@@ -78,6 +81,7 @@
   (set-value! connector value me)
   me)
 
+; probe
 (define (probe name connector)
   (define (print-probe value)
     (newline) (display "Probe: ") (display name)
