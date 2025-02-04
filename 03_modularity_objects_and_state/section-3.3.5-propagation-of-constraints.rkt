@@ -144,7 +144,6 @@
 
 (define C (make-connector))
 (define F (make-connector))
-(celsius-fahrenheit-converter C F)
 
 (define (celsius-fahrenheit-converter c f)
   (let ((u (make-connector))
@@ -159,6 +158,8 @@
     (constant 5 x)
     (constant 32 y)
     'ok))
+
+(celsius-fahrenheit-converter C F)
 ;--------------------------
 
 (probe "Celsius temp" C)
