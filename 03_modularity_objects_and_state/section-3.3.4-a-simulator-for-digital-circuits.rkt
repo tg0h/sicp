@@ -122,7 +122,7 @@
 (define (first-segment agenda) (car (segments agenda))) 
 (define (rest-segments agenda) (cdr (segments agenda)))
 
-; queue
+; queue -----------------------------------------------------
 (define (front-ptr queue) (car queue))
 (define (rear-ptr queue) (cdr queue))
 (define (set-front-ptr! queue item)
@@ -154,6 +154,7 @@
          (error "DELETE! called with an empty queue" queue))
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
               queue)))
+;; ----------------------------------------------------------
 
 (define the-agenda (make-agenda))
 (define inverter-delay 2)
