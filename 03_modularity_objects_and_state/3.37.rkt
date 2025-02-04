@@ -186,8 +186,8 @@
 
 ;--------------------------
 
-(define A (make-connector))
-(define B (make-connector))
+;; (define A (make-connector))
+;; (define B (make-connector))
 
 ;; (define (celsius-fahrenheit-converter c f)
 ;;   (let ((u (make-connector))
@@ -241,12 +241,12 @@
 
 ;; (squarer A B)
 
-(probe "A" A)
-(probe "B" B)
+(probe "C" C)
+(probe "F" F)
 
-(set-value! A 2 'user)
-;; (set-value! B 2 'user)
-;; (sqrt 2)
-;; (set-value! B 2 'user)
+(set-value! C 2 'user)
+
+(set-value! C 25 'user)
+;; (set-value! F 212 'user)
 ;; (forget-value! C 'user)
 ;; (set-value! F 212 'user)
