@@ -92,8 +92,11 @@
   (connect connector me)
   me)
 
+; connector
 (define (make-connector)
-  (let ((value false) (informant false) (constraints '()))
+  (let ((value false) 
+        (informant false) 
+        (constraints '()))
     (define (set-my-value newval setter)
       (cond ((not (has-value? me))
              (set! value newval)
