@@ -42,11 +42,19 @@
   (define (me request)
     (cond ((eq? request 'I-have-a-value) (process-new-value))
           ((eq? request 'I-lost-my-value) (process-forget-value))
-          (else (error "Unknown request: ADDER" request)))) 
+          (else (error "Unknown request: ADDER" request))))
   (connect a1 me)
   (connect a2 me)
   (connect sum me)
   me)
+
+(define (inform-about-value constraint) (constraint 'I-have-a-value))
+(define (inform-about-no-value constraint) (constraint 'I-lost-my-value))
+
+
+
+
+;--------------------------
 
 (probe "Celsius temp" C)
 (probe "Fahrenheit temp" F)
