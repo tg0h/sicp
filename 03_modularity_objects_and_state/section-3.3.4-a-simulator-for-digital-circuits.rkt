@@ -121,6 +121,8 @@
   (set-cdr! agenda segments))
 (define (first-segment agenda) (car (segments agenda)))
 (define (rest-segments agenda) (cdr (segments agenda)))
+
+(define (empty-agenda? agenda) (null? (segments agenda)))
 ; -----------------------------------------------------------
 
 ; queue -----------------------------------------------------
