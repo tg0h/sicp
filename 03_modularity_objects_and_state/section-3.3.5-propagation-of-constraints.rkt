@@ -98,16 +98,19 @@
         (informant false) ; who set the value
         (constraints '())) ; list of constraints
     (define (set-my-value newval setter)
-      ; if do not currently have value, set value and who set the value
-      (cond ((not (has-value? me))
+      (cond (
+             ; if do not currently have value, set value and who set the value
+             (not (has-value? me))
              (set! value newval)
              (set! informant setter)
              (for-each-except setter
                               inform-about-value ; propagate value to rest of constraints except setter
                               constraints))
             ((not (= value newval))
-             (error "Contradiction" (list value newval))) (else 'ignored)))
+             (error "Contradiction" (list value newval)))
+            (else 'ignored)))
     (define (forget-my-value retractor)
+      ; only the setter can forget the value
       (if (eq? retractor informant)
           (begin (set! informant false)
                  (for-each-except retractor
