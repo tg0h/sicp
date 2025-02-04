@@ -114,7 +114,7 @@
       (if (eq? retractor informant)
           (begin (set! informant false)
                  (for-each-except retractor
-                                  inform-about-no-value ; proppaget no-value to  rest of constraints
+                                  inform-about-no-value ; propagate no-value to  rest of constraints
                                   constraints))
           'ignored))
     (define (connect new-constraint)
