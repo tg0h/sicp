@@ -41,7 +41,7 @@
             )
         ;; ⟨alternative2⟩
         ( if (has-value? a)
-             (set-value! b (* (get-value a) (get-value a)))
+             (set-value! b (* (get-value a) (get-value a)) me)
              )))
   (define (process-forget-value)
     ;; ⟨body1⟩
@@ -54,10 +54,10 @@
     (cond ((eq? request 'I-have-a-value) (process-new-value))
           ((eq? request 'I-lost-my-value) (process-forget-value))
           (else (error "Unknown request: squarer" request))))
-;; ⟨rest of definition⟩
-(connect a me)
-(connect b me)
-me)
+  ;; ⟨rest of definition⟩
+  (connect a me)
+  (connect b me)
+  me)
 
 (define (inform-about-value constraint) (constraint 'I-have-a-value))
 (define (inform-about-no-value constraint) (constraint 'I-lost-my-value))
@@ -201,8 +201,9 @@ me)
 (probe "A" A)
 (probe "B" B)
 
-;; (set-value! A 2 'user)
-(set-value! B 2 'user)
+(set-value! A 2 'user)
+;; (set-value! B 2 'user)
+;; (sqrt 2)
 ;; (set-value! B 2 'user)
 ;; (forget-value! C 'user)
 ;; (set-value! F 212 'user)
