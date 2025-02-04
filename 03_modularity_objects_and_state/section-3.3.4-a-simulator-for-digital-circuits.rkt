@@ -232,3 +232,6 @@
 (set-signal! input-1 1)
 
 (propagate)
+
+(set-signal! input-2 1)
+(propagate)
