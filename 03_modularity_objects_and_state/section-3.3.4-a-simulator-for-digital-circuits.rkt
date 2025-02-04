@@ -106,7 +106,7 @@
                  (display " New-value = ")
                  (display (get-signal wire)))))
 
-
+; agenda ----------------------------------------------------
 (define (make-time-segment time queue)
   (cons time queue))
 (define (segment-time s) (car s))
@@ -119,8 +119,9 @@
 (define (segments agenda) (cdr agenda))
 (define (set-segments! agenda segments)
   (set-cdr! agenda segments))
-(define (first-segment agenda) (car (segments agenda))) 
+(define (first-segment agenda) (car (segments agenda)))
 (define (rest-segments agenda) (cdr (segments agenda)))
+; -----------------------------------------------------------
 
 ; queue -----------------------------------------------------
 (define (front-ptr queue) (car queue))
