@@ -30,6 +30,35 @@
   (connect sum me)
   me)
 
+(define (squarer a b)
+  (define (process-new-value)
+    (if (has-value? b)
+        (if (< (get-value b) 0)
+            (error "square less than 0: SQUARER"
+                   (get-value b))
+            ;; ⟨alternative1⟩
+            (set-value! a (sqrt (get-value b)) me)
+            )
+        ;; ⟨alternative2⟩
+        ( if (has-value? a)
+             (set-value! b (* (get-value a) (get-value a)))
+             )))
+  (define (process-forget-value)
+    ;; ⟨body1⟩
+    (forget-value! a me)
+    (forget-value! b me)
+    (process-new-value)
+    )
+  (define (me request)
+    ;; ⟨body2⟩
+    (cond ((eq? request 'I-have-a-value) (process-new-value))
+          ((eq? request 'I-lost-my-value) (process-forget-value))
+          (else (error "Unknown request: squarer" request))))
+;; ⟨rest of definition⟩
+(connect a me)
+(connect b me)
+me)
+
 (define (inform-about-value constraint) (constraint 'I-have-a-value))
 (define (inform-about-no-value constraint) (constraint 'I-lost-my-value))
 
@@ -160,11 +189,12 @@
 (define A (make-connector))
 (define B (make-connector))
 
-(define (squarer a b)
-  (let ((x (make-connector))
-        (y (make-connector)))
-    (multiplier a a b)
-    'ok))
+
+;; (define (squarer a b)
+;;   (let ((x (make-connector))
+;;         (y (make-connector)))
+;;     (multiplier a a b)
+;;     'ok))
 
 (squarer A B)
 
