@@ -56,6 +56,18 @@
   'ok
   )
 
+(define (or-gate a1 a2 output)
+  (define (or-action-procedure)
+    (let ((new-value
+           (logical-or (get-signal a1) (get-signal a2))))
+      (after-delay
+       or-gate-delay
+       (lambda () (set-signal! output new-value)))))
+  (add-action! a1 or-action-procedure)
+  (add-action! a2 or-action-procedure)
+  'ok
+  )
+
 ;; (define (logical-not s)
 ;;   (cond ((= s 0) 1)
 ;;         ((= s 1) 0)
@@ -72,7 +84,6 @@
         ((= b 0) 0)
         ((and (= a 1) (= b 1) ) 1)
         (else (error "Invalid signal"))))
-
 
 (define (inverter input output)
   (define (invert-input)
@@ -93,15 +104,15 @@
     (and-gate d e s)
     'ok))
 
-(define (or-gate a b output)
-  (let ((c (make-wire))
-        (d (make-wire))
-        (e (make-wire)))
-    (inverter a c)
-    (inverter b d)
-    (and-gate c d e)
-    (inverter e output)
-    'ok))
+;; (define (or-gate a b output)
+;;   (let ((c (make-wire))
+;;         (d (make-wire))
+;;         (e (make-wire)))
+;;     (inverter a c)
+;;     (inverter b d)
+;;     (and-gate c d e)
+;;     (inverter e output)
+;;     'ok))
 
 (define (probe name wire)
   (add-action! wire
