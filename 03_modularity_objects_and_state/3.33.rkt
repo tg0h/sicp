@@ -157,27 +157,22 @@
 
 ;--------------------------
 
+(define A (make-connector))
+(define B (make-connector))
 (define C (make-connector))
-(define F (make-connector))
 
-(define (celsius-fahrenheit-converter c f)
-  (let ((u (make-connector))
-        (v (make-connector))
-        (w (make-connector))
-        (x (make-connector))
+(define (averager a b c)
+  (let ((x (make-connector))
         (y (make-connector)))
-    (multiplier c w u)
-    (multiplier v x u)
-    (adder v y f)
-    (constant 9 w)
-    (constant 5 x)
-    (constant 32 y)
+    (adder a b x)
+    (multiplier x y c)
     'ok))
 
-(celsius-fahrenheit-converter C F)
+(averager A B C)
 
-(probe "Celsius temp" C)
-(probe "Fahrenheit temp" F)
+(probe "A" A)
+(probe "B" B)
+(probe "C" C)
 
 (set-value! C 25 'user)
 (set-value! F 212 'user)
