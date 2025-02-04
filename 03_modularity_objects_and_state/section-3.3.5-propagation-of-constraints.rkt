@@ -142,10 +142,18 @@
       (if informant true false))
     ((eq? request 'value) value)
     ((eq? request 'set-value!) set-my-value)
-    ((eq? request 'forget) forget-my-value) 
+    ((eq? request 'forget) forget-my-value)
     ((eq? request 'connect) connect)
     (else (error "Unknown operation: CONNECTOR"
                  request))))
+
+(define (for-each-except exception procedure list)
+  (define (loop items)
+    (cond ((null? items) 'done)
+          ((eq? (car items) exception) (loop (cdr items)))
+          (else (procedure (car items))
+                (loop (cdr items)))))
+  (loop list))
 ;--------------------------
 
 (probe "Celsius temp" C)
