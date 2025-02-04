@@ -142,6 +142,8 @@
 (define (forget-value! connector retractor) ((connector 'forget) retractor))
 (define (connect connector new-constraint) ((connector 'connect) new-constraint))
 
+;--------------------------
+
 (define C (make-connector))
 (define F (make-connector))
 
@@ -160,7 +162,6 @@
     'ok))
 
 (celsius-fahrenheit-converter C F)
-;--------------------------
 
 (probe "Celsius temp" C)
 (probe "Fahrenheit temp" F)
