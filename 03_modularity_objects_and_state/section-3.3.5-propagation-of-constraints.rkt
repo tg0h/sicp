@@ -51,8 +51,6 @@
 (define (inform-about-value constraint) (constraint 'I-have-a-value))
 (define (inform-about-no-value constraint) (constraint 'I-lost-my-value))
 
-
-
 (define (multiplier m1 m2 product)
   (define (process-new-value)
     (cond ((or (and (has-value? m1)
