@@ -244,9 +244,9 @@
 (probe "C" C)
 (probe "F" F)
 
-(set-value! C 2 'user)
+;; (set-value! C 2 'user)
 
-(set-value! C 25 'user)
-;; (set-value! F 212 'user)
+;; (set-value! C 25 'user)
+(set-value! F 212 'user)
 ;; (forget-value! C 'user)
 ;; (set-value! F 212 'user)
