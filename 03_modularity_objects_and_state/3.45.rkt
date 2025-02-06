@@ -84,3 +84,6 @@
             ((eq? m 'serializer) balance-serializer)
             (else (error "Unknown request: MAKE-ACCOUNT" m))))
     dispatch))
+
+(define (deposit account amount)
+        ((account 'deposit) amount))
