@@ -32,7 +32,7 @@
           (protected-deposit (protected deposit)))
       (define (dispatch m)
         (cond ((eq? m 'withdraw) protected-withdraw)
-              ((eq? m 'deposit) protected-deposit) 
+              ((eq? m 'deposit) protected-deposit)
               ((eq? m 'balance) balance)
               (else
                (error "Unknown request: MAKE-ACCOUNT"
