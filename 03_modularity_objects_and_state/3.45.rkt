@@ -94,8 +94,15 @@
 (define (deposit account amount)
   ((account 'deposit) amount))
 
+(define (serialized-exchange account1 account2)
+  (let ((serializer1 (account1 'serializer))
+        (serializer2 (account2 'serializer)))
+    ((serializer1 (serializer2 exchange)) ; lock both accounts
+     account1
+     account2)))
+
 (define (exchange account1 account2)
   (let ((difference (- (account1 'balance)
                        (account2 'balance))))
-    ((account1 'withdraw) difference) ; this locks itself 
+    ((account1 'withdraw) difference) ; this locks itself
     ((account2 'deposit) difference)))
