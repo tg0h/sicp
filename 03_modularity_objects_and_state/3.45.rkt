@@ -63,7 +63,7 @@
     ((s d) amount)))
 
 (define (exchange account1 account2)
-(let ((difference (- (account1 'balance)
+  (let ((difference (- (account1 'balance)
                        (account2 'balance))))
     ((account1 'withdraw) difference)
     ((account2 'deposit) difference)))
@@ -93,3 +93,9 @@
 
 (define (deposit account amount)
   ((account 'deposit) amount))
+
+(define (exchange account1 account2)
+  (let ((difference (- (account1 'balance)
+                       (account2 'balance))))
+    ((account1 'withdraw) difference) ; this locks itself 
+    ((account2 'deposit) difference)))
