@@ -57,15 +57,17 @@
             (else (error "Unknown request: MAKE-ACCOUNT" m))))
     dispatch))
 
-(define (deposit account amount) (let ((s (account 'serializer))
+(define (deposit account amount)
+  (let ((s (account 'serializer))
         (d (account 'deposit)))
     ((s d) amount)))
 
-(define (serialized-exchange account1 account2) (let ((serializer1 (account1 'serializer))
-        (serializer2 (account2 'serializer)))
-    ((serializer1 (serializer2 exchange))
-     account1
-     account2)))
+(define (serialized-exchange account1 account2) 
+  (let ((serializer1 (account1 'serializer))
+                                                      (serializer2 (account2 'serializer)))
+                                                  ((serializer1 (serializer2 exchange))
+                                                   account1
+                                                   account2)))
 
 ; exercise suggested solution
 (define (make-account-and-serializer balance)
