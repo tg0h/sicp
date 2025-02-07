@@ -17,9 +17,7 @@
 ;;                          m))))
 ;;     dispatch))
 
-(define (rand)
-  (random 10000)
-  )
+(define (rand) (random 10000))
 
 (define (make-serializer)
   (let ((mutex (make-mutex)))
