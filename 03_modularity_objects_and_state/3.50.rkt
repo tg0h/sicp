@@ -5,7 +5,7 @@
 
 (define
   (stream-map proc . argstreams)
-  (if (null? (stream-car (car argstreams)))
+  (if (null? (car argstreams))
       the-empty-stream
       (cons-stream
        (apply proc (map stream-car argstreams))
