@@ -48,7 +48,6 @@
         false)))
 
 (define (make-account-and-serializer balance)
-  ;; (let ((id (rand)))
   (define id (rand))
   (define (withdraw amount)
     (if (>= balance amount)
@@ -63,7 +62,7 @@
             ((eq? m 'deposit) deposit) ; do not lock deposit, export a serializer and let someone else manage the lock
             ((eq? m 'balance) balance)
             ((eq? m 'serializer) balance-serializer)
-            ((eq? m 'id) rand)
+            ((eq? m 'id) id)
             (else (error "Unknown request: MAKE-ACCOUNT" m))))
     dispatch))
 
@@ -79,3 +78,8 @@
                        (account2 'balance))))
     ((account1 'withdraw) difference) ; this locks itself
     ((account2 'deposit) difference)))
+
+(define a1 (make-account-and-serializer 100))
+
+(a1 'id)
+(a1 'id)
