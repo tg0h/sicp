@@ -1,7 +1,13 @@
 #lang sicp
 
-(define (stream-map proc . argstreams) (if (⟨??⟩ (car argstreams))
-            the-empty-stream
-(⟨??⟩
-(apply proc (map ⟨??⟩ argstreams)) (apply stream-map
-(cons proc (map ⟨??⟩ argstreams))))))
+(define (stream-car stream) (car stream))
+(define (stream-cdr stream) (force (cdr stream)))
+
+(define
+  (stream-map proc . argstreams)
+  (if (null? (stream-car (car argstreams)))
+      the-empty-stream
+      (cons-stream
+       (apply proc (map stream-car argstreams))
+       (apply stream-map
+              (cons proc (map stream-cdr argstreams))))))
