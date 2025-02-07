@@ -16,3 +16,20 @@
             (else (error "Unknown request: MAKE-ACCOUNT"
                          m))))
     dispatch))
+
+(define (make-account-and-serializer balance)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount)) balance)
+  (let ((balance-serializer (make-serializer)))
+    (define (dispatch m)
+      (cond ((eq? m 'withdraw) withdraw) ; do not lock withdraw, export a serializer and let someone else manage the lock
+            ((eq? m 'deposit) deposit) ; do not lock deposit, export a serializer and let someone else manage the lock
+            ((eq? m 'balance) balance)
+            ((eq? m 'serializer) balance-serializer)
+            (else (error "Unknown request: MAKE-ACCOUNT" m))))
+    dispatch))
