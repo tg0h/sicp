@@ -69,9 +69,11 @@
 (define (serialized-exchange account1 account2)
   (let ((serializer1 (account1 'serializer))
         (serializer2 (account2 'serializer)))
-    ((serializer1 (serializer2 exchange)) ; lock both accounts
-     account1
-     account2)))
+    (if (< (account1 'id)  (account2 'id))
+        ((serializer2 (serializer1 exchange)) account1 account2) ; lock 1 then 2
+        ((serializer1 (serializer2 exchange)) account1 account2)) ; lock 2 then 1
+    )
+  )
 
 (define (exchange account1 account2)
   (let ((difference (- (account1 'balance)
