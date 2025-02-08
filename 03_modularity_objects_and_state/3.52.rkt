@@ -15,6 +15,15 @@
        low
        (stream-enumerate-interval (+ low 1) high))))
 
+(define (stream-filter pred stream)
+  (cond ((stream-null? stream) the-empty-stream)
+        ((pred (stream-car stream))
+         (cons-stream (stream-car stream)
+                      (stream-filter
+                       pred
+                       (stream-cdr stream))))
+        (else (stream-filter pred (stream-cdr stream)))))
+
 (define sum 0)
 (define (accum x) (set! sum (+ x sum)) sum)
 (define seq
