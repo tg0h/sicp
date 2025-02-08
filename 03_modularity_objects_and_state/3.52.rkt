@@ -1,5 +1,12 @@
 #lang sicp
 
+(define (stream-car stream) (car stream))
+(define (stream-cdr stream) (force (cdr stream)))
+(define (stream-map proc s)
+  (if (stream-null? s) the-empty-stream
+      (cons-stream (proc (stream-car s))
+                   (stream-map proc (stream-cdr s)))))
+
 (define sum 0)
 (define (accum x) (set! sum (+ x sum)) sum)
 (define seq
