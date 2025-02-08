@@ -40,18 +40,17 @@
   (display x)
   ;; (newline)
   )
-;-------- basic ref funcs
+; -- basic libs
 
-(define sum 0)
-(define (accum x) (set! sum (+ x sum)) sum)
-(define seq
-  (stream-map accum
-              (stream-enumerate-interval 1 20)))
+(define (divisible? x y) (= (remainder x y) 0))
+(define (integers-starting-from n)
+(cons-stream n (integers-starting-from (+ n 1))))
+(define integers (integers-starting-from 1))
 
-(define y (stream-filter even? seq))
-
-(define z
-  (stream-filter (lambda (x) (= (remainder x 5) 0)) seq))
-
-(stream-ref y 7)
-(display-stream z)
+(define (sieve stream) (cons-stream
+                        (stream-car stream)
+                        (sieve (stream-filter
+                                (lambda (x)
+                                  (not (divisible? x (stream-car stream))))
+                                (stream-cdr stream)))))
+(define primes (sieve (integers-starting-from 2)))
