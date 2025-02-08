@@ -17,7 +17,10 @@
              (stream-for-each proc (stream-cdr s)))))
 
 (define (display-stream s) (stream-for-each display-line s))
-(define (display-line x) (newline) (display x))
+(define (display-line x) (newline)
+  (display "this is x ->")
+  (display x)
+  )
 
 (define (stream-car stream) (car stream))
 (define (stream-cdr stream) (force (cdr stream)))
@@ -40,12 +43,34 @@
         (else (stream-filter pred (stream-cdr stream)))))
 
 
-(define (show x) (display-line x) x)
+(define (show x)
+  (display-line x) x
+  )
 
 ;-----------------------
+(define y (stream-enumerate-interval 0 10))
+;; (stream-cdr y)
+;; (stream-cdr y)
+;; (stream-car (stream-cdr (stream-cdr y)))
+;; (stream-cdr y)
+
 (define x
   (stream-map show
               (stream-enumerate-interval 0 10)))
+
 ; show 0
-(stream-ref x 5)
-(stream-ref x 7)
+(stream-ref x 2)
+(newline)
+(display "tim")
+(newline)
+(stream-ref x 2)
+(stream-car x)
+(stream-car (stream-cdr x))
+(stream-car (stream-cdr (stream-cdr x)))
+(stream-car (stream-cdr (stream-cdr (stream-cdr x))))
+
+;; (stream-ref x 0)
+
+;; (newline)
+
+;; (stream-ref x 5)
