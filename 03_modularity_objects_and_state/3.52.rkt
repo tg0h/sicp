@@ -7,6 +7,14 @@
       (cons-stream (proc (stream-car s))
                    (stream-map proc (stream-cdr s)))))
 
+
+(define (stream-enumerate-interval low high)
+  (if (> low high)
+      the-empty-stream
+      (cons-stream
+       low
+       (stream-enumerate-interval (+ low 1) high))))
+
 (define sum 0)
 (define (accum x) (set! sum (+ x sum)) sum)
 (define seq
