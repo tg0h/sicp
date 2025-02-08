@@ -18,8 +18,9 @@
 
 (define (display-stream s) (stream-for-each display-line s))
 (define (display-line x) (newline)
-  (display "this is x ->")
+  (display "SHOW x-> ")
   (display x)
+  (newline)
   )
 
 (define (stream-car stream) (car stream))
@@ -58,19 +59,11 @@
   (stream-map show
               (stream-enumerate-interval 0 10)))
 
-; show 0
-(stream-ref x 2)
-(newline)
-(display "tim")
-(newline)
-(stream-ref x 2)
-(stream-car x)
-(stream-car (stream-cdr x))
-(stream-car (stream-cdr (stream-cdr x)))
-(stream-car (stream-cdr (stream-cdr (stream-cdr x))))
-
-;; (stream-ref x 0)
-
+;; (stream-cdr x)
 ;; (newline)
+;; x
+;; x
+;; (stream-cdr x)
+(stream-ref x 5)
 
-;; (stream-ref x 5)
+(stream-ref x 7) ; (memoized)
