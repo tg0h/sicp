@@ -42,8 +42,8 @@
       (stream-ref (stream-cdr s) (- n 1))))
 
 ;; (stream-car (partial-sums integers))
-(stream-cdr (partial-sums integers))
-;; (stream-ref (partial-sums integers) 0)
-;; (stream-ref (partial-sums integers) 1)
-;; (stream-ref (partial-sums integers) 2)
-;; (stream-ref (partial-sums integers) 3)
+;; (stream-cdr (partial-sums integers))
+(stream-ref (partial-sums integers) 0)
+(stream-ref (partial-sums integers) 1)
+(stream-ref (partial-sums integers) 2)
+(stream-ref (partial-sums integers) 3)
