@@ -24,9 +24,10 @@
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
-(define inverse-fractions (stream-map inverse integers-starting-from 1 ))
+(define inverse-fractions (stream-map inverse (integers-starting-from 1 )))
 
 
 (stream-ref inverse-fractions 0)
 (stream-ref inverse-fractions 1)
 (stream-ref inverse-fractions 2)
+(stream-ref inverse-fractions 3)
