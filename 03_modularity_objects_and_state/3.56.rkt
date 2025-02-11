@@ -57,3 +57,14 @@
 (define (scale-stream stream factor)
   (stream-map (lambda (x) (* x factor))
               stream))
+
+(define S
+  (cons-stream 1
+               (merge(merge s2 s3) s5)
+               )
+  )
+
+(define s2 (scale-stream S 2))
+(define s3 (scale-stream S 3))
+(define s5 (scale-stream S 5))
+
