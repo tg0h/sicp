@@ -60,11 +60,22 @@
 
 (define S
   (cons-stream 1
-               (merge(merge s2 s3) s5)
-               )
-  )
+               (merge (merge s2 s3) s5)))
 
 (define s2 (scale-stream S 2))
 (define s3 (scale-stream S 3))
 (define s5 (scale-stream S 5))
 
+(stream-ref S 0)
+(stream-ref S 1)
+(stream-ref S 2)
+(stream-ref S 3)
+(stream-ref S 4)
+(stream-ref S 5)
+(stream-ref S 6)
+(stream-ref S 7)
+(stream-ref S 8)
+(stream-ref S 9)
+(stream-ref S 10)
+(stream-ref S 11)
+(stream-ref S 12)
