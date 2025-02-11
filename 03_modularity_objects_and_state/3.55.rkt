@@ -20,5 +20,15 @@
 (define (add-streams s1 s2) (stream-map + s1 s2))
 
 (define (partial-sums s)
-  (cons-stream  (stream-car s) (add-stream partial-sums (stream-cdr s)))
+  (cons-stream  (stream-car s) (add-streams partial-sums (stream-cdr s)))
   )
+
+(define (stream-ref s n)
+  (if (= n 0)
+      (stream-car s)
+      (stream-ref (stream-cdr s) (- n 1))))
+
+(stream-ref (partial-sums integers) 0)
+(stream-ref (partial-sums integers) 1)
+(stream-ref (partial-sums integers) 2)
+(stream-ref (partial-sums integers) 3)
