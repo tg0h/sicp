@@ -28,38 +28,24 @@
 
 (define (add-streams s1 s2) (stream-map + s1 s2))
 
-(define (partial-sums s)
-  (cons-stream (stream-car s)
-               (add-streams
-                (partial-sums s)
-                (stream-cdr s))
-               )
-  )
-
 (define (stream-ref s n)
   (if (= n 0)
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
-;; (stream-car (partial-sums integers))
-;; (stream-cdr (partial-sums integers))
-(stream-ref (partial-sums integers) 0)
-(stream-ref (partial-sums integers) 1)
-(stream-ref (partial-sums integers) 2)
-(stream-ref (partial-sums integers) 3)
 
 (define (merge s1 s2)
-(cond ((stream-null? s1) s2)
-((stream-null? s2) s1) (else
-(let ((s1car (stream-car s1)) (s2car (stream-car s2)))
-(cond ((< s1car s2car) (cons-stream
-s1car
-                   (merge (stream-cdr s1) s2)))
-                 ((> s1car s2car)
-                  (cons-stream
-                   s2car
-                   (merge s1 (stream-cdr s2))))
-(else (cons-stream
-                   s1car
-                   (merge (stream-cdr s1)
-(stream-cdr s2)))))))))
+  (cond ((stream-null? s1) s2)
+        ((stream-null? s2) s1) (else
+                                (let ((s1car (stream-car s1)) (s2car (stream-car s2)))
+                                  (cond ((< s1car s2car) (cons-stream
+                                                          s1car
+                                                          (merge (stream-cdr s1) s2)))
+                                        ((> s1car s2car)
+                                         (cons-stream
+                                          s2car
+                                          (merge s1 (stream-cdr s2))))
+                                        (else (cons-stream
+                                               s1car
+                                               (merge (stream-cdr s1)
+                                                      (stream-cdr s2)))))))))
