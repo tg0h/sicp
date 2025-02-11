@@ -12,16 +12,13 @@
   (cons-stream n (integers-starting-from (+ n 1))))
 (define integers (integers-starting-from 1))
 
-(define factorials (cons-stream 1
-                                (mul-streams factorials (stream-cdr integers))))
+(define (stream-map proc s)
+  (if (stream-null? s) the-empty-stream
+      (cons-stream (proc (stream-car s))
+                   (stream-map proc (stream-cdr s)))))
 
-(define (stream-ref s n)
-  (if (= n 0)
-      (stream-car s)
-      (stream-ref (stream-cdr s) (- n 1))))
+(define (add-streams s1 s2) (stream-map + s1 s2))
 
-;; (stream-cdr factorials)
-(stream-ref factorials 0)
-(stream-ref factorials 1)
-(stream-ref factorials 2)
-(stream-ref factorials 3)
+(define (partial-sums s)
+  (cons-stream  (stream-car s) (add-stream partial-sums (stream-cdr s)))
+  )
