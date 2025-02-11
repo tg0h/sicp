@@ -12,15 +12,28 @@
   (cons-stream n (integers-starting-from (+ n 1))))
 (define integers (integers-starting-from 1))
 
-(define (stream-map proc s)
-  (if (stream-null? s) the-empty-stream
-      (cons-stream (proc (stream-car s))
-                   (stream-map proc (stream-cdr s)))))
+;; (define (stream-map proc s)
+;;   (if (stream-null? s) the-empty-stream
+;;       (cons-stream (proc (stream-car s))
+;;                    (stream-map proc (stream-cdr s)))))
+
+(define
+  (stream-map proc . argstreams)
+  (if (null? (car argstreams))
+      the-empty-stream
+      (cons-stream
+       (apply proc (map stream-car argstreams))
+       (apply stream-map
+              (cons proc (map stream-cdr argstreams))))))
 
 (define (add-streams s1 s2) (stream-map + s1 s2))
 
 (define (partial-sums s)
-  (cons-stream  (stream-car s) (add-streams partial-sums (stream-cdr s)))
+  (cons-stream (stream-car s)
+               (add-streams
+                (partial-sums s)
+                (stream-cdr s))
+               )
   )
 
 (define (stream-ref s n)
@@ -28,7 +41,9 @@
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
-(stream-ref (partial-sums integers) 0)
-(stream-ref (partial-sums integers) 1)
-(stream-ref (partial-sums integers) 2)
-(stream-ref (partial-sums integers) 3)
+;; (stream-car (partial-sums integers))
+(stream-cdr (partial-sums integers))
+;; (stream-ref (partial-sums integers) 0)
+;; (stream-ref (partial-sums integers) 1)
+;; (stream-ref (partial-sums integers) 2)
+;; (stream-ref (partial-sums integers) 3)
