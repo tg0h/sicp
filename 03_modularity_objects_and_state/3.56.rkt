@@ -54,7 +54,6 @@
                                (stream-cdr s2)))))))))
 
 
-
 (define (scale-stream stream factor)
   (stream-map (lambda (x) (* x factor))
               stream))
