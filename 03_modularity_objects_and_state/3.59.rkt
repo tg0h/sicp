@@ -26,8 +26,11 @@
 
 (define inverse-fractions (stream-map inverse (integers-starting-from 1 )))
 
-
 (stream-ref inverse-fractions 0)
 (stream-ref inverse-fractions 1)
 (stream-ref inverse-fractions 2)
 (stream-ref inverse-fractions 3)
+
+(define (integrate-series s c)
+  (cons-stream c (mul-streams inverse-fractions s))
+  )
