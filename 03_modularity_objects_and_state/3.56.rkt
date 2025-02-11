@@ -38,7 +38,8 @@
   (cond ((stream-null? s1) s2)
         ((stream-null? s2) s1)
         (else
-         (let ((s1car (stream-car s1)) (s2car (stream-car s2)))
+         (let ((s1car (stream-car s1))
+               (s2car (stream-car s2)))
            (cond ((< s1car s2car)
                   (cons-stream
                    s1car
@@ -51,3 +52,9 @@
                         s1car
                         (merge (stream-cdr s1)
                                (stream-cdr s2)))))))))
+
+
+
+(define (scale-stream stream factor)
+  (stream-map (lambda (x) (* x factor))
+              stream))
