@@ -26,11 +26,43 @@
 
 (define inverse-fractions (stream-map inverse (integers-starting-from 1 )))
 
-(stream-ref inverse-fractions 0)
-(stream-ref inverse-fractions 1)
-(stream-ref inverse-fractions 2)
-(stream-ref inverse-fractions 3)
+;; (stream-ref inverse-fractions 0)
+;; (stream-ref inverse-fractions 1)
+;; (stream-ref inverse-fractions 2)
+;; (stream-ref inverse-fractions 3)
 
-(define (integrate-series s c)
-  (cons-stream c (mul-streams inverse-fractions s))
-  )
+(define (integrate-series s)
+  (mul-streams inverse-fractions s))
+
+
+(define exp-series
+  (cons-stream 1 (integrate-series exp-series)))
+
+;; (stream-ref exp-series 0)
+;; (stream-ref exp-series 1)
+;; (stream-ref exp-series 2)
+;; (stream-ref exp-series 3)
+
+
+(define (scale-stream stream factor)
+  (stream-map (lambda (x) (* x factor))
+              stream))
+
+
+(define sine-series (cons-stream 0 (integrate-series cosine-series)))
+
+; deriv cosine is negative of sine
+(define cosine-series (cons-stream 1 (scale-stream (integrate-series sine-series) -1 )))
+
+;; (stream-ref cosine-series 0)
+;; (stream-ref cosine-series 1)
+;; (stream-ref cosine-series 2)
+;; (stream-ref cosine-series 3)
+;; (stream-ref cosine-series 4)
+;; (stream-ref cosine-series 5)
+;; (stream-ref cosine-series 6)
+
+(stream-ref sine-series 0)
+(stream-ref sine-series 1)
+(stream-ref sine-series 2)
+(stream-ref sine-series 3)
