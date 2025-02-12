@@ -89,3 +89,13 @@
          (mul-series s1 (invert-unit-series
                          (scale-stream s2 (/ 1 c))))
          (/ 1 c)))))
+
+(define tangent-series (div-series sine-series cosine-series))
+
+(stream-ref tangent-series 0)
+(stream-ref tangent-series 1)
+(stream-ref tangent-series 2)
+(stream-ref tangent-series 3)
+(stream-ref tangent-series 4)
+(stream-ref tangent-series 5)
+(stream-ref tangent-series 6)
