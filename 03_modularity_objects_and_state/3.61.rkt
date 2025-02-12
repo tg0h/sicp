@@ -73,5 +73,9 @@
                 (mul-series (stream-cdr s1) s2))))
 
 (define (invert-unit-series s)
-  (cons-stream 1 (mul-series  (stream-cdr s) (invert-unit-series s)))
+  (cons-stream 1
+               (scale-stream
+                (mul-series  (stream-cdr s) (invert-unit-series s))
+                -1)
+               )
   )
