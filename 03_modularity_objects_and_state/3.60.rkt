@@ -53,3 +53,22 @@
 
 ; deriv cosine is negative of sine
 (define cosine-series (cons-stream 1 (scale-stream (integrate-series sine-series) -1 )))
+
+
+(define (add-streams s1 s2) (stream-map + s1 s2))
+
+(define (mul-series s1 s2)
+  (cons-stream (* (stream-car s1) (stream-car s2))
+               (add-streams
+                (scale-stream (stream-cdr s2) (stream-car s1))
+                (mul-series (stream-cdr s1) s2))))
+
+(define z (add-streams
+           (mul-series sine-series sine-series)
+           (mul-series cosine-series cosine-series)))
+
+
+(stream-ref exp-series 0)
+(stream-ref exp-series 1)
+(stream-ref exp-series 2)
+(stream-ref exp-series 3)
