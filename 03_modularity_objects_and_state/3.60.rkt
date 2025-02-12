@@ -14,10 +14,19 @@
   (cons-stream n (integers-starting-from (+ n 1))))
 (define integers (integers-starting-from 1))
 
-(define (stream-map proc s)
-  (if (stream-null? s) the-empty-stream
-      (cons-stream (proc (stream-car s))
-                   (stream-map proc (stream-cdr s)))))
+;; (define (stream-map proc s)
+;;   (if (stream-null? s) the-empty-stream
+;;       (cons-stream (proc (stream-car s))
+;;                    (stream-map proc (stream-cdr s)))))
+
+(define
+  (stream-map proc . argstreams)
+  (if (null? (car argstreams))
+      the-empty-stream
+      (cons-stream
+       (apply proc (map stream-car argstreams))
+       (apply stream-map
+              (cons proc (map stream-cdr argstreams))))))
 
 (define (stream-ref s n)
   (if (= n 0)
@@ -67,8 +76,15 @@
            (mul-series sine-series sine-series)
            (mul-series cosine-series cosine-series)))
 
+;; (stream-ref (mul-series sine-series sine-series) 0)
+(stream-ref (mul-series cosine-series cosine-series) 0)
+(stream-ref (mul-series cosine-series cosine-series) 1)
+(stream-ref (mul-series cosine-series cosine-series) 2)
+;; (stream-ref (mul-series sine-series sine-series) 1)
+;; (stream-ref (mul-series sine-series sine-series) 2)
+;; (stream-ref (mul-series sine-series sine-series) 3)
 
-(stream-ref z 0)
-(stream-ref z 1)
-(stream-ref z 2)
-(stream-ref z 3)
+;; (stream-ref z 0)
+;; (stream-ref z 1)
+;; (stream-ref z 2)
+;; (stream-ref z 3)
