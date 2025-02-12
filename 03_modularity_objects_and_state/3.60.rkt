@@ -68,7 +68,7 @@
            (mul-series cosine-series cosine-series)))
 
 
-(stream-ref exp-series 0)
-(stream-ref exp-series 1)
-(stream-ref exp-series 2)
-(stream-ref exp-series 3)
+(stream-ref z 0)
+(stream-ref z 1)
+(stream-ref z 2)
+(stream-ref z 3)
