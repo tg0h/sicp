@@ -56,14 +56,21 @@
 ;; (stream-cdr y)
 
 (define x
-  (stream-map show
-              (stream-enumerate-interval 0 10)))
+  (stream-map show (stream-enumerate-interval 0 10))
+  )
 
 ;; (stream-cdr x)
 ;; (newline)
+(stream-cdr (stream-cdr x)) ; cached
+(stream-cdr (stream-cdr x)) ; cached
+
+; this is a new cons-stream so it is not cached because it has never been called before
+(stream-cdr (stream-cdr   (stream-map show (stream-enumerate-interval 0 10)))) ; not cached
+;; (stream-cdr   (stream-map show (stream-enumerate-interval 0 10)))
+
 ;; x
 ;; x
 ;; (stream-cdr x)
-(stream-ref x 5)
+;; (stream-ref x 5)
 
-(stream-ref x 7) ; (memoized)
+;; (stream-ref x 7) ; (memoized)
