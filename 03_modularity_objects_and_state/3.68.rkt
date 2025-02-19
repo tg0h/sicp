@@ -54,16 +54,9 @@
 
 ;; (stream-for-each pii 1 40)
 
-(define (all-ints s)
-  (let (
-        (first (car (stream-car s )))
-        (second (cadr(stream-car s ))))
-    (cond
-      ((= first second) (cons-stream (list first second) (all-ints (stream-cdr s))))
-      (else (cons-stream (list first second)
-                         (cons-stream (list second first)
-                                      (all-ints (stream-cdr s))))))))
-
-(define apii (all-ints pii))
-
 (stream-for-each apii 1 30)
+
+(define (_pairs s t)
+  (interleave
+   (stream-map (lambda (x) (list (stream-car s) x)) t)
+   (_pairs (stream-cdr s) (stream-cdr t))))
