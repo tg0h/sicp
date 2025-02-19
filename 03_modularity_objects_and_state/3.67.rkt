@@ -52,14 +52,18 @@
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
-(stream-for-each pii 1 40)
+;; (stream-for-each pii 1 40)
 
 (define (all-ints s)
-  (let ((pair (stream-car s))
-        (first (car(stream-car s )))
+  (let (
+        (first (car (stream-car s )))
         (second (cadr(stream-car s ))))
     (cond
       ((= first second) (cons-stream (list first second) (all-ints (stream-cdr s))))
       (else (cons-stream (list first second)
                          (cons-stream (list second first)
-                                      (all-ints stream-cdr s)))))))
+                                      (all-ints (stream-cdr s))))))))
+
+(define apii (all-ints pii))
+
+(stream-for-each apii 1 30)
