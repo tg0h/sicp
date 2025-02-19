@@ -113,7 +113,8 @@
                    (merge-weighted weight s1 (stream-cdr s2))))
                  (else (cons-stream
                         s1car
-                        (merge-weighted weight
-                                        (stream-cdr s1)
-                                        (stream-cdr s2)))
+                        (merge-weighted weight (stream-cdr s1) (stream-cdr s2)))
                        ))))))
+
+
+
