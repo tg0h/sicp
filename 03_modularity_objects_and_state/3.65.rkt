@@ -43,9 +43,42 @@
 (define (display-line x) (display x)(newline))
 (define (display-stream s) (stream-for-each display-line s))
 
-;; (stream-ref ln-stream 0)
-;; (stream-ref ln-stream 1)
-;; (stream-ref ln-stream 2)
-;; (stream-ref ln-stream 3)
-;; (stream-ref ln-stream 4)
-(display-stream ln-stream)
+(define (square x) (* x x))
+(define (euler-transform s)
+  (let ((s0 (stream-ref s 0))
+        (s1 (stream-ref s 1))
+        (s2 (stream-ref s 2)))
+    (cons-stream (- s2 (/ (square (- s2 s1))
+                          (+ s0 (* -2 s1) s2)))
+                 (euler-transform (stream-cdr s)))))
+
+(stream-ref ln-stream 0)
+(stream-ref ln-stream 1)
+(stream-ref ln-stream 2)
+(stream-ref ln-stream 3)
+(stream-ref ln-stream 4)
+(newline)
+
+(define eln-stream (euler-transform ln-stream))
+
+(stream-ref eln-stream 0)
+(stream-ref eln-stream 1)
+(stream-ref eln-stream 2)
+(stream-ref eln-stream 3)
+(stream-ref eln-stream 4)
+(newline)
+
+(define (make-tableau transform s)
+  (cons-stream s (make-tableau transform (transform s))))
+
+(define (accelerated-sequence transform s)
+  (stream-map stream-car (make-tableau transform s)))
+
+
+(define eeln-stream (accelerated-sequence euler-transform ln-stream))
+
+(stream-ref eeln-stream 0)
+(stream-ref eeln-stream 1)
+(stream-ref eeln-stream 2)
+(stream-ref eeln-stream 3)
+(stream-ref eeln-stream 4)
