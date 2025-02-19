@@ -43,26 +43,13 @@
               (display (stream-car s))
               (newline)
               (stream-for-each (stream-cdr s) (+ n 1 ) limit))))
-;; (define (display-line x) (display x)(newline))
-
-;; (define (display-stream s) (stream-for-each display-line s 0))
 
 (define (stream-ref s n)
   (if (= n 0)
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
-;; (stream-for-each pii 1 40)
 
-;; (define (triples s t u)
-;;   (cons-stream (stream-map (lambda (p) (list (stream-car s)
-;;                                              (car p)
-;;                                              (cadr p)))
-;;                            (pairs t u))
-;;                (triples
-;;                 (stream-cdr s)
-;;                 (stream-cdr t)
-;;                 (stream-cdr u))))
 
 (define (triples s t u)
   (cons-stream (list (stream-car s) (stream-car t) (stream-car u))
@@ -79,7 +66,7 @@
 (define ti (triples integers integers integers))
 
 
-(stream-for-each ti 1 70)
+;; (stream-for-each ti 1 70)
 
 
 (define (square x) (* x x))
@@ -93,30 +80,19 @@
                        (stream-cdr stream))))
         (else (stream-filter pred (stream-cdr stream)))))
 
-(define pythagorean-triples
-  (stream-filter (lambda(t)
-                   (let ((i (car t))
-                         (j (cadr t))
-                         (k (caddr t)))
-                     (= (+ (square i) (square j)) (square k)))) ti))
-
-;; (stream-for-each pythagorean-triples 1 10)
-
-;; (stream-for-each (pairs integers (stream-cdr integers)) 1 20)
-
 (define (merge s1 s2)
   (cond ((stream-null? s1) s2)
-        ((stream-null? s2) s1) 
+        ((stream-null? s2) s1)
         (else
-                                (let ((s1car (stream-car s1)) (s2car (stream-car s2)))
-                                  (cond ((< s1car s2car) (cons-stream
-                                                          s1car
-                                                          (merge (stream-cdr s1) s2)))
-                                        ((> s1car s2car)
-                                         (cons-stream
-                                          s2car
-                                          (merge s1 (stream-cdr s2))))
-                                        (else (cons-stream
-                                               s1car
-                                               (merge (stream-cdr s1)
-                                                      (stream-cdr s2)))))))))
+         (let ((s1car (stream-car s1)) (s2car (stream-car s2)))
+           (cond ((< s1car s2car) (cons-stream
+                                   s1car
+                                   (merge (stream-cdr s1) s2)))
+                 ((> s1car s2car)
+                  (cons-stream
+                   s2car
+                   (merge s1 (stream-cdr s2))))
+                 (else (cons-stream
+                        s1car
+                        (merge (stream-cdr s1)
+                               (stream-cdr s2)))))))))
