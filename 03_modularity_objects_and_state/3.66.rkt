@@ -32,16 +32,25 @@
 
 (define pii (pairs integers integers))
 
-(define (stream-for-each proc s)
-  (if (stream-null? s)
+(define (stream-for-each s n limit)
+  (if (or (stream-null? s )
+          (= n limit )
+          ;; (= (stream-car (stream-car s)) 99)
+          )
       'done
-      (begin (proc (stream-car s))
-             (stream-for-each proc (stream-cdr s)))))
-(define (display-line x) (display x)(newline))
-(define (display-stream s) (stream-for-each display-line s))
+      (begin  (display n)
+              (display ": ")
+              (display (stream-car s))
+              (newline)
+              (stream-for-each (stream-cdr s) (+ n 1 ) limit))))
+;; (define (display-line x) (display x)(newline))
+
+;; (define (display-stream s) (stream-for-each display-line s 0))
 
 (define (stream-ref s n)
   (if (= n 0)
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
+(stream-for-each pii 1 40)
+;; (stream-for-each pii 1 100000)
