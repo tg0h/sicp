@@ -54,9 +54,16 @@
 
 ;; (stream-for-each pii 1 40)
 
-(stream-for-each apii 1 30)
-
 (define (_pairs s t)
   (interleave
    (stream-map (lambda (x) (list (stream-car s) x)) t)
    (_pairs (stream-cdr s) (stream-cdr t))))
+
+;; (define _pii (_pairs integers integers))
+
+;; (stream-for-each _pii 1 40)
+;; (stream-car _pii)
+
+;; (stream-car (interleave integers integers))
+;; (interleave integers integers)
+(_pairs integers integers)
