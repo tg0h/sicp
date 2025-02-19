@@ -54,5 +54,52 @@
 
 ;; (stream-for-each pii 1 40)
 
-(define
+;; (define (triples s t u)
+;;   (cons-stream (stream-map (lambda (p) (list (stream-car s)
+;;                                              (car p)
+;;                                              (cadr p)))
+;;                            (pairs t u))
+;;                (triples
+;;                 (stream-cdr s)
+;;                 (stream-cdr t)
+;;                 (stream-cdr u))))
 
+(define (triples s t u)
+  (cons-stream (list (stream-car s) (stream-car t) (stream-car u))
+               (interleave
+                (stream-map (lambda (p) (list (stream-car s)
+                                              (car p)
+                                              (cadr p)))
+                            (stream-cdr (pairs t u)))
+                (triples
+                 (stream-cdr s)
+                 (stream-cdr t)
+                 (stream-cdr u)))))
+
+(define ti (triples integers integers integers))
+
+
+(stream-for-each ti 1 70)
+
+
+(define (square x) (* x x))
+
+(define (stream-filter pred stream)
+  (cond ((stream-null? stream) the-empty-stream)
+        ((pred (stream-car stream))
+         (cons-stream (stream-car stream)
+                      (stream-filter
+                       pred
+                       (stream-cdr stream))))
+        (else (stream-filter pred (stream-cdr stream)))))
+
+(define pythagorean-triples
+  (stream-filter (lambda(t)
+                   (let ((i (car t))
+                         (j (cadr t))
+                         (k (caddr t)))
+                     (= (+ (square i) (square j)) (square k)))) ti))
+
+;; (stream-for-each pythagorean-triples 1 10)
+
+;; (stream-for-each (pairs integers (stream-cdr integers)) 1 20)
