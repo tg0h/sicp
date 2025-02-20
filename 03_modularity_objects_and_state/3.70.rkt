@@ -83,25 +83,6 @@
                         (merge (stream-cdr s1)
                                (stream-cdr s2)))))))))
 
-(define (merge-weighted weight s1 s2)
-  (cond ((stream-null? s1) s2)
-        ((stream-null? s2) s1)
-        (else
-         (let ((s1car (stream-car s1))
-               (s2car (stream-car s2)))
-           (cond ((< (weight s1car) (weight s2car)
-                     (cons-stream
-                      s1car
-                      (merge-weighted weight (stream-cdr s1) s2))))
-                 ((> (weight s1car) (weight s2car))
-                  (cons-stream
-                   s2car
-                   (merge-weighted weight s1 (stream-cdr s2))))
-                 (else (cons-stream
-                        s1car
-                        (merge-weighted weight (stream-cdr s1) (stream-cdr s2)))
-                       ))))))
-
 (define (weighted-pairs weight s t)
   (cons-stream
    (list (stream-car s) (stream-car t))
@@ -110,4 +91,28 @@
     (pairs (stream-cdr s) (stream-cdr t)))))
 
 
-(stream-for-each pii 1 10)
+(stream-for-each pii 1 20)
+
+(define (merge-weighted s1 s2 weight)
+  (cond ((stream-null? s1) s2)
+        ((stream-null? s2) s1)
+        (else
+         (let ((s1car (stream-car s1))
+               (s2car (stream-car s2)))
+           (let ((w1 (weight s1car))
+                 (w2 (weight s2car)))
+             (cond ((< w1 w2)
+                    (cons-stream s1car
+                                 (merge-weighted (stream-cdr s1) s2 weight)))
+                   ((> w1 w2)
+                    (cons-stream s2car
+                                 (merge-weighted s1 (stream-cdr s2) weight)))
+                   (else
+                    (cons-stream
+                     s1car
+                     (cons-stream
+                      s2car ;; must include both in case of ties!
+                      (merge-weighted
+                       (stream-cdr s1)
+                       (stream-cdr s2)
+                       weight))))))))))
