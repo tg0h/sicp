@@ -33,10 +33,7 @@
 (define pii (pairs integers integers))
 
 (define (stream-for-each s n limit)
-  (if (or (stream-null? s )
-          (= n limit )
-          ;; (= (stream-car (stream-car s)) 99)
-          )
+  (if (or (stream-null? s ) (= n limit ))
       'done
       (begin  (display n)
               (display ": ")
@@ -50,11 +47,6 @@
       (stream-ref (stream-cdr s) (- n 1))))
 
 
-
-
-;; (stream-for-each ti 1 70)
-
-
 (define (square x) (* x x))
 
 (define (stream-filter pred stream)
@@ -65,26 +57,6 @@
                        pred
                        (stream-cdr stream))))
         (else (stream-filter pred (stream-cdr stream)))))
-
-(define (merge s1 s2)
-  (cond ((stream-null? s1) s2)
-        ((stream-null? s2) s1)
-        (else
-         (let ((s1car (stream-car s1)) (s2car (stream-car s2)))
-           (cond ((< s1car s2car) (cons-stream
-                                   s1car
-                                   (merge (stream-cdr s1) s2)))
-                 ((> s1car s2car)
-                  (cons-stream
-                   s2car
-                   (merge s1 (stream-cdr s2))))
-                 (else (cons-stream
-                        s1car
-                        (merge (stream-cdr s1)
-                               (stream-cdr s2)))))))))
-
-
-;; (stream-for-each pii 1 20)
 
 (define (merge-weighted s1 s2 weight)
   (cond ((stream-null? s1) s2)
@@ -110,19 +82,6 @@
                        (stream-cdr s2)
                        weight))))))))))
 
-;; (define (weighted-pairs s t weight)
-;;   (cons-stream
-;;    (list (stream-car s) (stream-car t))
-;;    (merge-weighted
-;;     (merge-weighted
-;;      (stream-map (lambda (x) (list x (stream-car t)))
-;;                  (stream-cdr s))
-;;      (stream-map (lambda (x) (list (stream-car s) x))
-;;                  (stream-cdr t))
-;;      weight)
-;;     (weighted-pairs (stream-cdr s) (stream-cdr t) weight)
-;;     weight)))
-
 (define (weighted-pairs s t weight)
   (cons-stream
    (list (stream-car s) (stream-car t))
@@ -134,8 +93,8 @@
 
 (define (cube x) (* x x x))
 (define (sum-weight p) (+ (car p) (cadr p)))
-
 (define (cube-weight p) (+ (cube (car p)) (cube (cadr p))))
+(define (square-weight p) (+ (square (car p)) (square (cadr p))))
 
 (define wii (weighted-pairs integers integers cube-weight))
 
@@ -144,7 +103,8 @@
 (define (find-rama-nums)
   (define (search s)
     (let ((current (stream-car s))
-          (next (stream-car (stream-cdr s))))
+          (next (stream-car (stream-cdr s)))
+          (next-next (stream-car (stream-cdr (stream-cdr s)))))
       (if (= (cube-weight current) (cube-weight next))
           (begin
             (display current)
