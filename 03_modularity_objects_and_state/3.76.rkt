@@ -18,10 +18,13 @@
     (cons-stream (/ (+ current next) 2)
                  (smooth (stream-cdr s)))))
 
-(define (make-zero-crossings input-stream previous-value)
-  (let ((smooth-value ( stream-car (smooth input-stream)))) ; there should not be smooth here
-    (cons-stream
-     (sign-change-detector smooth-value last-smooth-value)
-     (make-zero-crossings
-      (stream-cdr input-stream) smooth-value )))
-  )
+;; (define (make-zero-crossings input-stream previous-value)
+;;   (let ((smooth-value ( stream-car (smooth input-stream)))) ; there should not be smooth here?
+;;     (cons-stream
+;;      (sign-change-detector smooth-value last-smooth-value)
+;;      (make-zero-crossings
+;;       (stream-cdr input-stream) smooth-value )))
+;;   )
+
+(define zero-crossings
+  (stream-map sign-change-detector (smooth s) (stream-cdr (smooth s))))
