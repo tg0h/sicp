@@ -132,8 +132,32 @@
     weight)))
 
 
+(define (cube x) (* x x x))
 (define (sum-weight p) (+ (car p) (cadr p)))
 
-(define wii (weighted-pairs integers integers sum-weight))
+(define (cube-weight p) (+ (cube (car p)) (cube (cadr p))))
+
+(define wii (weighted-pairs integers integers cube-weight))
 
 (stream-for-each wii 1 20)
+
+(define (find-rama-nums)
+  (define (search s)
+    (let ((current (stream-car s))
+          (next (stream-car (stream-cdr s))))
+      (if (= (cube-weight current) (cube-weight next))
+          (begin
+            (display current)
+            (display " and ")
+            (display next)
+            (display " : ")
+            (display (cube-weight current))
+            (newline)
+            (search (stream-cdr (stream-cdr s)))
+            )
+          (search (stream-cdr s))
+          )))
+  (search wii)
+  )
+
+(find-rama-nums)
