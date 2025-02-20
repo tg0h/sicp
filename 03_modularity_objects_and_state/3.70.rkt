@@ -83,15 +83,8 @@
                         (merge (stream-cdr s1)
                                (stream-cdr s2)))))))))
 
-(define (weighted-pairs weight s t)
-  (cons-stream
-   (list (stream-car s) (stream-car t))
-   (interleave
-    (stream-map (lambda (x) (list (stream-car s) x)) (stream-cdr t))
-    (pairs (stream-cdr s) (stream-cdr t)))))
 
-
-(stream-for-each pii 1 20)
+;; (stream-for-each pii 1 20)
 
 (define (merge-weighted s1 s2 weight)
   (cond ((stream-null? s1) s2)
@@ -116,3 +109,22 @@
                        (stream-cdr s1)
                        (stream-cdr s2)
                        weight))))))))))
+
+(define (weighted-pairs s t weight) 
+   (cons-stream 
+    (list (stream-car s) (stream-car t)) 
+    (merge-weighted 
+     (merge-weighted 
+      (stream-map (lambda (x) (list x (stream-car t))) 
+                  (stream-cdr s)) 
+      (stream-map (lambda (x) (list (stream-car s) x)) 
+                  (stream-cdr t)) 
+      weight) 
+     (weighted-pairs (stream-cdr s) (stream-cdr t) weight) 
+     weight))) 
+
+(define (sum-weight p) (+ (car p) (cadr p)))
+
+(define wii (merge-weighted integers integers sum-weight))
+
+(stream-for-each wii 1 20)
