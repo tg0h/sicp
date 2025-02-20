@@ -110,18 +110,27 @@
                        (stream-cdr s2)
                        weight))))))))))
 
-(define (weighted-pairs s t weight) 
-   (cons-stream 
-    (list (stream-car s) (stream-car t)) 
-    (merge-weighted 
-     (merge-weighted 
-      (stream-map (lambda (x) (list x (stream-car t))) 
-                  (stream-cdr s)) 
-      (stream-map (lambda (x) (list (stream-car s) x)) 
-                  (stream-cdr t)) 
-      weight) 
-     (weighted-pairs (stream-cdr s) (stream-cdr t) weight) 
-     weight))) 
+;; (define (weighted-pairs s t weight)
+;;   (cons-stream
+;;    (list (stream-car s) (stream-car t))
+;;    (merge-weighted
+;;     (merge-weighted
+;;      (stream-map (lambda (x) (list x (stream-car t)))
+;;                  (stream-cdr s))
+;;      (stream-map (lambda (x) (list (stream-car s) x))
+;;                  (stream-cdr t))
+;;      weight)
+;;     (weighted-pairs (stream-cdr s) (stream-cdr t) weight)
+;;     weight)))
+
+(define (weighted-pairs s t weight)
+  (cons-stream
+   (list (stream-car s) (stream-car t))
+   (merge-weighted
+    (stream-map (lambda (x) (list (stream-car s) x)) (stream-cdr t))
+    (weighted-pairs (stream-cdr s) (stream-cdr t) weight)
+    weight)))
+
 
 (define (sum-weight p) (+ (car p) (cadr p)))
 
