@@ -29,15 +29,12 @@
 
 (define init 11)
 
-(define (random-numbers)
+(define random-numbers
   (cons-stream
    init
    (stream-map rand-update random-numbers)))
 
 (define (rand-update x)
-  (display "x is")
-  (display x)
-  (display newline)
   (remainder (+ (* 173 x) 33) 101))
 ;; (define rand
 ;;   (let ((x random-init))
@@ -52,13 +49,17 @@
     (lambda (m)
       (cond ((eq? m 'generate)
              ;; (set! x (rand-update x))
-             (random-numbers x)
+             random-numbers
              ;; x
              )
             ((eq? m 'reset)
 
-             (lambda (x-new)
-               (random-numbers x-new)
+             (lambda (init)
+               (define random-numbers
+                 (cons-stream
+                  init
+                  (stream-map rand-update random-numbers)))
+               random-numbers
                ;; (set! x x-new)
                )
              )
@@ -70,20 +71,16 @@
       (stream-car s)
       (stream-ref (stream-cdr s) (- n 1))))
 
-(define y (random-numbers 11))
-
-;; (random-numbers)
-(stream-ref y 0)
-(stream-ref y 1)
-;; (stream-ref y 2)
-;; (stream-ref y 3)
+(define y random-numbers )
 
 
-;; (rand-update 1)
-;; (rand-update 4)
-;; (stream-car (rand 'generate))
+
+(define z (rand 'generate))
+(stream-ref z 0)
+(stream-ref z 1)
+(stream-ref z 2)
 ;; (rand 'generate)
-;; (rand 'generate)
+((rand 'reset) 12)
 ;; (stream-cdr ((rand 'reset) 11))
 ;; (stream-car (stream-cdr ((rand 'reset ) 11)))
 
