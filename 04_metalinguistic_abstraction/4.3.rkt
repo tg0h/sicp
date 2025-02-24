@@ -10,7 +10,14 @@
          (lookup-variable-value exp env))
 
         (else
-         ((get 'eval (operation exp)) exp env)
+         (let ((eval-operation (get 'eval (operation exp))))
+           (if (eval-operation)
+               ; if operation found in get table, use it
+               (eval-operation exp env)
+               ; if not found, then use the application function
+               ((get 'eval 'application) exp env)
+               )
+           )
          )
 
         ;------------------------------------------------------------------------------------
