@@ -27,3 +27,24 @@
 
     )
   )
+
+(define (eval-or exp env)
+  (cond
+    ; if or does not have any predicates, return false
+    ; eg just a single and
+    (null? (cdr exp) false)
+
+    ; if pred is true, return expression
+    ((true? (eval (cadr exp) env)) (eval cadr exp))
+
+    ; if false and last expression, return false
+    ( (and (not (true? (eval (cadr exp) env)))
+           (null? (cddr exp)))
+      false
+      )
+
+    ; if false and not last expression, continue evaluation
+    (else (eval-and (cons 'or (cddr exp)) env))
+
+    )
+  )
