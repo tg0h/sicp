@@ -77,6 +77,12 @@
          (meta-apply
           (eval (operator exp) env)
           (list-of-values (operands exp) env)))
+        ;; put 'eval 'application application-operation
+        ;; (define (application-operation exp env)
+        ;;   (meta-apply
+        ;;    (eval (operator exp) env)
+        ;;    (list-of-values (operands exp) env))
+        ;; )
 
         (else
          (error "Unknown expression type: EVAL" exp))))
