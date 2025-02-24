@@ -56,11 +56,11 @@
              )
             (cond-arrow-recipient (cond-arrow-test))
             (if (cond-else-clause? first)
-                (if (null? rest)
+                (if (null? rest) ; the else condition does not have any other predicates below
                     (sequence->exp (cond-actions first))
                     (error "ELSE clause isn't last: COND->IF"
                            clauses))
-                (make-if (cond-predicate first)
+                (make-if (cond-predicate first) ; if predicate satisfied, evaluate the cond actions
                          (sequence->exp (cond-actions first))
                          (expand-clauses rest)))))))
 
