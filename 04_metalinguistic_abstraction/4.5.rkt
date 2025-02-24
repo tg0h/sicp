@@ -29,20 +29,40 @@
 (define (cond-predicate clause) (car clause))
 (define (cond-actions clause) (cdr clause))
 
+(define (cond-arrow-test clause) (car clause))
+(define (cond-arrow-operator clause) (cadr clause))
+(define (cond-arrow-recipient clause) (caddr clause))
+
+(define (cond-arrow-clause? clause)
+  ;; (
+  ;;   (assoc 'b '((a 1) (b 2)))
+  ;;   =>
+  ;;   cadr
+  ;; )
+  (and (= (length clause) 3)
+       (eq? (cond-arrow-operator clause) '=>)
+       )
+  )
+
 
 (define (expand-clauses clauses)
   (if (null? clauses)
       'false ; no else clause
       (let ((first (car clauses))
             (rest (cdr clauses)))
-        (if (cond-else-clause? first)
-            (if (null? rest)
-                (sequence->exp (cond-actions first))
-                (error "ELSE clause isn't last: COND->IF"
-                       clauses))
-            (make-if (cond-predicate first)
-                     (sequence->exp (cond-actions first))
-                     (expand-clauses rest))))))
+        (if (and
+             (cond-arrow-clause? first) ; if cond arrow clause
+             (cond-arrow-test) ; and test evaluates to true
+             )
+            (cond-arrow-recipient (cond-arrow-test))
+            (if (cond-else-clause? first)
+                (if (null? rest)
+                    (sequence->exp (cond-actions first))
+                    (error "ELSE clause isn't last: COND->IF"
+                           clauses))
+                (make-if (cond-predicate first)
+                         (sequence->exp (cond-actions first))
+                         (expand-clauses rest)))))))
 
 ; test predicates
 (define (true? x) (not (eq? x false)))
