@@ -1,6 +1,6 @@
 #lang sicp
 
- 
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
          exp)
@@ -23,6 +23,8 @@
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
+        ;; ((let? exp)
+        ;;  (let->combination exp)
 
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
@@ -38,3 +40,23 @@
           (list-of-values (operands exp) env)))
         (else
          (error "Unknown expression type: EVAL" exp))))
+
+
+; let
+(define (let? exp) (tagged-list? exp 'let))
+(define (lambda-parameters exp) (cadr exp))
+(define (lambda-body exp) (cddr exp))
+
+(define (let->combination exp)
+
+  )
+
+;; (let
+;;     (
+;;      (a (+ 1 1))
+;;      (b (+ 1 1))
+;;      )
+;;
+;;   (+ 2 2)
+;;   (+ 2 2)
+;;   )
