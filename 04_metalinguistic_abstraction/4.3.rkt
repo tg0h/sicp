@@ -1,5 +1,7 @@
 #lang sicp
 
+(define (operation exp) (car exp))
+
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
          exp)
