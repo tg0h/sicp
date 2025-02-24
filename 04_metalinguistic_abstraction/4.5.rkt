@@ -15,10 +15,12 @@
 (define (first-exp seq) (car seq))
 (define (rest-exps seq) (cdr seq))
 
-(define (sequence->exp seq)
-  (cond ((null? seq) seq)
-        ((last-exp? seq) (first-exp seq))
+(define (sequence->exp seq arrow-test)
+  (cond ((null? seq) seq) ; if there is no expression in the cond clause, then return nil
+        ((last-exp? seq) (first-exp seq)) ; if there is only 1 expression, then return that expression
+        ((eq? (car seq) '=>) (eval (cons arrow-test (cond-arrow-recipient seq))))
         (else (make-begin seq))))
+
 (define (make-begin seq) (cons 'begin seq))
 
 ; cond (convert cond to nested ifs)
@@ -26,7 +28,9 @@
 (define (cond-clauses exp) (cdr exp))
 (define (cond-else-clause? clause)
   (eq? (cond-predicate clause) 'else))
+
 (define (cond-predicate clause) (car clause))
+
 (define (cond-actions clause) (cdr clause))
 
 (define (cond-arrow-test clause) (car clause))
@@ -50,19 +54,20 @@
       'false ; no else clause
       (let ((first (car clauses))
             (rest (cdr clauses)))
-        (if (and
-             (cond-arrow-clause? first) ; if cond arrow clause
-             (cond-arrow-test) ; and test evaluates to true
-             )
-            (cond-arrow-recipient (cond-arrow-test))
-            (if (cond-else-clause? first)
-                (if (null? rest) ; the else condition does not have any other predicates below
-                    (sequence->exp (cond-actions first))
-                    (error "ELSE clause isn't last: COND->IF"
-                           clauses))
-                (make-if (cond-predicate first) ; if predicate satisfied, evaluate the cond actions
-                         (sequence->exp (cond-actions first))
-                         (expand-clauses rest)))))))
+        (if
+         (and
+          (cond-arrow-clause? first) ; if cond arrow clause
+          (cond-arrow-test) ; and test evaluates to true
+          )
+         (cond-arrow-recipient (cond-arrow-test))
+         (if (cond-else-clause? first)
+             (if (null? rest) ; the else condition does not have any other predicates below
+                 (sequence->exp (cond-actions first) nil)
+                 (error "ELSE clause isn't last: COND->IF"
+                        clauses))
+             (make-if (cond-predicate first) ; if predicate satisfied, evaluate the cond actions
+                      (sequence->exp (cond-actions first) (cond-predicate first) )
+                      (expand-clauses rest)))))))
 
 ; test predicates
 (define (true? x) (not (eq? x false)))
