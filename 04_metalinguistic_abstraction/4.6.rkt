@@ -23,8 +23,10 @@
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
-        ;; ((let? exp)
-        ;;  (let->combination exp)
+        ((let? exp)
+         (eval (let->combination exp env)
+               )
+         )
 
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
@@ -69,9 +71,13 @@
 
 
 
-(define (let->combination exp env)
-  (make-procedure (let-var-list (let-clauses exp)) (let-body exp) env)
+;; (cons (list 'a 'b 'c) (list 'd 'e))
+;; ( (a b c) d e)
 
+(define (let->combination exp env)
+  (cons
+   (make-procedure (let-var-list (let-clauses exp)) (let-body exp) env)
+   (let-exp-list (let-clauses exp)))
   )
 
 ;; (let
