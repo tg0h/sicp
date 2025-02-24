@@ -9,7 +9,7 @@
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
          (lookup-variable-value exp env))
 
-        ;; hmm should use this instead
+        ;; hmm should use this instead of else
         ;; ((get 'op (car expr)) (get 'op (car expr) expr env))
 
         (else
