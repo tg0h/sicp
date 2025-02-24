@@ -54,20 +54,20 @@
       'false ; no else clause
       (let ((first (car clauses))
             (rest (cdr clauses)))
-        (if
-         (and
-          (cond-arrow-clause? first) ; if cond arrow clause
-          (cond-arrow-test) ; and test evaluates to true
-          )
-         (cond-arrow-recipient (cond-arrow-test))
-         (if (cond-else-clause? first)
-             (if (null? rest) ; the else condition does not have any other predicates below
-                 (sequence->exp (cond-actions first) nil)
-                 (error "ELSE clause isn't last: COND->IF"
-                        clauses))
-             (make-if (cond-predicate first) ; if predicate satisfied, evaluate the cond actions
-                      (sequence->exp (cond-actions first) (cond-predicate first) )
-                      (expand-clauses rest)))))))
+        ;; (if
+        ;;  (and
+        ;;   (cond-arrow-clause? first) ; if cond arrow clause
+        ;;   (cond-arrow-test) ; and test evaluates to true
+        ;;   )
+        ;;  (cond-arrow-recipient (cond-arrow-test))
+        (if (cond-else-clause? first)
+            (if (null? rest) ; the else condition does not have any other predicates below
+                (sequence->exp (cond-actions first) nil)
+                (error "ELSE clause isn't last: COND->IF"
+                       clauses))
+            (make-if (cond-predicate first) ; if predicate satisfied, evaluate the cond actions
+                     (sequence->exp (cond-actions first) (cond-predicate first) )
+                     (expand-clauses rest))))))
 
 ; test predicates
 (define (true? x) (not (eq? x false)))
