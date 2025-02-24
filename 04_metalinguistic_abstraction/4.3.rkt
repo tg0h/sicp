@@ -9,6 +9,9 @@
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
          (lookup-variable-value exp env))
 
+        ;; hmm should use this instead
+        ;; ((get 'op (car expr)) (get 'op (car expr) expr env))
+
         (else
          (let ((eval-operation (get 'eval (operation exp))))
            (if (eval-operation)
