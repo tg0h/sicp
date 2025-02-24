@@ -18,6 +18,7 @@
 (define (sequence->exp seq arrow-test)
   (cond ((null? seq) seq) ; if there is no expression in the cond clause, then return nil
         ((last-exp? seq) (first-exp seq)) ; if there is only 1 expression, then return that expression
+        ; very bad style, this becomes an application
         ((eq? (car seq) '=>) (eval (cons arrow-test (cond-arrow-recipient seq))))
         (else (make-begin seq))))
 
