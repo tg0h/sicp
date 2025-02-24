@@ -1,5 +1,8 @@
 #lang sicp
 
+(define (make-if predicate consequent alternative)
+  (list 'if predicate consequent alternative))
+
 (define (tagged-list? exp tag)
   (if (pair? exp)
       (eq? (car exp) tag)
@@ -26,8 +29,6 @@
 (define (cond-predicate clause) (car clause))
 (define (cond-actions clause) (cdr clause))
 
-(define (cond->if exp)
-  (expand-clauses (cond-clauses exp)))
 
 (define (expand-clauses clauses)
   (if (null? clauses)
@@ -44,3 +45,6 @@
 ; test predicates
 (define (true? x) (not (eq? x false)))
 (define (false? x) (eq? x false))
+
+(define (cond->if exp)
+  (expand-clauses (cond-clauses exp)))
