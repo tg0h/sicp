@@ -44,10 +44,33 @@
 
 ; let
 (define (let? exp) (tagged-list? exp 'let))
-(define (lambda-parameters exp) (cadr exp))
-(define (lambda-body exp) (cddr exp))
+(define (let-clauses exp) (cadr exp))
 
-(define (let->combination exp)
+(define (var-clause clause) (car clause))
+(define (exp-clause clause) (cadr clause))
+
+; create list of vars from let expression
+(define (let-var-list let-clauses)
+  (let ((first (car let-clauses)))
+    (if (null? first)
+        nil
+        (cons (var-clause first) (let-var-list (cdr let-clauses)))
+        )))
+
+; create list of exprs from let expression
+(define (let-exp-list let-clauses)
+  (let ((first (car let-clauses)))
+    (if (null? first)
+        nil
+        (cons (exp-clause first) (let-exp-list (cdr let-clauses)))
+        )))
+
+(define (let-body exp) (cddr exp))
+
+
+
+(define (let->combination exp env)
+  (make-procedure (let-var-list (let-clauses exp)) (let-body exp) env)
 
   )
 
