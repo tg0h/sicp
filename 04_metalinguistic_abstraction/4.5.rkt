@@ -97,6 +97,8 @@
         ((last-exp? seq) (first-exp seq))
         (else (make-begin seq))))
 (define (make-begin seq) (cons 'begin seq))
+; seq is a list of expressions ( (exp 1 ) (exp 2) )
+; cons begin list gives a list of exps beginning with 'begin
 
 ; procedure application
 (define (application? exp) (pair? exp))
