@@ -93,9 +93,9 @@
         (rest (cdr clauses)))
     (if (null? rest)
         (begin
-          (display "making")
-          (display (cons (make-lambda (list (car first)) body) (cdr first)))
-          (newline)
+          ;; (display "making")
+          ;; (display (cons (make-lambda (list (car first)) body) (cdr first)))
+          ;; (newline)
           (cons (make-lambda (list (car first)) body) (cdr first))
           )
         (cons (make-lambda (list (car first)) (list (expand-lets (cdr clauses) body))) (cdr first))
