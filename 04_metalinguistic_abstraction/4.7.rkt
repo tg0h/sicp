@@ -84,7 +84,9 @@
 
 ; let*
 (define (let*? exp) (tagged-list? exp 'let*))
-(define (let*-rest exp) (cdr exp))
+(define (let*-clauses exp) (cadr exp))
+(define (let*-body exp) (cddr exp))
+(define (let*->nested-lets exp) (expand-lets (let*-clauses exp) (let*-body exp))) 
 
 (define (expand-lets clauses body)
   (let (
@@ -92,12 +94,8 @@
         (rest (cdr clauses)))
     (if (null? rest)
         (cons (make-lambda (list (car first)) body) (cdr first))
-        (cons (make-lambda (list (car first)) (expand-lets (cdr clauses) body) (cdr first))
-
-              )
-        )
-    )
-  )
+        (cons (make-lambda (list (car first)) (expand-lets (cdr clauses) body) (cdr first)))
+        )))
 
 
 ; conditionals
