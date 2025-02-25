@@ -86,15 +86,19 @@
 (define (let*? exp) (tagged-list? exp 'let*))
 (define (let*-clauses exp) (cadr exp))
 (define (let*-body exp) (cddr exp))
-(define (let*->nested-lets exp) (expand-lets (let*-clauses exp) (let*-body exp))) 
+(define (let*->nested-lets exp) (expand-lets (let*-clauses exp) (let*-body exp)))
 
 (define (expand-lets clauses body)
-  (let (
-        (first (car clauses))
+  (let ((first (car clauses))
         (rest (cdr clauses)))
     (if (null? rest)
-        (cons (make-lambda (list (car first)) body) (cdr first))
-        (cons (make-lambda (list (car first)) (expand-lets (cdr clauses) body) (cdr first)))
+        (begin
+          (display "making")
+          (display (cons (make-lambda (list (car first)) body) (cdr first)))
+          (newline)
+          (cons (make-lambda (list (car first)) body) (cdr first))
+          )
+        (cons (make-lambda (list (car first)) (list (expand-lets (cdr clauses) body))) (cdr first))
         )))
 
 
@@ -360,9 +364,26 @@
 ;;   '((lambda (x) x) 3)
 ;;   )
 
+;; (define input-text
+;;   '(let ((x 13)) x)
+;;   )
+
 (define input-text
-  '(let ((x 13)) x)
+  '(let* (
+          (x 3)
+          (y (+ x 2))
+          )
+     (+ x y))
   )
+
+;; (expand-lets* input-text)
+;; ((let*? exp) (eval (let*->nested-lets exp) env))
+
+;; (define (let*-clauses exp) (cadr exp))
+;; (define (let*-body exp) (cddr exp))
+;; (let*-clauses input-text)
+;; (let*-body input-text)
+;; (let*->nested-lets input-text)
 
 
 (define (one-shot)
