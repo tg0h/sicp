@@ -98,7 +98,8 @@
           ;; (newline)
           (cons (make-lambda (list (car first)) body) (cdr first))
           )
-        (cons (make-lambda (list (car first)) (list (expand-lets (cdr clauses) body))) (cdr first))
+        (cons (make-lambda (list (car first)) (list (expand-lets (cdr clauses) body)))
+              (cdr first))
         )))
 
 
