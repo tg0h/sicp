@@ -212,7 +212,7 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
-        (list '= =) ; implement + COOOOOOL
+        (list '= =)
         ;; ⟨more primitives⟩
         ))
 (define (primitive-procedure-names)
@@ -308,13 +308,13 @@
 ;;   (driver-loop))
 
 ; one-shot driver loop
-(define input-text '(= 1 3))
-;; (define input-text
-;;   '(cond
-;;      ((= 1 2) 2)
-;;      (else 99)
-;;      )
-;;   )
+;; (define input-text '(= 1 3))
+(define input-text
+  '(cond
+     ((= 1 2) 2)
+     (else 99)
+     )
+  )
 
 (define (one-shot)
   (let ((input input-text))
