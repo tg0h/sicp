@@ -72,6 +72,15 @@
 (define (make-lambda parameters body)
   (cons 'lambda (cons parameters body)))
 
+; let
+(define (let? exp) (tagged-list? exp 'let))
+(define (let-clauses exp) (cadr exp))
+(define (let-body exp) (cddr exp))
+(define (let-vars exp) (map car (let-clauses exp)))
+(define (let-exps exp) (map cadr (let-clauses exp)))
+(define (let->combination exp)
+  (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+  )
 
 ; conditionals
 (define (if? exp) (tagged-list? exp 'if))
@@ -277,6 +286,9 @@
                          (lambda-body exp)
                          env))
 
+        ; let to lambda
+        ((let? exp) (eval (let->combination exp) env))
+
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
           (begin-actions exp) env))
@@ -323,13 +335,11 @@
 
 ; one-shot driver loop
 ;; (define input-text '(= 1 3))
+
 (define input-text
-  '(cond
-     ((= 1 2) 2)
-     ((assoc 'b '((a 1) (b 2))) => cadr)
-     (else 99)
-     )
+  '((lambda (x) x) 3)
   )
+
 
 (define (one-shot)
   (let ((input input-text))
