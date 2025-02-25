@@ -287,7 +287,8 @@
                          env))
 
         ; let to lambda
-        ((let? exp) (eval (let->combination exp) env))
+        ((let? exp) (eval
+                     (let->combination exp) env))
 
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
@@ -336,8 +337,12 @@
 ; one-shot driver loop
 ;; (define input-text '(= 1 3))
 
+;; (define input-text
+;;   '((lambda (x) x) 3)
+;;   )
+
 (define input-text
-  '((lambda (x) x) 3)
+  '(let ((x 13)) x)
   )
 
 
