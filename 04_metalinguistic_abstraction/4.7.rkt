@@ -84,33 +84,33 @@
 
 ; let*
 (define (let*? exp) (tagged-list? exp 'let*))
-(define (let*-clauses exp) (cadr exp))
-(define (let*-body exp) (cddr exp))
-(define (let*->nested-lets exp) (expand-lets (let*-clauses exp) (let*-body exp))
+(define (let*-rest exp) (cdr exp))
 
-  (define (expand-lets clauses body)
-    (let ((first (car clauses))
-          (rest (cdr clauses)))
-      (if (null? rest)
-          1
-          2
+(define (expand-lets clauses body)
+  (let (
+        (first (car clauses))
+        (rest (cdr clauses)))
+    (if (null? rest)
+        (cons (make-lambda (list (car first)) body) (cdr first))
+        (cons (make-lambda (list (car first)) (expand-lets (cdr clauses) body) (cdr first))
 
-          )
-
-      )
+              )
+        )
     )
+  )
 
-  ; conditionals
-  (define (if? exp) (tagged-list? exp 'if))
-  (define (if-predicate exp) (cadr exp))
-  (define (if-consequent exp) (caddr exp))
-  efine (if-alternative exp)
-  (not (null? (cdddr exp))) (cadddr exp)
-  'false))
+
+; conditionals
+(define (if? exp) (tagged-list? exp 'if))
+(define (if-predicate exp) (cadr exp))
+(define (if-consequent exp) (caddr exp))
+(define (if-alternative exp)
+  (if (not (null? (cdddr exp))) (cadddr exp)
+      'false))
 
 ; if
-efine (make-if predicate consequent alternative)
-(list 'if predicate consequent alternative))
+(define (make-if predicate consequent alternative)
+  (list 'if predicate consequent alternative))
 
 ; begin
 (define (begin? exp) (tagged-list? exp 'begin))
@@ -119,10 +119,10 @@ efine (make-if predicate consequent alternative)
 (define (first-exp seq) (car seq))
 (define (rest-exps seq) (cdr seq))
 
-efine (sequence->exp seq)
-((null? seq) seq)
-((last-exp? seq) (first-exp seq))
-(else (make-begin seq))))
+(define (sequence->exp seq)
+  (cond ((null? seq) seq)
+        ((last-exp? seq) (first-exp seq))
+        (else (make-begin seq))))
 (define (make-begin seq) (cons 'begin seq))
 ; seq is a list of expressions ( (exp 1 ) (exp 2) )
 ; cons begin list gives a list of exps beginning with 'begin
@@ -138,8 +138,8 @@ efine (sequence->exp seq)
 ; cond (convert cond to nested ifs)
 (define (cond? exp) (tagged-list? exp 'cond))
 (define (cond-clauses exp) (cdr exp))
-efine (cond-else-clause? clause)
-(eq? (cond-predicate clause) 'else))
+(define (cond-else-clause? clause)
+  (eq? (cond-predicate clause) 'else))
 (define (cond-predicate clause) (car clause))
 (define (cond-actions clause) (cdr clause))
 (define (cond->if exp) (expand-clauses (cond-clauses exp)))
@@ -147,23 +147,23 @@ efine (cond-else-clause? clause)
 (define (cond-arrow-test clause) (car clause))
 (define (cond-arrow-recipient clause) (caddr clause))
 
-efine (expand-clauses clauses)
-(null? clauses)
-'false ; no else clause
-(first (car clauses))
-(rest (cdr clauses)))
-(cond-arrow-clause? first)
-(cond-arrow-test first)
-(list (cond-arrow-recipient first) (cond-arrow-test first))
-(expand-clauses rest))
-(cond-else-clause? first)
-(null? rest)
-(sequence->exp (cond-actions first))
-"ELSE clause isn't last: COND->IF"
-clauses))
-(cond-predicate first)
-(sequence->exp (cond-actions first))
-(expand-clauses rest)))))))
+(define (expand-clauses clauses)
+  (if (null? clauses)
+      'false ; no else clause
+      (let ((first (car clauses))
+            (rest (cdr clauses)))
+        (if (cond-arrow-clause? first)
+            (make-if (cond-arrow-test first)
+                     (list (cond-arrow-recipient first) (cond-arrow-test first))
+                     (expand-clauses rest))
+            (if (cond-else-clause? first)
+                (if (null? rest)
+                    (sequence->exp (cond-actions first))
+                    (error "ELSE clause isn't last: COND->IF"
+                           clauses))
+                (make-if (cond-predicate first)
+                         (sequence->exp (cond-actions first))
+                         (expand-clauses rest)))))))
 
 ; test predicates
 (define (true? x) (not (eq? x false)))
@@ -183,199 +183,199 @@ clauses))
 (define (make-frame variables values) (cons variables values))
 (define (frame-variables frame) (car frame))
 (define (frame-values frame) (cdr frame))
-efine (add-binding-to-frame! var val frame)
-(set-car! frame (cons var (car frame)))
-(set-cdr! frame (cons val (cdr frame))))
+(define (add-binding-to-frame! var val frame)
+  (set-car! frame (cons var (car frame)))
+  (set-cdr! frame (cons val (cdr frame))))
 
-efine (extend-environment vars vals base-env)
-(= (length vars) (length vals))
-(cons (make-frame vars vals) base-env)
-(< (length vars) (length vals))
-(error "Too many arguments supplied" vars vals)
-(error "Too few arguments supplied" vars vals))))
+(define (extend-environment vars vals base-env)
+  (if (= (length vars) (length vals))
+      (cons (make-frame vars vals) base-env)
+      (if (< (length vars) (length vals))
+          (error "Too many arguments supplied" vars vals)
+          (error "Too few arguments supplied" vars vals))))
 
-efine (lookup-variable-value var env)
-efine (env-loop env)
-efine (scan vars vals)
-(null? vars)
-(env-loop (enclosing-environment env)))
-((eq? var (car vars)) (car vals))
-(else (scan (cdr vars) (cdr vals)))))
-(eq? env the-empty-environment)
-(error "Unbound variable lolz" var)
-et ((frame (first-frame env)))
-(frame-variables frame)
-(frame-values frame)))))
-(env-loop env))
+(define (lookup-variable-value var env)
+  (define (env-loop env)
+    (define (scan vars vals)
+      (cond ((null? vars)
+             (env-loop (enclosing-environment env)))
+            ((eq? var (car vars)) (car vals))
+            (else (scan (cdr vars) (cdr vals)))))
+    (if (eq? env the-empty-environment)
+        (error "Unbound variable lolz" var)
+        (let ((frame (first-frame env)))
+          (scan (frame-variables frame)
+                (frame-values frame)))))
+  (env-loop env))
 
-efine (set-variable-value! var val env)
-efine (env-loop env)
-efine (scan vars vals)
-(null? vars)
-(env-loop (enclosing-environment env)))
-((eq? var (car vars)) (set-car! vals val))
-(else (scan (cdr vars) (cdr vals)))))
-(eq? env the-empty-environment)
-(error "Unbound variable: SET!" var)
-et ((frame (first-frame env)))
-(frame-variables frame)
-(frame-values frame)))))
-(env-loop env))
+(define (set-variable-value! var val env)
+  (define (env-loop env)
+    (define (scan vars vals)
+      (cond ((null? vars)
+             (env-loop (enclosing-environment env)))
+            ((eq? var (car vars)) (set-car! vals val))
+            (else (scan (cdr vars) (cdr vals)))))
+    (if (eq? env the-empty-environment)
+        (error "Unbound variable: SET!" var)
+        (let ((frame (first-frame env)))
+          (scan (frame-variables frame)
+                (frame-values frame)))))
+  (env-loop env))
 
 
-efine (define-variable! var val env)
-et ((frame (first-frame env)))
-efine (scan vars vals)
-(null? vars)
-(add-binding-to-frame! var val frame))
-((eq? var (car vars)) (set-car! vals val))
-(else (scan (cdr vars) (cdr vals)))))
-(scan (frame-variables frame) (frame-values frame))))
+(define (define-variable! var val env)
+  (let ((frame (first-frame env)))
+    (define (scan vars vals)
+      (cond ((null? vars)
+             (add-binding-to-frame! var val frame))
+            ((eq? var (car vars)) (set-car! vals val))
+            (else (scan (cdr vars) (cdr vals)))))
+    (scan (frame-variables frame) (frame-values frame))))
 
-efine (setup-environment)
-initial-env
-(primitive-procedure-names)
-(primitive-procedure-objects)
-the-empty-environment)))
-(define-variable! 'true true initial-env)
-(define-variable! 'false false initial-env)
-initial-env))
+(define (setup-environment)
+  (let ((initial-env
+         (extend-environment (primitive-procedure-names)
+                             (primitive-procedure-objects)
+                             the-empty-environment)))
+    (define-variable! 'true true initial-env)
+    (define-variable! 'false false initial-env)
+    initial-env))
 
 
 (define (primitive-procedure? proc) (tagged-list? proc 'primitive))
 (define (primitive-implementation proc) (cadr proc))
 
-efine primitive-procedures
-(list 'car car)
-(list 'cadr cadr)
-(list 'cdr cdr)
-(list 'cons cons)
-(list 'null? null?)
-(list '+ +) ; implement + COOOOOOL
-(list '= =)
-(list 'assoc assoc)
-;; ⟨more primitives⟩
+(define primitive-procedures
+  (list (list 'car car)
+        (list 'cadr cadr)
+        (list 'cdr cdr)
+        (list 'cons cons)
+        (list 'null? null?)
+        (list '+ +) ; implement + COOOOOOL
+        (list '= =)
+        (list 'assoc assoc)
+        ;; ⟨more primitives⟩
+        ))
+(define (primitive-procedure-names)
+  (map car primitive-procedures))
+(define (primitive-procedure-objects)
+  (map (lambda (proc) (list 'primitive (cadr proc)))
+       primitive-procedures))
 
-ine (primitive-procedure-names)
-car primitive-procedures))
-ine (primitive-procedure-objects)
-(lambda (proc) (list 'primitive (cadr proc)))
-itive-procedures))
+(define (apply-primitive-procedure proc args)
+  (
+   ;; apply-in-underlying-scheme
+   ; use the underlying apply (note our implemented apply is called meta-apply
+   apply (primitive-implementation proc) args))
 
-ine (apply-primitive-procedure proc args)
+(define (meta-apply procedure arguments)
+  (cond ((primitive-procedure? procedure)
+         (apply-primitive-procedure procedure arguments))
+        ((compound-procedure? procedure)
+         (eval-sequence
+          (procedure-body procedure)
+          (extend-environment
+           (procedure-parameters procedure)
+           arguments
+           (procedure-environment procedure))))
+        (else (error
+               "Unknown procedure type: meta-apply" procedure))))
 
-pply-in-underlying-scheme
-e the underlying apply (note our implemented apply is called meta-apply
-                             y (primitive-implementation proc) args))
+(define (eval exp env)
+  (cond ((self-evaluating? exp) ;; primitive - string or number
+         exp)
+        ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
+         (lookup-variable-value exp env))
 
-ine (meta-apply procedure arguments)
-d ((primitive-procedure? procedure)
-   ly-primitive-procedure procedure arguments))
-mpound-procedure? procedure)
-l-sequence
-cedure-body procedure)
-end-environment
-cedure-parameters procedure)
-ments
-cedure-environment procedure))))
-e (error
-   nown procedure type: meta-apply" procedure))))
+        ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
+         (text-of-quotation exp))
 
-ine (eval exp env)
-  d ((self-evaluating? exp) ;; primitive - string or number
-        
-        riable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
-         kup-variable-value exp env))
+        ((assignment? exp) ;; tagged-list - assignment - set! x 2
+         (eval-assignment exp env))
 
-        oted? exp) ;; togged-list - quoted - a list starting with the symbol quote
-         t-of-quotation exp))
+        ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
+         (eval-definition exp env))
 
-        signment? exp) ;; tagged-list - assignment - set! x 2
-         l-assignment exp env))
+        ((if? exp) ;; tagged-list - if
+         (eval-if exp env))
 
-        finition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
-         l-definition exp env))
+        ((lambda? exp) ;; tagged-list - lambda
+         (make-procedure (lambda-parameters exp)
+                         (lambda-body exp)
+                         env))
 
-        ? exp) ;; tagged-list - if
-         l-if exp env))
+        ; let to lambda
+        ((let? exp) (eval
+                     (let->combination exp) env))
 
-        mbda? exp) ;; tagged-list - lambda
-         e-procedure (lambda-parameters exp)
-                         bda-body exp)
-                         )
+        ; let* to lets
+        ((let*? exp) (eval (let*->nested-lets exp) env))
 
-        t to lambda
-        t? exp) (eval
-                     ->combination exp) env))
+        ((begin? exp) ;; tagged-list - begin
+         (eval-sequence
+          (begin-actions exp) env))
 
-        t* to lets
-        t*? exp) (eval (let*->nested-lets exp) env))
+        ((cond? exp) ;; tagged-list - cond
+         (eval
+          (cond->if exp) env))
 
-        gin? exp) ;; tagged-list - begin
-         l-sequence
-          in-actions exp) env))
+        ((application? exp) ;; function call
+         (meta-apply
+          (eval (operator exp) env)
+          (list-of-values (operands exp) env)))
+        (else
+         (error "Unknown expression type: EVAL" exp))))
 
-        nd? exp) ;; tagged-list - cond
-         l
-          d->if exp) env))
+;; REPL
+(define (prompt-for-input string)
+  (newline) (newline) (display string) (newline))
 
-        plication? exp) ;; function call
-         a-apply
-          l (operator exp) env)
-          t-of-values (operands exp) env)))
-        e
-         or "Unknown expression type: EVAL" exp))))
+(define (announce-output string) (newline) (display string) (newline))
 
-EPL
-ine (prompt-for-input string)
-  line) (newline) (display string) (newline))
+(define (user-print object)
+  (if (compound-procedure? object)
+      (display (list 'compound-procedure
+                     (procedure-parameters object)
+                     (procedure-body object)
+                     '<procedure-env>))
+      (display object)))
 
-ine (announce-output string) (newline) (display string) (newline))
+(define input-prompt ";;; M-Eval input:")
+(define output-prompt ";;; M-Eval value:")
 
-ine (user-print object)
-  (compound-procedure? object)
-      play (list 'compound-procedure
-                     cedure-parameters object)
-                     cedure-body object)
-                     ocedure-env>))
-      play object)))
+; input driver loop
+;; (define (driver-loop)
+;;   (prompt-for-input input-prompt)
+;;   ; read returns a list of the complete expression that the user types
+;;   ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
+;;   ; eg user types 'x -> read returns list with quote and symbol x (quote x)
+;;   (let ((input (read)))
+;;     (let ((output (eval input the-global-environment)))
+;;       (announce-output output-prompt)
+;;       (user-print output)))
+;;   (driver-loop))
 
-ine input-prompt ";;; M-Eval input:")
-             ine output-prompt ";;; M-Eval value:")
+; one-shot driver loop
+;; (define input-text '(= 1 3))
 
-put driver loop
-define (driver-loop)
-(prompt-for-input input-prompt)
-; read returns a list of the complete expression that the user types
-; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
-; eg user types 'x -> read returns list with quote and symbol x (quote x)
-(let ((input (read)))
-  (let ((output (eval input the-global-environment)))
-    (announce-output output-prompt)
-    (user-print output)))
-(driver-loop))
+;; (define input-text
+;;   '((lambda (x) x) 3)
+;;   )
 
-e-shot driver loop
-define input-text '(= 1 3))
-
-define input-text
-'((lambda (x) x) 3)
-)
-
-ine input-text
-t ((x 13)) x)
-
-
-
-ine (one-shot)
-((input input-text))
-((output (eval input the-global-environment)))
-ounce-output output-prompt)
-r-print output)))
-driver-loop)
+(define input-text
+  '(let ((x 13)) x)
+  )
 
 
-etup environment sets up the primitives like
-ar, cons, +, 'true
-ine the-global-environment (setup-environment))
--shot)
+(define (one-shot)
+  (let ((input input-text))
+    (let ((output (eval input the-global-environment)))
+      (announce-output output-prompt)
+      (user-print output)))
+  ;; (driver-loop)
+  )
+
+;; setup environment sets up the primitives like
+;; car, cons, +, 'true
+(define the-global-environment (setup-environment))
+(one-shot)
