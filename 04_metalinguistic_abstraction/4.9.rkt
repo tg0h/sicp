@@ -172,6 +172,29 @@
 (define (cond-arrow-test clause) (car clause))
 (define (cond-arrow-recipient clause) (caddr clause))
 
+; do
+(define (do? exp) (tagged-list? exp 'do))
+(define (do-body exp) (cadr exp))
+(define (do-pred exp) (caddr exp))
+
+(define (make-define-procedure name variables body)
+  (cons 'define (cons (cons name variables ) (list body) ))
+  )
+(define (eval-do exp)
+  (cons
+   (do-body exp)
+   (cons
+    (make-define-procedure 'r '()
+                           (make-if (do-pred exp)
+                                    (sequence->exp (cons (do-body exp) '((r))))
+                                    'false
+                                    )
+                           )
+
+    '((r)) )
+   )
+  )
+
 (define (expand-clauses clauses)
   (if (null? clauses)
       'false ; no else clause
@@ -345,6 +368,10 @@
         ((cond? exp) ;; tagged-list - cond
          (eval
           (cond->if exp) env))
+
+        ((do? exp)
+         (eval
+          (eval-do exp) env))
 
         ((application? exp) ;; function call
          (meta-apply
