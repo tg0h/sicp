@@ -276,6 +276,7 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
+        (list '- -)
         (list '= =)
         (list '* *)
         (list 'assoc assoc)
@@ -369,35 +370,39 @@
 (define output-prompt ";;; M-Eval value:")
 
 ; input driver loop
-;; (define (driver-loop)
-;;   (prompt-for-input input-prompt)
-;;   ; read returns a list of the complete expression that the user types
-;;   ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
-;;   ; eg user types 'x -> read returns list with quote and symbol x (quote x)
-;;   (let ((input (read)))
-;;     (let ((output (eval input the-global-environment)))
-;;       (announce-output output-prompt)
-;;       (user-print output)))
-;;   (driver-loop))
+(define (driver-loop)
+  (prompt-for-input input-prompt)
+  ; read returns a list of the complete expression that the user types
+  ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
+  ; eg user types 'x -> read returns list with quote and symbol x (quote x)
+  (let ((input (read)))
+    (let ((output (eval input the-global-environment)))
+      (announce-output output-prompt)
+      (user-print output)))
+  (driver-loop))
 
 (define input-text
-  '(let* (
-          (x 3)
-          (y (+ x 2))
-          (z (+ x y 5))
-          )
-     (* x z))
+  '(define (fib n)
+     (let fib-iter ((a 1)
+                    (b 0)
+                    (count n))
+       (if (= count 0)
+           b
+           (fib-iter (+ a b) a (- count 1)))))
   )
 
 (define (one-shot)
   (let ((input input-text))
     (let ((output (eval input the-global-environment)))
       (announce-output output-prompt)
-      (user-print output)))
+      (user-print output))
+    )
   ;; (driver-loop)
   )
 
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
-(one-shot)
+;; (one-shot)
+
+(driver-loop)
