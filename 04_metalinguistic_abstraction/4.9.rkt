@@ -183,9 +183,9 @@
 (define (eval-do exp)
   (sequence->exp
    (cons
-    (do-body exp)
-    (cons
-     (make-define-procedure 'r '()
+    (do-body exp) ; do it once
+    (cons ; then define the function if pred body recurse else nothing (false) then run r again
+     (make-define-procedure 'r '() ; unfortunately, the name of the proc can shadow variables that the user defines
                             (make-if (do-pred exp)
                                      (sequence->exp (cons (do-body exp) '((r))))
                                      'false
