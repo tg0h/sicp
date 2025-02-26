@@ -181,17 +181,19 @@
   (cons 'define (cons (cons name variables ) (list body) ))
   )
 (define (eval-do exp)
-  (cons
-   (do-body exp)
+  (sequence->exp
    (cons
-    (make-define-procedure 'r '()
-                           (make-if (do-pred exp)
-                                    (sequence->exp (cons (do-body exp) '((r))))
-                                    'false
-                                    )
-                           )
+    (do-body exp)
+    (cons
+     (make-define-procedure 'r '()
+                            (make-if (do-pred exp)
+                                     (sequence->exp (cons (do-body exp) '((r))))
+                                     'false
+                                     )
+                            )
 
-    '((r)) )
+     '((r)) )
+    )
    )
   )
 
@@ -303,6 +305,7 @@
         (list '- -)
         (list '= =)
         (list '* *)
+        (list '< <)
         (list 'assoc assoc)
         ;; ⟨more primitives⟩
         ))
@@ -434,3 +437,13 @@
 ;; (one-shot)
 
 (driver-loop)
+
+;; run the driver loop
+;; enter
+
+;; (define x 0)
+;; (do (set! x (+ x 1)) (< x 10))
+;; x
+
+;; you should see 10
+
