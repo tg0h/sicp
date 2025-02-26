@@ -88,6 +88,7 @@
 (define (named-let-transform-body exp)
   (cons
    ; define the procedure with the body
+   ; does this pollute the global namespace?
    (cons 'define (cons
                   (cons (named-let-procedure exp) (named-let-vars exp))
                   (named-let-body exp)
