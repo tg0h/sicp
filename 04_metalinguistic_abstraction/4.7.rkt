@@ -256,6 +256,7 @@
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
         (list '= =)
+        (list '* *)
         (list 'assoc assoc)
         ;; ⟨more primitives⟩
         ))
@@ -373,8 +374,9 @@
   '(let* (
           (x 3)
           (y (+ x 2))
+          (z (+ x y 5))
           )
-     (+ x y))
+     (* x z))
   )
 
 ;; (expand-lets* input-text)
