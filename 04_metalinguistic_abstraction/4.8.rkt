@@ -78,9 +78,30 @@
 (define (let-body exp) (cddr exp))
 (define (let-vars exp) (map car (let-clauses exp)))
 (define (let-exps exp) (map cadr (let-clauses exp)))
-(define (let->combination exp)
-  (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+
+(define (named-let? exp) (not (pair? (cadr exp))))
+(define (named-let-procedure exp) (cadr exp))
+(define (named-let-bindings exp) (caddr exp))
+(define (named-let-body exp) (cdddr exp))
+(define (named-let-vars exp) (map car (named-let-bindings exp)))
+(define (named-let-exp exp) (map cadr (named-let-bindings exp)))
+(define (named-let-transform-body exp)
+  (cons
+   ; define the procedure with the body
+   (cons 'define (cons
+                  (cons (named-let-procedure exp) (named-let-vars exp))
+                  (named-let-body exp)
+                  ))
+   ; call the procedure
+   (list (cons (named-let-procedure exp) (named-let-exp exp)))
+   )
   )
+
+(define (let->combination exp)
+  (if (named-let? exp)
+      (cons (make-lambda (named-let-vars exp) (named-let-transform-body exp)) (named-let-exp exp))
+      (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+      ))
 
 ; let*
 (define (let*? exp) (tagged-list? exp 'let*))
@@ -359,17 +380,6 @@
 ;;       (user-print output)))
 ;;   (driver-loop))
 
-; one-shot driver loop
-;; (define input-text '(= 1 3))
-
-;; (define input-text
-;;   '((lambda (x) x) 3)
-;;   )
-
-;; (define input-text
-;;   '(let ((x 13)) x)
-;;   )
-
 (define input-text
   '(let* (
           (x 3)
@@ -378,16 +388,6 @@
           )
      (* x z))
   )
-
-;; (expand-lets* input-text)
-;; ((let*? exp) (eval (let*->nested-lets exp) env))
-
-;; (define (let*-clauses exp) (cadr exp))
-;; (define (let*-body exp) (cddr exp))
-;; (let*-clauses input-text)
-;; (let*-body input-text)
-;; (let*->nested-lets input-text)
-
 
 (define (one-shot)
   (let ((input input-text))
