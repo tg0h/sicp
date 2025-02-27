@@ -3,7 +3,7 @@
 (define (enclosing-environment env) (cdr env))
 (define (first-frame env) (car env))
 (define the-empty-environment '())
-
+;;
 (define (make-frame variables values) (cons variables values))
 (define (frame-variables frame) (car frame))
 (define (frame-values frame) (cdr frame))
@@ -11,13 +11,20 @@
   (set-car! frame (cons var (car frame)))
   (set-cdr! frame (cons val (cdr frame))))
 
+(define (first-variable vars) (car vars))
+(define (remaining-variables vars) (cdr vars))
+(define (first-value vals) (car vals))
+(define (remaining-values vals) (cdr vals))
+
+(define (set-value! vals val) (set-car! vals val))
+
 (define (lookup-variable-value var env)
   (define (env-loop env)
     (define (scan vars vals)
       (cond ((null? vars)
              (env-loop (enclosing-environment env)))
-            ((eq? var (car vars)) (car vals))
-            (else (scan (cdr vars) (cdr vals)))))
+            ((eq? var (first-variable vars)) (first-value vals))
+            (else (scan (remaining-variables vars) (remaining-values vals)))))
     (if (eq? env the-empty-environment)
         (error "Unbound variable lolz" var)
         (let ((frame (first-frame env)))
@@ -30,15 +37,14 @@
     (define (scan vars vals)
       (cond ((null? vars)
              (env-loop (enclosing-environment env)))
-            ((eq? var (car vars)) (set-car! vals val))
-            (else (scan (cdr vars) (cdr vals)))))
+            ((eq? var (first-variable vars)) (set-value! vals val))
+            (else (scan (remaining-variables vars) (remaining-values vals)))))
     (if (eq? env the-empty-environment)
         (error "Unbound variable: SET!" var)
         (let ((frame (first-frame env)))
           (scan (frame-variables frame)
                 (frame-values frame)))))
   (env-loop env))
-
 
 (define (define-variable! var val env)
   (let ((frame (first-frame env)))
