@@ -214,7 +214,7 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
-        (list '* *) ; implement + COOOOOOL
+        (list '* *)
         ;; ⟨more primitives⟩
         ))
 (define (primitive-procedure-names)
