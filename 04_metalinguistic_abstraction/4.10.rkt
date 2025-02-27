@@ -8,8 +8,9 @@
 
 (define (eval-if exp env)
   (if (true? (eval (if-predicate exp) env))
+      (eval (if-alternative exp) env)
       (eval (if-consequent exp) env)
-      (eval (if-alternative exp) env)))
+      ))
 
 (define (eval-sequence exps env)
   (cond ((last-exp? exps)
@@ -412,14 +413,9 @@
       (user-print output)))
   (driver-loop))
 
+; change syntax so that if true, evaluate to b in (if pred a b)
 (define input-text
-  '(define (fib n)
-     (let fib-iter ((a 1)
-                    (b 0)
-                    (count n))
-       (if (= count 0)
-           b
-           (fib-iter (+ a b) a (- count 1)))))
+  '(if (= 1 1) 2 3)
   )
 
 (define (one-shot)
@@ -434,9 +430,9 @@
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
-;; (one-shot)
+(one-shot)
 
-(driver-loop)
+;; (driver-loop)
 
 ;; run the driver loop
 ;; enter
