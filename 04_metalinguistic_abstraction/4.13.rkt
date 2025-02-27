@@ -49,9 +49,15 @@
 (define (assignment-variable exp) (cadr exp))
 (define (assignment-value exp) (caddr exp))
 
+; unbound
+(define (make-unbound? exp) (tagged-list? exp 'make-unbound!))
+(define (unbound-variable exp) (cadr exp))
+(define (eval-unbound exp env))
+
 ; quote
 (define (quoted? exp) (tagged-list? exp 'quote))
 (define (text-of-quotation exp) (cadr exp))
+
 
 ; definition
 (define (definition? exp) (tagged-list? exp 'define))
@@ -65,6 +71,7 @@
       (caddr exp)
       (make-lambda (cdadr exp)   ;formalparameters
                    (cddr exp)))) ;body
+
 
 ; lambda
 (define (lambda? exp) (tagged-list? exp 'lambda))
@@ -185,6 +192,20 @@
                 (frame-values frame)))))
   (env-loop env))
 
+(define (unset-variable! var env)
+  (define (env-loop env)
+    (define (scan vars vals)
+      (cond ((null? vars)
+             (env-loop (enclosing-environment env)))
+            ((eq? var (car vars)) (set-car! vals val))
+            (else (scan (cdr vars) (cdr vals)))))
+    (if (eq? env the-empty-environment)
+        (error "Unbound variable: SET!" var)
+        (let ((frame (first-frame env)))
+          (scan (frame-variables frame)
+                (frame-values frame)))))
+  (env-loop env))
+
 
 (define (define-variable! var val env)
   (let ((frame (first-frame env)))
@@ -252,6 +273,9 @@
 
         ((assignment? exp) ;; tagged-list - assignment - set! x 2
          (eval-assignment exp env))
+
+        ((make-unbound? exp)
+         (eval-unbound exp env))
 
         ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
          (eval-definition exp env))
