@@ -53,8 +53,7 @@
 (define (make-unbound? exp) (tagged-list? exp 'make-unbound!))
 (define (unbound-variable exp) (cadr exp))
 (define (eval-unbound exp env)
-  (unset-variable! (unbound-variable exp) env)
-  )
+  (unset-variable! (unbound-variable exp) env))
 
 ; quote
 (define (quoted? exp) (tagged-list? exp 'quote))
@@ -197,18 +196,13 @@
 (define (unset-variable! var env)
   (define (scan vars vals)
     (let
-        ((current-var (car vars))
-         (rest-vars (cdr vars))
-         (rest-vals (cdr vals)))
+        ((rest-vars (cdr vars)))
       (cond
         ((null? rest-vars) (error "make-unbound! var not found" ))
-        ( (eq? (cadr vars) var) ; remove next var
-          (set-cdr! vars (cddr vars))
-          (set-cdr! vals (cddr vals))
-          )
-        (else (scan (cdr vars) (cdr vals))))
-      )
-    )
+        ((eq? (cadr vars) var) ; remove next var
+         (set-cdr! vars (cddr vars))
+         (set-cdr! vals (cddr vals)))
+        (else (scan (cdr vars) (cdr vals))))))
   (if (eq? env the-empty-environment)
       (error "make-unbound! empty environment" var)
       (let* ((frame (first-frame env))
