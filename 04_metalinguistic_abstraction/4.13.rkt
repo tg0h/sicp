@@ -221,8 +221,6 @@
                (set-cdr! vals (cddr vals)))
               (else (scan vars vals))))))
 
-
-
 (define (define-variable! var val env)
   (let ((frame (first-frame env)))
     (define (scan vars vals)
