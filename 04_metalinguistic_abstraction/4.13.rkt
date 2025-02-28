@@ -52,7 +52,9 @@
 ; unbound
 (define (make-unbound? exp) (tagged-list? exp 'make-unbound!))
 (define (unbound-variable exp) (cadr exp))
-(define (eval-unbound exp env))
+(define (eval-unbound exp env)
+  (unset-variable! (unbound-variable exp) env)
+  )
 
 ; quote
 (define (quoted? exp) (tagged-list? exp 'quote))
@@ -193,18 +195,45 @@
   (env-loop env))
 
 (define (unset-variable! var env)
-  (define (env-loop env)
-    (define (scan vars vals)
-      (cond ((null? vars)
-             (env-loop (enclosing-environment env)))
-            ((eq? var (car vars)) (set-car! vals val))
-            (else (scan (cdr vars) (cdr vals)))))
-    (if (eq? env the-empty-environment)
-        (error "Unbound variable: SET!" var)
-        (let ((frame (first-frame env)))
-          (scan (frame-variables frame)
-                (frame-values frame)))))
-  (env-loop env))
+  (define (scan vars vals)
+    (let
+        ((current-var (car vars))
+         (rest-vars (cdr vars))
+         (rest-vals (cdr vals)))
+      (cond
+        ((null? rest-vars) (error "make-unbound! var not found" ))
+        ( (eq? (cadr vars) var) ; remove next var
+          (set-cdr! vars (cddr vars))
+          (set-cdr! vals (cddr vals))
+          )
+        (else (scan (cdr vars) (cdr vals))))
+      )
+    )
+  (if (eq? env the-empty-environment)
+      (error "make-unbound! empty environment" var)
+      (let* ((frame (first-frame env))
+             (vars (frame-variables frame))
+             (vals (frame-values frame))
+             )
+        (cond
+          ((null? vars) (error "make-unbound! vars null" ))
+          ; remove the first variable
+          ((eq? (car vars) var)
+           (set-car! frame (cdr vars))
+           (set-cdr! frame (cdr vals)))
+          ; remove next variable
+          ((and (not (null? (cdr vars)))
+                (eq? (cadr vars) var))
+           (set-cdr! vars (cddr vars))
+           (set-cdr! vals (cddr vals))
+           )
+          (else
+           (scan vars vals)
+           )
+          ))
+      )
+  )
+
 
 
 (define (define-variable! var val env)
