@@ -207,8 +207,7 @@
       (error "make-unbound! empty environment" var)
       (let* ((frame (first-frame env))
              (vars (frame-variables frame))
-             (vals (frame-values frame))
-             )
+             (vals (frame-values frame)))
         (cond ((null? vars) (error "make-unbound! vars null" ))
               ; remove the first variable
               ((eq? (car vars) var)
