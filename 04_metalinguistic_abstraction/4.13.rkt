@@ -209,24 +209,17 @@
              (vars (frame-variables frame))
              (vals (frame-values frame))
              )
-        (cond
-          ((null? vars) (error "make-unbound! vars null" ))
-          ; remove the first variable
-          ((eq? (car vars) var)
-           (set-car! frame (cdr vars))
-           (set-cdr! frame (cdr vals)))
-          ; remove next variable
-          ((and (not (null? (cdr vars)))
-                (eq? (cadr vars) var))
-           (set-cdr! vars (cddr vars))
-           (set-cdr! vals (cddr vals))
-           )
-          (else
-           (scan vars vals)
-           )
-          ))
-      )
-  )
+        (cond ((null? vars) (error "make-unbound! vars null" ))
+              ; remove the first variable
+              ((eq? (car vars) var)
+               (set-car! frame (cdr vars))
+               (set-cdr! frame (cdr vals)))
+              ; remove next variable
+              ((and (not (null? (cdr vars)))
+                    (eq? (cadr vars) var))
+               (set-cdr! vars (cddr vars))
+               (set-cdr! vals (cddr vals)))
+              (else (scan vars vals))))))
 
 
 
