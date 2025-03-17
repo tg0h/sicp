@@ -1,6 +1,9 @@
 #lang sicp
 
 (define (list-of-values exps env)
+  (display "list-of-values")
+  (display exps)
+  (newline)
   (if (no-operands? exps)
       '()
       (cons (eval (first-operand exps) env)
@@ -71,19 +74,24 @@
 (define (lambda-body exp) (cddr exp))
 
 (define (make-lambda parameters body)
-  (cons 'lambda (cons parameters body)))
+  (display "make-lambda")
+  (display (cons 'lambda (cons parameters body)))
+  (newline)
+  (cons 'lambda (cons parameters body))
+  )
 
 ; internal defines
 (define (scan-out-defines proc-body)
+  (display "scan-out-defines")
   (let
       ((vars (lambda-define-vars (lambda-defines proc-body)))
        (exprs (lambda-define-exprs (lambda-defines proc-body))))
-    (append
-     (list 'let)
-     (list (lambda-internal-def-vars->let-vars vars))
-     (lambda-internal-def->set vars exprs)
-     (lambda-body-without-define-exprs proc-body))
-    ))
+    (list (append
+           (list 'let)
+           (list (lambda-internal-def-vars->let-vars vars))
+           (lambda-internal-def->set vars exprs)
+           (lambda-body-without-define-exprs proc-body))
+          )))
 
 (define (lambda-defines exp)
   (if (definition? (car exp))
@@ -147,6 +155,8 @@
   )
 
 (define (let->combination exp)
+  (display "let->combination")
+  (newline)
   (if (named-let? exp)
       (cons (make-lambda (named-let-vars exp) (named-let-transform-body exp)) (named-let-exp exp))
       (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
@@ -268,7 +278,12 @@
 (define (false? x) (eq? x false))
 
 ; represent procedures
-(define (make-procedure parameters body env) (list 'procedure parameters body env))
+(define (make-procedure parameters body env)
+  (display "calling make-procedure")
+  (if (definition? (car body))
+      (list 'procedure parameters (scan-out-defines body) env)
+      (list 'procedure parameters body env)))
+
 (define (compound-procedure? p) (tagged-list? p 'procedure))
 (define (procedure-parameters p) (cadr p))
 (define (procedure-body p) (caddr p))
@@ -293,6 +308,8 @@
           (error "Too few arguments supplied" vars vals))))
 
 (define (lookup-variable-value var env)
+  (display "looking up ")(display var)
+  (newline)
   (define (env-loop env)
     (define (scan vars vals)
       (cond ((null? vars) (env-loop (enclosing-environment env)))
