@@ -73,6 +73,54 @@
 (define (make-lambda parameters body)
   (cons 'lambda (cons parameters body)))
 
+; internal defines
+(define (scan-out-defines exp)
+  (let
+      ((vars (lambda-define-vars (lambda-defines (lambda-body exp))))
+       (exprs (lambda-define-exprs (lambda-defines (lambda-body exp)))))
+    (make-lambda (lambda-parameters exp)
+                 (list (append
+                        (list 'let)
+                        (list (lambda-internal-def-vars->let-vars vars))
+                        (lambda-internal-def->set vars exprs)
+                        (lambda-body-without-define-exprs (lambda-body exp)))
+                       ))))
+
+(define (lambda-defines exp)
+  (if (definition? (car exp))
+      (cons (car exp) (lambda-defines (cdr exp)))
+      nil))
+
+(define (lambda-define-vars exp)
+  (cond ((null? exp) nil)
+        ((definition? (car exp))
+         (cons (definition-variable (car exp))
+               (lambda-define-vars (cdr exp))))))
+
+(define (lambda-define-exprs exp)
+  (cond ((null? exp) nil)
+        ((definition? (car exp))
+         (cons (definition-value (car exp))
+               (lambda-define-exprs (cdr exp))))))
+
+(define (lambda-body-without-define-exprs exp)
+  (cond ((null? exp) nil)
+        ((definition? (car exp))
+         (lambda-body-without-define-exprs (cdr exp))
+         )
+        (else exp)
+        ))
+
+(define (lambda-internal-def-vars->let-vars vars)
+  (if (null? vars) vars
+      (cons (list (car vars) '*unassigned*) (lambda-internal-def-vars->let-vars (cdr vars))
+            )))
+
+(define (lambda-internal-def->set vars exprs)
+  (if (null? vars) vars
+      (cons (list 'set! (car vars) (car exprs)) (lambda-internal-def->set (cdr vars) (cdr exprs))
+            )))
+
 ; let
 (define (let? exp) (tagged-list? exp 'let))
 (define (let-clauses exp) (cadr exp))
@@ -250,7 +298,7 @@
     (define (scan vars vals)
       (cond ((null? vars) (env-loop (enclosing-environment env)))
             ((eq? var (car vars))
-             (if (eq? (car vals) '*unassigned)
+             (if (eq? (car vals) '*unassigned*)
                  (error "variable is unassigned" var)
                  (car vals)))
             (else (scan (cdr vars) (cdr vals)))))
