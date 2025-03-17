@@ -74,17 +74,16 @@
   (cons 'lambda (cons parameters body)))
 
 ; internal defines
-(define (scan-out-defines exp)
+(define (scan-out-defines proc-body)
   (let
-      ((vars (lambda-define-vars (lambda-defines (lambda-body exp))))
-       (exprs (lambda-define-exprs (lambda-defines (lambda-body exp)))))
-    (make-lambda (lambda-parameters exp)
-                 (list (append
-                        (list 'let)
-                        (list (lambda-internal-def-vars->let-vars vars))
-                        (lambda-internal-def->set vars exprs)
-                        (lambda-body-without-define-exprs (lambda-body exp)))
-                       ))))
+      ((vars (lambda-define-vars (lambda-defines proc-body)))
+       (exprs (lambda-define-exprs (lambda-defines proc-body))))
+    (append
+     (list 'let)
+     (list (lambda-internal-def-vars->let-vars vars))
+     (lambda-internal-def->set vars exprs)
+     (lambda-body-without-define-exprs proc-body))
+    ))
 
 (define (lambda-defines exp)
   (if (definition? (car exp))
