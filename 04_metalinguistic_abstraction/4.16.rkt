@@ -413,26 +413,26 @@
       (user-print output)))
   (driver-loop))
 
-; change syntax so that if true, evaluate to b in (if pred a b)
-(define input-text
-  '(if (= 1 1) 2 3)
-  )
+;; ; change syntax so that if true, evaluate to b in (if pred a b)
+;; (define input-text
+;;   '(if (= 1 1) 2 3)
+;;   )
 
-(define (one-shot)
-  (let ((input input-text))
-    (let ((output (eval input the-global-environment)))
-      (announce-output output-prompt)
-      (user-print output))
-    )
-  ;; (driver-loop)
-  )
+;; (define (one-shot)
+;;   (let ((input input-text))
+;;     (let ((output (eval input the-global-environment)))
+;;       (announce-output output-prompt)
+;;       (user-print output))
+;;     )
+;;   ;; (driver-loop)
+;;   )
 
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
-(one-shot)
+;; (one-shot)
 
-;; (driver-loop)
+(driver-loop)
 
 ;; run the driver loop
 ;; enter
