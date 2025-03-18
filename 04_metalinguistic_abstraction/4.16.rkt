@@ -479,35 +479,36 @@
 ;;       (user-print output)))
 ;;   (driver-loop))
 
-;; ; change syntax so that if true, evaluate to b in (if pred a b)
-(define input-text
-  ;; '(if (= 1 1) 2 3)
-  '(define (square x) (* x x))
-  )
-(define input-text-2
-  'square
+(define inputs
+  (list
+   '(define (square x) (* x x))
+   'square
+   )
   )
 
-(define (one-shot)
-  (let ((input input-text))
-    (let ((output (eval input the-global-environment)))
-      (announce-output output-prompt)
-      (user-print output))
-    )
-  ;; (driver-loop)
-  )
 
 (define (process-input input)
   (let ((output (eval input the-global-environment)))
     (announce-output output-prompt)
     (user-print output))
   )
+
+(define (process-inputs inputs)
+  (if (not (null? inputs))
+      (begin
+        (process-input (car inputs))
+        (process-inputs (cdr inputs))
+        )
+      )
+  )
+
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
 ;; (one-shot)
-(process-input input-text)
-(process-input input-text-2)
+;; (process-input input-text)
+;; (process-input input-text-2)
+(process-inputs inputs)
 
 ;; (driver-loop)
 
