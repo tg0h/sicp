@@ -544,9 +544,9 @@
    ;; '(define (square x) (* x x) (* x x) )
    ;; 'square
    ;; '(square 2)
-   '(define test (lambda (x) (define u 1) (define v 2) v))
+   '(define test (lambda (x) (define u 1) (define v 2) u))
    ;; 'test
-   '(test 1)
+   '(test 999)
    ;; '(define (show x) x)
    ;; '(show '*unassigned*)
    )
