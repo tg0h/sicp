@@ -403,6 +403,8 @@
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
+         (display "### ### ### ### ### ### self-evaluating? ### ### ### ### ### ###")
+         (newline)
          exp)
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
          (display "### ### ### ### ### ### eval variable? ### ### ### ### ### ###")
@@ -410,9 +412,13 @@
          (lookup-variable-value exp env))
 
         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
+         (display "### ### ### ### ### ### quoted? ### ### ### ### ### ###")
+         (newline)
          (text-of-quotation exp))
 
         ((assignment? exp) ;; tagged-list - assignment - set! x 2
+         (display "### ### ### ### ### ### assignment? ### ### ### ### ### ###")
+         (newline)
          (eval-assignment exp env))
 
         ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
