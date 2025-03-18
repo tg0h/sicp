@@ -134,7 +134,8 @@
 
 (define (lambda-internal-def-vars->let-vars vars)
   (if (null? vars) vars
-      (cons (list (car vars) '*unassigned*) (lambda-internal-def-vars->let-vars (cdr vars))
+      ;; note double quote so that it shows up as single quote zzz
+      (cons (list (car vars) ''*unassigned*) (lambda-internal-def-vars->let-vars (cdr vars))
             )))
 
 (define (lambda-internal-def->set vars exprs)
