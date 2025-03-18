@@ -74,7 +74,7 @@
 (define (lambda-body exp) (cddr exp))
 
 (define (make-lambda parameters body)
-  (display "make-lambda")
+  (display "make-lambda ")
   (display (cons 'lambda (cons parameters body)))
   (newline)
   (cons 'lambda (cons parameters body))
@@ -414,12 +414,16 @@
          (eval-assignment exp env))
 
         ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
+         (display "### ### ### ### ### ### eval definition? ### ### ### ### ### ###")
+         (newline)
          (eval-definition exp env))
 
         ((if? exp) ;; tagged-list - if
          (eval-if exp env))
 
         ((lambda? exp) ;; tagged-list - lambda
+         (display "### ### ### ### ### ### eval lambda? ### ### ### ### ### ###")
+         (newline)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
@@ -444,6 +448,8 @@
           (eval-do exp) env))
 
         ((application? exp) ;; function call
+         (display "### ### ### ### ### ### eval APPLICATION? ### ### ### ### ### ###")
+         (newline)
          (meta-apply
           (eval (operator exp) env)
           (list-of-values (operands exp) env)))
@@ -508,4 +514,3 @@
 (process-inputs inputs)
 
 ;; (driver-loop)
-
