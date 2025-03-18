@@ -405,6 +405,8 @@
   (cond ((self-evaluating? exp) ;; primitive - string or number
          exp)
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
+         (display "### ### ### ### ### ### eval variable? ### ### ### ### ### ###")
+         (newline)
          (lookup-variable-value exp env))
 
         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
@@ -471,7 +473,7 @@
       (display object)))
 
 (define input-prompt ";;; M-Eval input:")
-(define output-prompt ";;; M-Eval value:")
+(define output-prompt ";;; M-Eval value: <<<")
 
 ; input driver loop
 ;; (define (driver-loop)
@@ -494,6 +496,10 @@
 
 
 (define (process-input input)
+  (newline)
+  (newline)
+  (display "input is: ")
+  (display input) (newline)
   (let ((output (eval input the-global-environment)))
     (announce-output output-prompt)
     (user-print output))
