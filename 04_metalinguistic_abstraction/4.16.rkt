@@ -426,6 +426,8 @@
         ((compound-procedure? procedure)
          (eval-sequence
           (procedure-body procedure)
+          ; bind the procedure parameters to the arguments
+          ; create a new frame with this binding when applying the procedure
           (extend-environment
            (procedure-parameters procedure)
            arguments
