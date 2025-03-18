@@ -75,6 +75,11 @@
 
 (define (make-lambda parameters body)
   (display "make-lambda ")
+  (newline)
+  (display "parameters ")(display parameters)
+  (newline)
+  (display "body ")(display body)
+  (newline)
   (display (cons 'lambda (cons parameters body)))
   (newline)
   (cons 'lambda (cons parameters body))
@@ -86,12 +91,21 @@
   (let
       ((vars (lambda-define-vars (lambda-defines proc-body)))
        (exprs (lambda-define-exprs (lambda-defines proc-body))))
+    (display
+     (list (append
+            (list 'let)
+            (list (lambda-internal-def-vars->let-vars vars))
+            (lambda-internal-def->set vars exprs)
+            (lambda-body-without-define-exprs proc-body))
+           )
+     )
     (list (append
            (list 'let)
            (list (lambda-internal-def-vars->let-vars vars))
            (lambda-internal-def->set vars exprs)
            (lambda-body-without-define-exprs proc-body))
-          )))
+          )
+    ))
 
 (define (lambda-defines exp)
   (if (definition? (car exp))
@@ -159,7 +173,11 @@
   (newline)
   (if (named-let? exp)
       (cons (make-lambda (named-let-vars exp) (named-let-transform-body exp)) (named-let-exp exp))
-      (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+      (begin
+        (display (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp)))
+        (newline)
+        (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+        )
       ))
 
 ; let*
@@ -284,10 +302,12 @@
   (if (definition? (car body))
       (begin
         (display (list 'procedure parameters (scan-out-defines body)))
+        (newline)
         (list 'procedure parameters (scan-out-defines body) env)
         )
       (begin
         (display (list 'procedure parameters body))
+        (newline)
         (list 'procedure parameters body env)
         )
       )
@@ -317,10 +337,12 @@
           (error "Too few arguments supplied" vars vals))))
 
 (define (lookup-variable-value var env)
-  (display "looking up ")(display var)
+  (display "looking up var ") (display var)
   (newline)
   (define (env-loop env)
     (define (scan vars vals)
+      ;; (display "scanning")
+      ;; (newline)
       (cond ((null? vars) (env-loop (enclosing-environment env)))
             ((eq? var (car vars))
              (if (eq? (car vals) '*unassigned*)
@@ -418,6 +440,15 @@
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
          (display "### ### ### ### ### ### eval variable? ### ### ### ### ### ###")
          (newline)
+         ;; (display "exp is ")
+         ;; (display exp)
+         ;; (newline)
+         ;; (display (symbol? exp))
+         ;; (newline)
+         ;; (display (symbol? '*unassigned*))
+         ;; (newline)
+         ;; (display (quoted? '*unassigned*))
+         ;; (newline)
          (lookup-variable-value exp env))
 
         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
@@ -470,6 +501,8 @@
         ((application? exp) ;; function call
          (display "### ### ### ### ### ### eval APPLICATION? ### ### ### ### ### ###")
          (newline)
+         (display exp)
+         (newline)
          (meta-apply
           (eval (operator exp) env)
           (list-of-values (operands exp) env)))
@@ -507,8 +540,14 @@
 
 (define inputs
   (list
-   '(define (square x) (* x x))
-   'square
+   ;; '(define (square x) (* x x) (* x x) )
+   ;; 'square
+   ;; '(square 2)
+   '(define test (lambda (x) (define u 1) (define v 2) v))
+   ;; 'test
+   '(test 1)
+   ;; '(define (show x) x)
+   ;; '(show '*unassigned*)
    )
   )
 
