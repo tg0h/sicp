@@ -279,10 +279,19 @@
 
 ; represent procedures
 (define (make-procedure parameters body env)
-  (display "calling make-procedure")
+  (display "calling make-procedure ")
+  (newline)
   (if (definition? (car body))
-      (list 'procedure parameters (scan-out-defines body) env)
-      (list 'procedure parameters body env)))
+      (begin
+        (display (list 'procedure parameters (scan-out-defines body)))
+        (list 'procedure parameters (scan-out-defines body) env)
+        )
+      (begin
+        (display (list 'procedure parameters body))
+        (list 'procedure parameters body env)
+        )
+      )
+  )
 
 (define (compound-procedure? p) (tagged-list? p 'procedure))
 (define (procedure-parameters p) (cadr p))
