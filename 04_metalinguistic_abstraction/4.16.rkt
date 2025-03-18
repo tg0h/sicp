@@ -468,37 +468,48 @@
 (define output-prompt ";;; M-Eval value:")
 
 ; input driver loop
-(define (driver-loop)
-  (prompt-for-input input-prompt)
-  ; read returns a list of the complete expression that the user types
-  ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
-  ; eg user types 'x -> read returns list with quote and symbol x (quote x)
-  (let ((input (read)))
-    (let ((output (eval input the-global-environment)))
-      (announce-output output-prompt)
-      (user-print output)))
-  (driver-loop))
-
-;; ; change syntax so that if true, evaluate to b in (if pred a b)
-;; (define input-text
-;;   '(if (= 1 1) 2 3)
-;;   )
-
-;; (define (one-shot)
-;;   (let ((input input-text))
+;; (define (driver-loop)
+;;   (prompt-for-input input-prompt)
+;;   ; read returns a list of the complete expression that the user types
+;;   ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
+;;   ; eg user types 'x -> read returns list with quote and symbol x (quote x)
+;;   (let ((input (read)))
 ;;     (let ((output (eval input the-global-environment)))
 ;;       (announce-output output-prompt)
-;;       (user-print output))
-;;     )
-;;   ;; (driver-loop)
-;;   )
+;;       (user-print output)))
+;;   (driver-loop))
 
+;; ; change syntax so that if true, evaluate to b in (if pred a b)
+(define input-text
+  ;; '(if (= 1 1) 2 3)
+  '(define (square x) (* x x))
+  )
+(define input-text-2
+  'square
+  )
+
+(define (one-shot)
+  (let ((input input-text))
+    (let ((output (eval input the-global-environment)))
+      (announce-output output-prompt)
+      (user-print output))
+    )
+  ;; (driver-loop)
+  )
+
+(define (process-input input)
+  (let ((output (eval input the-global-environment)))
+    (announce-output output-prompt)
+    (user-print output))
+  )
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
 ;; (one-shot)
+(process-input input-text)
+(process-input input-text-2)
 
-(driver-loop)
+;; (driver-loop)
 
 ;; run the driver loop
 ;; enter
