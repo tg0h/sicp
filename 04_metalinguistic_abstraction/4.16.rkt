@@ -437,8 +437,11 @@
                          env))
 
         ; let to lambda
-        ((let? exp) (eval
-                     (let->combination exp) env))
+        ((let? exp)
+         (display "### ### ### ### ### ### let? ### ### ### ### ### ###")
+         (newline)
+         (eval
+          (let->combination exp) env))
 
         ; let* to lets
         ((let*? exp) (eval (let*->nested-lets exp) env))
