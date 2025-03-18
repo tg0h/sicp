@@ -505,19 +505,7 @@
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
-;; (one-shot)
-;; (process-input input-text)
-;; (process-input input-text-2)
 (process-inputs inputs)
 
 ;; (driver-loop)
-
-;; run the driver loop
-;; enter
-
-;; (define x 0)
-;; (do (set! x (+ x 1)) (< x 10))
-;; x
-
-;; you should see 10
 
