@@ -82,8 +82,11 @@
   (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
   )
 
-; let
+; letrec
 (define (letrec? exp) (tagged-list? exp 'letrec))
+(define (letrec->let exp)
+  (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+  )
 
 ; conditionals
 (define (if? exp) (tagged-list? exp 'if))
@@ -291,7 +294,7 @@
 
         ; let to lambda
         ((let? exp) (eval
-                     (let->combination exp) env))
+                     (letrec->let exp) env))
 
         ((letrec? exp) (eval
                         (let->combination exp) env))
@@ -333,9 +336,10 @@
    ;; '(define (square x) (* x x) (* x x) )
    ;; 'square
    ;; '(square 2)
-   '(define test (lambda (x) (define u 1) (define v 2) u))
+   ;; '(define test (lambda (x) (define u 1) (define v 2) u))
    ;; 'test
-   '(test 999)
+   ;; '(test 999)
+   '(letrec ((a 9)) a)
    ;; '(define (show x) x)
    ;; '(show '*unassigned*)
    )
