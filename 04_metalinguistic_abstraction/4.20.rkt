@@ -82,6 +82,9 @@
   (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
   )
 
+; let
+(define (letrec? exp) (tagged-list? exp 'letrec))
+
 ; conditionals
 (define (if? exp) (tagged-list? exp 'if))
 (define (if-predicate exp) (cadr exp))
@@ -289,6 +292,9 @@
         ; let to lambda
         ((let? exp) (eval
                      (let->combination exp) env))
+
+        ((letrec? exp) (eval
+                        (let->combination exp) env))
 
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
