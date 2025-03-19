@@ -84,6 +84,19 @@
 
 ; letrec
 (define (letrec? exp) (tagged-list? exp 'letrec))
+
+(define (letrec-unassigned exp)
+  ; create a list of *unassigned
+  (map (lambda (x) ''*unassigned*) (let-vars exp)))
+
+(define (letrec-set-exps exp)
+  ; create a list of (set! var-n exp-n)
+  (let ((vars (let-vars exp))
+        (exps (let-exps exp)))
+    (map (lambda (var exp)
+           (list 'set! var exp)
+           ) vars exps )))
+
 (define (letrec->let exp)
   (display "let-vars ")
   (display (let-vars exp))
@@ -94,7 +107,14 @@
   (display "let-exps ")
   (display (let-exps exp))
   (newline)
-  (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+  (display (cons (make-lambda (let-vars exp)
+                              (append (letrec-set-exps exp)
+                                      (let-body exp))
+                              ) (letrec-unassigned exp)))
+  (cons (make-lambda (let-vars exp)
+                     (append (letrec-set-exps exp)
+                             (let-body exp))
+                     ) (letrec-unassigned exp))
   )
 
 ; conditionals
@@ -250,6 +270,8 @@
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
         (list '= =)
+        (list '* *)
+        (list '- -)
         (list 'assoc assoc)
         ;; ⟨more primitives⟩
         ))
@@ -348,7 +370,10 @@
    ;; '(define test (lambda (x) (define u 1) (define v 2) u))
    ;; 'test
    ;; '(test 999)
-   '(letrec ((a 9)) a)
+   ;; '(letrec ((a 9) (b 2)) 1 2 3 a)
+   '(letrec
+        ((fact (lambda (n)
+                 (if (= n 1) 1 (* n (fact (- n 1))))))) (fact 10))
    ;; '(define (show x) x)
    ;; '(show '*unassigned*)
    )
