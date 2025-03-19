@@ -85,6 +85,15 @@
 ; letrec
 (define (letrec? exp) (tagged-list? exp 'letrec))
 (define (letrec->let exp)
+  (display "let-vars ")
+  (display (let-vars exp))
+  (newline)
+  (display "let-body ")
+  (display (let-body exp))
+  (newline)
+  (display "let-exps ")
+  (display (let-exps exp))
+  (newline)
   (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
   )
 
@@ -297,7 +306,7 @@
                      (letrec->let exp) env))
 
         ((letrec? exp) (eval
-                        (let->combination exp) env))
+                        (letrec->let exp) env))
 
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
