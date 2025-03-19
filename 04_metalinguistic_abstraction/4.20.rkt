@@ -1,9 +1,6 @@
 #lang sicp
 
 (define (list-of-values exps env)
-  (display "list-of-values")
-  (display exps)
-  (newline)
   (if (no-operands? exps)
       '()
       (cons (eval (first-operand exps) env)
@@ -11,9 +8,8 @@
 
 (define (eval-if exp env)
   (if (true? (eval (if-predicate exp) env))
-      (eval (if-alternative exp) env)
       (eval (if-consequent exp) env)
-      ))
+      (eval (if-alternative exp) env)))
 
 (define (eval-sequence exps env)
   (cond ((last-exp? exps)
@@ -74,74 +70,7 @@
 (define (lambda-body exp) (cddr exp))
 
 (define (make-lambda parameters body)
-  (display "make-lambda ")
-  (newline)
-  (display "parameters ")(display parameters)
-  (newline)
-  (display "body ")(display body)
-  (newline)
-  (display (cons 'lambda (cons parameters body)))
-  (newline)
-  (cons 'lambda (cons parameters body))
-  )
-
-; internal defines
-(define (scan-out-defines proc-body)
-  (display "scan-out-defines")
-  (let
-      ((vars (lambda-define-vars (lambda-defines proc-body)))
-       (exprs (lambda-define-exprs (lambda-defines proc-body))))
-    (display
-     (list (append
-            (list 'let)
-            (list (lambda-internal-def-vars->let-vars vars))
-            (lambda-internal-def->set vars exprs)
-            (lambda-body-without-define-exprs proc-body))
-           )
-     )
-    (list (append
-           (list 'let)
-           (list (lambda-internal-def-vars->let-vars vars))
-           (lambda-internal-def->set vars exprs)
-           (lambda-body-without-define-exprs proc-body))
-          )
-    ))
-
-(define (lambda-defines exp)
-  (if (definition? (car exp))
-      (cons (car exp) (lambda-defines (cdr exp)))
-      nil))
-
-(define (lambda-define-vars exp)
-  (cond ((null? exp) nil)
-        ((definition? (car exp))
-         (cons (definition-variable (car exp))
-               (lambda-define-vars (cdr exp))))))
-
-(define (lambda-define-exprs exp)
-  (cond ((null? exp) nil)
-        ((definition? (car exp))
-         (cons (definition-value (car exp))
-               (lambda-define-exprs (cdr exp))))))
-
-(define (lambda-body-without-define-exprs exp)
-  (cond ((null? exp) nil)
-        ((definition? (car exp))
-         (lambda-body-without-define-exprs (cdr exp))
-         )
-        (else exp)
-        ))
-
-(define (lambda-internal-def-vars->let-vars vars)
-  (if (null? vars) vars
-      ;; note double quote so that it shows up as single quote zzz
-      (cons (list (car vars) ''*unassigned*) (lambda-internal-def-vars->let-vars (cdr vars))
-            )))
-
-(define (lambda-internal-def->set vars exprs)
-  (if (null? vars) vars
-      (cons (list 'set! (car vars) (car exprs)) (lambda-internal-def->set (cdr vars) (cdr exprs))
-            )))
+  (cons 'lambda (cons parameters body)))
 
 ; let
 (define (let? exp) (tagged-list? exp 'let))
@@ -149,58 +78,9 @@
 (define (let-body exp) (cddr exp))
 (define (let-vars exp) (map car (let-clauses exp)))
 (define (let-exps exp) (map cadr (let-clauses exp)))
-
-(define (named-let? exp) (not (pair? (cadr exp))))
-(define (named-let-procedure exp) (cadr exp))
-(define (named-let-bindings exp) (caddr exp))
-(define (named-let-body exp) (cdddr exp))
-(define (named-let-vars exp) (map car (named-let-bindings exp)))
-(define (named-let-exp exp) (map cadr (named-let-bindings exp)))
-(define (named-let-transform-body exp)
-  (cons
-   ; define the procedure with the body
-   ; does this pollute the global namespace?
-   (cons 'define (cons
-                  (cons (named-let-procedure exp) (named-let-vars exp))
-                  (named-let-body exp)
-                  ))
-   ; call the procedure
-   (list (cons (named-let-procedure exp) (named-let-exp exp)))
-   )
-  )
-
 (define (let->combination exp)
-  (display "let->combination")
-  (newline)
-  (if (named-let? exp)
-      (cons (make-lambda (named-let-vars exp) (named-let-transform-body exp)) (named-let-exp exp))
-      (begin
-        (display (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp)))
-        (newline)
-        (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
-        )
-      ))
-
-; let*
-(define (let*? exp) (tagged-list? exp 'let*))
-(define (let*-clauses exp) (cadr exp))
-(define (let*-body exp) (cddr exp))
-(define (let*->nested-lets exp) (expand-lets (let*-clauses exp) (let*-body exp)))
-
-(define (expand-lets clauses body)
-  (let ((first (car clauses))
-        (rest (cdr clauses)))
-    (if (null? rest)
-        (begin
-          ;; (display "making")
-          ;; (display (cons (make-lambda (list (car first)) body) (cdr first)))
-          ;; (newline)
-          (cons (make-lambda (list (car first)) body) (cdr first))
-          )
-        (cons (make-lambda (list (car first)) (list (expand-lets (cdr clauses) body)))
-              (cdr first))
-        )))
-
+  (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+  )
 
 ; conditionals
 (define (if? exp) (tagged-list? exp 'if))
@@ -249,31 +129,6 @@
 (define (cond-arrow-test clause) (car clause))
 (define (cond-arrow-recipient clause) (caddr clause))
 
-; do
-(define (do? exp) (tagged-list? exp 'do))
-(define (do-body exp) (cadr exp))
-(define (do-pred exp) (caddr exp))
-
-(define (make-define-procedure name variables body)
-  (cons 'define (cons (cons name variables ) (list body) ))
-  )
-(define (eval-do exp)
-  (sequence->exp
-   (cons
-    (do-body exp) ; do it once
-    (cons ; then define the function if pred body recurse else nothing (false) then run r again
-     (make-define-procedure 'r '() ; unfortunately, the name of the proc can shadow variables that the user defines
-                            (make-if (do-pred exp)
-                                     (sequence->exp (cons (do-body exp) '((r))))
-                                     'false
-                                     )
-                            )
-
-     '((r)) )
-    )
-   )
-  )
-
 (define (expand-clauses clauses)
   (if (null? clauses)
       'false ; no else clause
@@ -297,23 +152,7 @@
 (define (false? x) (eq? x false))
 
 ; represent procedures
-(define (make-procedure parameters body env)
-  (display "calling make-procedure ")
-  (newline)
-  (if (definition? (car body))
-      (begin
-        (display (list 'procedure parameters (scan-out-defines body)))
-        (newline)
-        (list 'procedure parameters (scan-out-defines body) env)
-        )
-      (begin
-        (display (list 'procedure parameters body))
-        (newline)
-        (list 'procedure parameters body env)
-        )
-      )
-  )
-
+(define (make-procedure parameters body env) (list 'procedure parameters body env))
 (define (compound-procedure? p) (tagged-list? p 'procedure))
 (define (procedure-parameters p) (cadr p))
 (define (procedure-body p) (caddr p))
@@ -338,17 +177,11 @@
           (error "Too few arguments supplied" vars vals))))
 
 (define (lookup-variable-value var env)
-  (display "looking up var ") (display var)
-  (newline)
   (define (env-loop env)
     (define (scan vars vals)
-      ;; (display "scanning")
-      ;; (newline)
-      (cond ((null? vars) (env-loop (enclosing-environment env)))
-            ((eq? var (car vars))
-             (if (eq? (car vals) '*unassigned*)
-                 (error "variable is unassigned" var)
-                 (car vals)))
+      (cond ((null? vars)
+             (env-loop (enclosing-environment env)))
+            ((eq? var (car vars)) (car vals))
             (else (scan (cdr vars) (cdr vals)))))
     (if (eq? env the-empty-environment)
         (error "Unbound variable lolz" var)
@@ -401,10 +234,7 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
-        (list '- -)
         (list '= =)
-        (list '* *)
-        (list '< <)
         (list 'assoc assoc)
         ;; ⟨more primitives⟩
         ))
@@ -426,8 +256,6 @@
         ((compound-procedure? procedure)
          (eval-sequence
           (procedure-body procedure)
-          ; bind the procedure parameters to the arguments
-          ; create a new frame with this binding when applying the procedure
           (extend-environment
            (procedure-parameters procedure)
            arguments
@@ -437,57 +265,30 @@
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
-         (display "### ### ### ### ### ### self-evaluating? ### ### ### ### ### ###")
-         (newline)
          exp)
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
-         (display "### ### ### ### ### ### eval variable? ### ### ### ### ### ###")
-         (newline)
-         ;; (display "exp is ")
-         ;; (display exp)
-         ;; (newline)
-         ;; (display (symbol? exp))
-         ;; (newline)
-         ;; (display (symbol? '*unassigned*))
-         ;; (newline)
-         ;; (display (quoted? '*unassigned*))
-         ;; (newline)
          (lookup-variable-value exp env))
 
         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
-         (display "### ### ### ### ### ### quoted? ### ### ### ### ### ###")
-         (newline)
          (text-of-quotation exp))
 
         ((assignment? exp) ;; tagged-list - assignment - set! x 2
-         (display "### ### ### ### ### ### assignment? ### ### ### ### ### ###")
-         (newline)
          (eval-assignment exp env))
 
         ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
-         (display "### ### ### ### ### ### eval definition? ### ### ### ### ### ###")
-         (newline)
          (eval-definition exp env))
 
         ((if? exp) ;; tagged-list - if
          (eval-if exp env))
 
         ((lambda? exp) ;; tagged-list - lambda
-         (display "### ### ### ### ### ### eval lambda? ### ### ### ### ### ###")
-         (newline)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
 
         ; let to lambda
-        ((let? exp)
-         (display "### ### ### ### ### ### let? ### ### ### ### ### ###")
-         (newline)
-         (eval
-          (let->combination exp) env))
-
-        ; let* to lets
-        ((let*? exp) (eval (let*->nested-lets exp) env))
+        ((let? exp) (eval
+                     (let->combination exp) env))
 
         ((begin? exp) ;; tagged-list - begin
          (eval-sequence
@@ -497,15 +298,7 @@
          (eval
           (cond->if exp) env))
 
-        ((do? exp)
-         (eval
-          (eval-do exp) env))
-
         ((application? exp) ;; function call
-         (display "### ### ### ### ### ### eval APPLICATION? ### ### ### ### ### ###")
-         (newline)
-         (display exp)
-         (newline)
          (meta-apply
           (eval (operator exp) env)
           (list-of-values (operands exp) env)))
@@ -527,19 +320,7 @@
       (display object)))
 
 (define input-prompt ";;; M-Eval input:")
-(define output-prompt ";;; M-Eval value: <<<")
-
-; input driver loop
-;; (define (driver-loop)
-;;   (prompt-for-input input-prompt)
-;;   ; read returns a list of the complete expression that the user types
-;;   ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
-;;   ; eg user types 'x -> read returns list with quote and symbol x (quote x)
-;;   (let ((input (read)))
-;;     (let ((output (eval input the-global-environment)))
-;;       (announce-output output-prompt)
-;;       (user-print output)))
-;;   (driver-loop))
+(define output-prompt ";;; M-Eval value:")
 
 (define inputs
   (list
