@@ -214,6 +214,9 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
+        (list '* *)
+        (list '= =)
+        (list '- -)
         ;; ⟨more primitives⟩
         ))
 (define (primitive-procedure-names)
@@ -296,30 +299,46 @@
 (define input-prompt ";;; M-Eval input:")
 (define output-prompt ";;; M-Eval value:")
 
-; input driver loop
-;; (define (driver-loop)
-;;   (prompt-for-input input-prompt)
-;;   ; read returns a list of the complete expression that the user types
-;;   ; eg user types (+ 23 x) -> read returns a list with a SYMBOL, number and SYMBOL (+ 23 x)
-;;   ; eg user types 'x -> read returns list with quote and symbol x (quote x)
-;;   (let ((input (read)))
-;;     (let ((output (eval input the-global-environment)))
-;;       (announce-output output-prompt)
-;;       (user-print output)))
-;;   (driver-loop))
+(define inputs
+  (list
+   ;; '(define (square x) (* x x) )
+   '(define (factorial n)
+      (if (= n 1) 1 (* (factorial (- n 1)) n)))
+   '(factorial 3)
+   ;; 'square
+   ;; '(square 2)
+   ;; '(square 2)
+   ;; '(define test (lambda (x) (define u 1) (define v 2) u))
+   ;; 'test
+   ;; '(test 999)
+   ;; '(define (show x) x)
+   ;; '(show '*unassigned*)
+   )
+  )
 
-; one-shot driver loop
-(define input-text '(+ 1 3))
 
-(define (one-shot)
-  (let ((input input-text))
-    (let ((output (eval input the-global-environment)))
-      (announce-output output-prompt)
-      (user-print output)))
-  ;; (driver-loop)
+(define (process-input input)
+  (newline)
+  (newline)
+  (display "input is: ")
+  (display input) (newline)
+  (let ((output (eval input the-global-environment)))
+    (announce-output output-prompt)
+    (user-print output))
+  )
+
+(define (process-inputs inputs)
+  (if (not (null? inputs))
+      (begin
+        (process-input (car inputs))
+        (process-inputs (cdr inputs))
+        )
+      )
   )
 
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
-(one-shot)
+(process-inputs inputs)
+
+;; (driver-loop)
