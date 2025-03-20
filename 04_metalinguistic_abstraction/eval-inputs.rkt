@@ -304,7 +304,7 @@
    ;; '(define (square x) (* x x) )
    '(define (factorial n)
       (if (= n 1) 1 (* (factorial (- n 1)) n)))
-   '(factorial 3)
+   '(factorial 1000)
    ;; 'square
    ;; '(square 2)
    ;; '(square 2)
@@ -339,6 +339,12 @@
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
+(define start (runtime))
+
 (process-inputs inputs)
+
+(define end (runtime))
+(newline)
+(display "runtime: ") (display (- end start))
 
 ;; (driver-loop)
