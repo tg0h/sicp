@@ -64,7 +64,9 @@
 (define Y
   (lambda (f)
     ((lambda (x) (x x))
-     (lambda (x) (f (lambda (y) ((x x) y)))))))
+     (lambda (x) (f (lambda (y) ((x x) y)))))
+    ))
 
 (define factorial (Y fact-once))
+
 (factorial 20)  ;=2432902008176640000
