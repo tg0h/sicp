@@ -365,7 +365,10 @@
          (newline)
          (analyze (cond->if exp)))
 
-        ((application? exp) (analyze-application exp))
+        ((application? exp)
+         (display "analyze application? ") (display exp)
+         (newline)
+         (analyze-application exp))
 
         (else (error "Unknown expression type: ANALYZE" exp))))
 
