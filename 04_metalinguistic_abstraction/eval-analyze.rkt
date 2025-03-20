@@ -317,7 +317,11 @@
 
 
 (define (analyze exp)
-  (cond ((self-evaluating? exp) (analyze-self-evaluating exp))
+  (cond ((self-evaluating? exp) 
+         (display "analyze self-evaluating?")
+         (newline)
+         (analyze-self-evaluating exp)
+         )
 
         ((quoted? exp) (analyze-quoted exp)) ; list starting with symbol quote
 
