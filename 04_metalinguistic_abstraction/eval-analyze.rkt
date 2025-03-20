@@ -370,15 +370,7 @@
    ;; '(define (square x) (* x x) )
    '(define (factorial n)
       (if (= n 1) 1 (* (factorial (- n 1)) n)))
-   '(factorial 3)
-   ;; 'square
-   ;; '(square 2)
-   ;; '(square 2)
-   ;; '(define test (lambda (x) (define u 1) (define v 2) u))
-   ;; 'test
-   ;; '(test 999)
-   ;; '(define (show x) x)
-   ;; '(show '*unassigned*)
+   '(factorial 10000)
    )
   )
 
@@ -405,6 +397,17 @@
 ;; setup environment sets up the primitives like
 ;; car, cons, +, 'true
 (define the-global-environment (setup-environment))
+
 (process-inputs inputs)
 
 ;; (driver-loop)
+
+;; (define (time f)
+;;   (define start (runtime))
+;;   (f)
+;;   (define end (runtime))
+;;   (newline)
+;;   (display "runtime: ") (display (- end start))
+;;   )
+;;
+;; (time (lambda ()(process-inputs inputs)))
