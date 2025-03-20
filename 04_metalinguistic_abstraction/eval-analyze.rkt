@@ -244,6 +244,29 @@
 
 (define (eval exp env) ((analyze exp) env))
 
+; analysis
+(define (analyze-self-evaluating exp) (lambda (env) exp))
+
+(define (analyze-quoted exp)
+  (let ((qval (text-of-quotation exp)))
+    (lambda (env) qval)))
+
+(define (analyze-variable exp)
+  (lambda (env) (lookup-variable-value exp env)))
+
+(define (analyze-assignment exp)
+  (let ((var (assignment-variable exp))
+        (vproc (analyze (assignment-value exp))))
+    (lambda (env)
+      (set-variable-value! var (vproc env) env)
+      'ok)))
+
+(define (analyze-definition exp)
+  (let ((var (definition-variable exp))
+        (vproc (analyze (definition-value exp))))
+    (lambda (env)
+      (define-variable! var (vproc env) env) 'ok)))
+
 (define (analyze exp)
   (cond ((self-evaluating? exp) (analyze-self-evaluating exp))
 
@@ -266,44 +289,6 @@
         ((application? exp) (analyze-application exp))
 
         (else (error "Unknown expression type: ANALYZE" exp))))
-
-;; (define (eval exp env)
-;;   (cond ((self-evaluating? exp) ;; primitive - string or number
-;;          exp)
-;;         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
-;;          (lookup-variable-value exp env))
-;;
-;;         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
-;;          (text-of-quotation exp))
-;;
-;;         ((assignment? exp) ;; tagged-list - assignment - set! x 2
-;;          (eval-assignment exp env))
-;;
-;;         ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
-;;          (eval-definition exp env))
-;;
-;;         ((if? exp) ;; tagged-list - if
-;;          (eval-if exp env))
-;;
-;;         ((lambda? exp) ;; tagged-list - lambda
-;;          (make-procedure (lambda-parameters exp)
-;;                          (lambda-body exp)
-;;                          env))
-;;
-;;         ((begin? exp) ;; tagged-list - begin
-;;          (eval-sequence
-;;           (begin-actions exp) env))
-;;
-;;         ((cond? exp) ;; tagged-list - cond
-;;          (eval
-;;           (cond->if exp) env))
-;;
-;;         ((application? exp) ;; function call
-;;          (meta-apply
-;;           (eval (operator exp) env)
-;;           (list-of-values (operands exp) env)))
-;;         (else
-;;          (error "Unknown expression type: EVAL" exp))))
 
 ;; REPL
 (define (prompt-for-input string)
