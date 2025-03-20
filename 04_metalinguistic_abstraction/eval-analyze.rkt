@@ -327,22 +327,40 @@
         ((quoted? exp) (analyze-quoted exp)) ; list starting with symbol quote
 
         ((variable? exp)
-         (display "analyze variable ") (display exp)
+         (display "analyze variable? ") (display exp)
          (newline)
          (analyze-variable exp)
          ) ; is exp a symbol?
 
-        ((assignment? exp) (analyze-assignment exp)) ;; set!
+        ((assignment? exp)
+         (display "analyze assignment? ") (display exp)
+         (newline)
+         (analyze-assignment exp)) ;; set!
 
-        ((definition? exp) (analyze-definition exp)) ;; define, add variable to env, can be simple or a lambda
+        ((definition? exp)
+         (display "analyze definition? ") (display exp)
+         (newline)
+         (analyze-definition exp)) ;; define, add variable to env, can be simple or a lambda
 
-        ((if? exp) (analyze-if exp))
+        ((if? exp)
+         (display "analyze if? ") (display exp)
+         (newline)
+         (analyze-if exp))
 
-        ((lambda? exp) (analyze-lambda exp))
+        ((lambda? exp)
+         (display "analyze lambda? ") (display exp)
+         (newline)
+         (analyze-lambda exp))
 
-        ((begin? exp) (analyze-sequence (begin-actions exp)))
+        ((begin? exp)
+         (display "analyze begin? ") (display exp)
+         (newline)
+         (analyze-sequence (begin-actions exp)))
 
-        ((cond? exp) (analyze (cond->if exp)))
+        ((cond? exp)
+         (display "analyze cond? ") (display exp)
+         (newline)
+         (analyze (cond->if exp)))
 
         ((application? exp) (analyze-application exp))
 
