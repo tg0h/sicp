@@ -245,13 +245,26 @@
 (define (eval exp env) ((analyze exp) env))
 
 (define (analyze exp)
-  (cond ((self-evaluating? exp) (analyze-self-evaluating exp)) ((quoted? exp) (analyze-quoted exp))
-        ((variable? exp) (analyze-variable exp))
-        ((assignment? exp) (analyze-assignment exp)) ((definition? exp) (analyze-definition exp))
+  (cond ((self-evaluating? exp) (analyze-self-evaluating exp))
+
+        ((quoted? exp) (analyze-quoted exp)) ; list starting with symbol quote
+
+        ((variable? exp) (analyze-variable exp)) ; is exp a symbol?
+
+        ((assignment? exp) (analyze-assignment exp)) ;; set!
+
+        ((definition? exp) (analyze-definition exp)) ;; define, add variable to env, can be simple or a lambda
+
         ((if? exp) (analyze-if exp))
+
         ((lambda? exp) (analyze-lambda exp))
-        ((begin? exp) (analyze-sequence (begin-actions exp))) ((cond? exp) (analyze (cond->if exp)))
+
+        ((begin? exp) (analyze-sequence (begin-actions exp)))
+
+        ((cond? exp) (analyze (cond->if exp)))
+
         ((application? exp) (analyze-application exp))
+
         (else (error "Unknown expression type: ANALYZE" exp))))
 
 ;; (define (eval exp env)
