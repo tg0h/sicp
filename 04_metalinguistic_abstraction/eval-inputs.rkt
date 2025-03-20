@@ -247,10 +247,16 @@
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
          exp)
+
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
+         (display "eval variable? ")
+         (display exp)
+         (newline)
          (lookup-variable-value exp env))
 
         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
+         (display "eval variable?")
+         (newline)
          (text-of-quotation exp))
 
         ((assignment? exp) ;; tagged-list - assignment - set! x 2
@@ -304,7 +310,7 @@
    ;; '(define (square x) (* x x) )
    '(define (factorial n)
       (if (= n 1) 1 (* (factorial (- n 1)) n)))
-   '(factorial 10000)
+   '(factorial 4)
    )
   )
 
