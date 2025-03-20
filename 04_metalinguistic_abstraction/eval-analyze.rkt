@@ -214,6 +214,8 @@
         (list 'cons cons)
         (list 'null? null?)
         (list '+ +) ; implement + COOOOOOL
+        (list '* *)
+        (list '- -)
         ;; ⟨more primitives⟩
         ))
 (define (primitive-procedure-names)
@@ -356,12 +358,13 @@
 
 (define inputs
   (list
-   ;; '(define (square x) (* x x) (* x x) )
+   '(define (square x) (* x x) )
    ;; 'square
-   ;; '(square 2)
-   '(define test (lambda (x) (define u 1) (define v 2) u))
+   '(square 2)
+   '(square 2)
+   ;; '(define test (lambda (x) (define u 1) (define v 2) u))
    ;; 'test
-   '(test 999)
+   ;; '(test 999)
    ;; '(define (show x) x)
    ;; '(show '*unassigned*)
    )
