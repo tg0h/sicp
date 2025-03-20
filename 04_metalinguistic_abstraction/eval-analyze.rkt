@@ -275,6 +275,11 @@
                       (cproc env)
                       (aproc env)))))
 
+(define (analyze-lambda exp)
+  (let ((vars (lambda-parameters exp))
+        (bproc (analyze-sequence (lambda-body exp)))) 
+    (lambda (env) (make-procedure vars bproc env))))
+
 (define (analyze exp)
   (cond ((self-evaluating? exp) (analyze-self-evaluating exp))
 
