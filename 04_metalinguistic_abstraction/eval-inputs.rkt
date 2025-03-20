@@ -246,29 +246,38 @@
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) ;; primitive - string or number
+         (display "eval self-evaluating? ") (display exp)
+         (newline)
          exp)
 
         ((variable? exp) ;; is exp a symbol? (not a list starting with the symbol quote)
-         (display "eval variable? ")
-         (display exp)
+         (display "eval variable? ") (display exp)
          (newline)
          (lookup-variable-value exp env))
 
         ((quoted? exp) ;; togged-list - quoted - a list starting with the symbol quote
-         (display "eval variable?")
+         (display "eval quoted?") (display exp)
          (newline)
          (text-of-quotation exp))
 
         ((assignment? exp) ;; tagged-list - assignment - set! x 2
+         (display "eval assignment?") (display exp)
+         (newline)
          (eval-assignment exp env))
 
         ((definition? exp) ;; tagged-list - definition - add the variable to the environment, the value can be simple or a lambda
+         (display "eval definition?") (display exp)
+         (newline)
          (eval-definition exp env))
 
         ((if? exp) ;; tagged-list - if
+         (display "eval if?") (display exp)
+         (newline)
          (eval-if exp env))
 
         ((lambda? exp) ;; tagged-list - lambda
+         (display "eval lambda?") (display exp)
+         (newline)
          (make-procedure (lambda-parameters exp)
                          (lambda-body exp)
                          env))
