@@ -283,14 +283,20 @@
                          env))
 
         ((begin? exp) ;; tagged-list - begin
+         (display "eval begin?") (display exp)
+         (newline)
          (eval-sequence
           (begin-actions exp) env))
 
         ((cond? exp) ;; tagged-list - cond
+         (display "eval cond?") (display exp)
+         (newline)
          (eval
           (cond->if exp) env))
 
         ((application? exp) ;; function call
+         (display "eval application?") (display exp)
+         (newline)
          (meta-apply
           (eval (operator exp) env)
           (list-of-values (operands exp) env)))
