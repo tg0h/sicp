@@ -30,7 +30,8 @@
     (definition-variable exp)
     (eval (definition-value exp) env)
     env)
-  'ok)
+  'ok
+  "added definition to env - ok")
 
 ; numbers or strings
 (define (self-evaluating? exp)
