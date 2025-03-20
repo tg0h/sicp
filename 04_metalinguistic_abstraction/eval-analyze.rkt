@@ -216,6 +216,7 @@
         (list '+ +) ; implement + COOOOOOL
         (list '* *)
         (list '- -)
+        (list '= =)
         ;; ⟨more primitives⟩
         ))
 (define (primitive-procedure-names)
@@ -317,7 +318,7 @@
 
 
 (define (analyze exp)
-  (cond ((self-evaluating? exp) 
+  (cond ((self-evaluating? exp)
          (display "analyze self-evaluating?")
          (newline)
          (analyze-self-evaluating exp)
@@ -325,7 +326,11 @@
 
         ((quoted? exp) (analyze-quoted exp)) ; list starting with symbol quote
 
-        ((variable? exp) (analyze-variable exp)) ; is exp a symbol?
+        ((variable? exp)
+         (display "analyze variable ") (display exp)
+         (newline)
+         (analyze-variable exp)
+         ) ; is exp a symbol?
 
         ((assignment? exp) (analyze-assignment exp)) ;; set!
 
@@ -362,10 +367,13 @@
 
 (define inputs
   (list
-   '(define (square x) (* x x) )
+   ;; '(define (square x) (* x x) )
+   '(define (factorial n)
+      (if (= n 1) 1 (* (factorial (- n 1)) n)))
+   '(factorial 3)
    ;; 'square
-   '(square 2)
-   '(square 2)
+   ;; '(square 2)
+   ;; '(square 2)
    ;; '(define test (lambda (x) (define u 1) (define v 2) u))
    ;; 'test
    ;; '(test 999)
