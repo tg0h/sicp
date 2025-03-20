@@ -394,7 +394,7 @@
    ;; '(define (square x) (* x x) )
    '(define (factorial n)
       (if (= n 1) 1 (* (factorial (- n 1)) n)))
-   '(factorial 4)
+   '(factorial 2)
    )
   )
 
