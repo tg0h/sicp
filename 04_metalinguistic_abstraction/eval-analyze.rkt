@@ -307,6 +307,9 @@
 (define (analyze-application exp)
   (let ((fproc (analyze (operator exp)))
         (aprocs (map analyze (operands exp))))
+    ; an execution procedure that will execute the application
+    ; by executing the operator exec procedure
+    ; executing the operands exec procedures
     (lambda (env)
       (execute-application
        (fproc env)
