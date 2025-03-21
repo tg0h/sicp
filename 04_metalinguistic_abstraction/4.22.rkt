@@ -83,6 +83,16 @@
   (if (not (null? (cdddr exp))) (cadddr exp)
       'false))
 
+; let
+(define (let? exp) (tagged-list? exp 'let))
+(define (let-clauses exp) (cadr exp))
+(define (let-body exp) (cddr exp))
+(define (let-vars exp) (map car (let-clauses exp)))
+(define (let-exps exp) (map cadr (let-clauses exp)))
+(define (let->combination exp)
+  (cons (make-lambda (let-vars exp) (let-body exp)) (let-exps exp))
+  )
+
 ; if
 (define (make-if predicate consequent alternative)
   (list 'if predicate consequent alternative))
@@ -286,6 +296,10 @@
                       (cproc env)
                       (aproc env)))))
 
+(define (analyze-let exp)
+
+  )
+
 (define (analyze-lambda exp)
   (let ((vars (lambda-parameters exp))
         (bproc (analyze-sequence (lambda-body exp))))
@@ -367,6 +381,12 @@
          (newline)
          (analyze-lambda exp))
 
+        ; let to lambda
+        ((let? exp)
+         (display "analyze let? ") (display exp)
+         (newline)
+         (analyze-let exp))
+
         ((begin? exp)
          (display "analyze begin? ") (display exp)
          (newline)
@@ -407,11 +427,11 @@
    ;;    (if (= n 1) 1 (* (factorial (- n 1)) n)))
    ;; '(factorial 5)
 
-   '(define (square x) (* x x) )
+   ;; '(define (square x) (* x x) )
    ; the analyzed square execution procedure has now been installed in the environment
+   ;; '(square 2)
 
-   '(square 2)
-   '(square 2)
+   '(let ((x 2)) x)
    )
   )
 
