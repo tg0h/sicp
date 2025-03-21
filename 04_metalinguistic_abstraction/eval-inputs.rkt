@@ -300,7 +300,8 @@
          (display "eval application?") (display exp)
          (newline)
          (meta-apply
-          (eval (operator exp) env)
+          ; looking up the operator, i either return a primitive or compound procedure
+          (eval (operator exp) env) 
           (list-of-values (operands exp) env)))
         (else
          (error "Unknown expression type: EVAL" exp))))
@@ -324,10 +325,14 @@
 
 (define inputs
   (list
-   ;; '(define (square x) (* x x) )
-   '(define (factorial n)
-      (if (= n 1) 1 (* (factorial (- n 1)) n)))
-   '(factorial 2)
+   ;; '(define (factorial n)
+   ;;    (if (= n 1) 1 (* (factorial (- n 1)) n)))
+   ;; '(factorial 5)
+
+   '(define (square x) (* x x) )
+   '(square 2)
+   '(square 2)
+
    )
   )
 

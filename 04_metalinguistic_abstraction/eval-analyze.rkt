@@ -268,7 +268,10 @@
   (let ((var (definition-variable exp))
         (vproc (analyze (definition-value exp))))
     (lambda (env)
-      (define-variable! var (vproc env) env) 'ok)))
+      (define-variable! var (vproc env) env)
+      'ok
+      "analyzed definition - ok"
+      )))
 
 (define (analyze-if exp)
   (let ((pproc (analyze (if-predicate exp)))
@@ -391,10 +394,13 @@
 
 (define inputs
   (list
-   ;; '(define (square x) (* x x) )
-   '(define (factorial n)
-      (if (= n 1) 1 (* (factorial (- n 1)) n)))
-   '(factorial 2)
+   ;; '(define (factorial n)
+   ;;    (if (= n 1) 1 (* (factorial (- n 1)) n)))
+   ;; '(factorial 5)
+
+   '(define (square x) (* x x) )
+   '(square 2)
+   '(square 2)
    )
   )
 
