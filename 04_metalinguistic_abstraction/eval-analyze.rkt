@@ -405,6 +405,8 @@
    ;; '(factorial 5)
 
    '(define (square x) (* x x) )
+   ; the analyzed square execution procedure has now been installed in the environment
+
    '(square 2)
    '(square 2)
    )
