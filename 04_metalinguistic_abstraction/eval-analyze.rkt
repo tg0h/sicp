@@ -268,8 +268,10 @@
   (let ((var (definition-variable exp))
         (vproc (analyze (definition-value exp))))
     ; when i execute the execution procedure, this will define the variable
-    ; if the definition value is a lambda, it will install the procedure object in the 
+    ; if the definition value is a lambda, it will install the procedure object in the
     ; environment
+    ; the procedure object is an execution procedure of execution procedures
+    ; (it has already been analyzed)
     (lambda (env)
       (define-variable! var (vproc env) env)
       'ok
