@@ -286,6 +286,8 @@
         (bproc (analyze-sequence (lambda-body exp))))
     (lambda (env) (make-procedure vars bproc env))))
 
+; analyze every expression in the exps
+; convert into a single lambda (execution procedure) that accepts an env and runs the analyzed lambda body (more execution procedures)
 (define (analyze-sequence exps)
   (define (sequentially proc1 proc2)
     (lambda (env) (proc1 env) (proc2 env)))
@@ -324,8 +326,7 @@
   (cond ((self-evaluating? exp)
          (display "analyze self-evaluating?") (display exp)
          (newline)
-         (analyze-self-evaluating exp)
-         )
+         (analyze-self-evaluating exp))
 
         ((quoted? exp)
          (display "analyze quoted? ") (display exp)
